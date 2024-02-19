@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\api;
+namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\api\RegisterReuest;
+use App\Http\Requests\API\RegisterReuest;
 use App\Mail\VerifyMail;
 use App\Models\Role;
 use App\Models\User;
