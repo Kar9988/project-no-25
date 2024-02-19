@@ -22,17 +22,13 @@ class RegisterController extends Controller
      */
     public function store(RegisterReuest $request): JsonResponse
     {
-        $random = Str::random(40);
 
         $userData = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role_id' => Role::USER_ID,
-            'email_verify_token' => $random
         ]);
-
-        Mail::to($userData->email)->queue(new VerifyMail($random));
 
         return response()->json([
             'success' => true,
