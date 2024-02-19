@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\api\VerificationController;
+use App\Http\Controllers\API\VerificationController;
 use Illuminate\Support\Facades\Route;
 
 /*
