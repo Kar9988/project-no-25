@@ -11,8 +11,8 @@ class Role extends Model
 
     protected $guarded = [];
     const MODERATOR_ID = 3;
-    const ADMIN_ID = 2;
-    const USER_ID = 1;
+    const ADMIN_ID = 1;
+    const USER_ID = 2;
 
     public function user(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
