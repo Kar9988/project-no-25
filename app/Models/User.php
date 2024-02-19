@@ -12,22 +12,24 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $guarded = [];
+
     public function role(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Role::class);
     }
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $guarded = [];
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
+    public function payments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    public function user_plans(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(User_plans::class);
+    }
+
+
     protected $hidden = [
         'password',
         'remember_token',
