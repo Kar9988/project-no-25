@@ -7,66 +7,73 @@ use App\Http\Requests\API\PlanRequest;
 use App\Http\Resources\PlanResource;
 use App\Models\Plan;
 use App\Services\PlanService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class PlanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-//        $plans = Plan::all();
-//        return response()->json(['data' => PlanResource::collection($plans), 'success' => true, 'type' => 'success']);
+    protected $service;
 
+    /**
+     * @param PlanService $service
+     */
+    public function __construct(PlanService $service)
+    {
+        $this->service = $service;
     }
 
     /**
-     * Show the form for creating a new resource.
+     * @return JsonResponse
      */
-    public function create(PlanRequest $request)
+    public function index(): JsonResponse
     {
-
+        return response()->json(['data' => PlanResource::collection($this->service->index()), 'success' => true, 'type' => 'success']);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @param PlanRequest $request
+     * @return JsonResponse
      */
-    public function store(PlanRequest $request, PlanService $service)
+    public function store(PlanRequest $request): JsonResponse
     {
-        $data = $service->store($request->all());
-        return response()->json(['success' => true, 'type' => 'success','plan' => new PlanResource($data)]);
+        $data = $this->service->store($request->all());
+        return response()->json(['success' => true, 'type' => 'success', 'plan' => new PlanResource($data)]);
     }
 
     /**
-     * Display the specified resource.
+     * @param string $id
+     * @return JsonResponse
      */
-    public function show(string $id)
+    public function show(string $id): JsonResponse
     {
-        //
+        $plan = $this->service->getById($id);
+        return response()->json(['success' => true, 'type' => 'success', 'plan' => new PlanResource($plan)]);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * @param Request $request
+     * @param string $id
+     * @return JsonResponse
      */
-    public function edit(string $id)
+    public function update(Request $request, string $id): JsonResponse
     {
-        //
+        $updateData = $this->service->update($request->all(), $id);
+        if ($updateData === 1) {
+            return response()->json(['success' => true, 'type' => 'success']);
+        }
+        return response()->json(['success' => false, 'type' => 'error']);
     }
 
     /**
-     * Update the specified resource in storage.
+     * @param string $id
+     * @return JsonResponse
      */
-    public function update(Request $request, string $id)
+    public function destroy(string $id): JsonResponse
     {
-        dd($id);
-    }
+        if ($this->service->delete($id) === 1) {
+            return response()->json(['success' => true, 'type' => 'success']);
+        };
+        return response()->json(['success' => false, 'type' => 'error']);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }
