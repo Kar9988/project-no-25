@@ -22,7 +22,6 @@ class PlanController extends Controller
         $this->service = $service;
     }
 
-
     /**
      * @return JsonResponse
      */
@@ -36,7 +35,6 @@ class PlanController extends Controller
      * @return JsonResponse
      */
     public function store(PlanRequest $request): JsonResponse
-
     {
         $data = $this->service->store($request->all());
         return response()->json(['success' => true, 'type' => 'success', 'plan' => new PlanResource($data)]);
