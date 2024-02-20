@@ -21,5 +21,3 @@ Route::post('/register', [RegisterController::class, 'store']);
 Route::post('/login', [LoginController::class, 'store']);
 Route::post('/home', [LoginController::class, 'store']);
 Route::apiResource('plans', PlanController::class);
-
-
