@@ -38,7 +38,7 @@ class PlanService
      * @param int $id
      * @return mixed
      */
-    public function getById(int $id):mixed
+    public function getById(int $id): mixed
     {
         return Plan::query()->findOrFail($id);
     }
