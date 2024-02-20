@@ -34,7 +34,6 @@ class PlanController extends Controller
      */
     public function create(PlanRequest $request)
     {
-        dd(22222222);
 //
     }
 
@@ -61,7 +60,7 @@ class PlanController extends Controller
      */
     public function edit(string $id, Request $request)
     {
-        dd($id);
+//
     }
 
     /**
