@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 
 class GenresController extends Controller
 {
+
+    public function __construct(protected GenresService $service)
+    {
+
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -27,9 +33,9 @@ class GenresController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, GenresService $service)
+    public function store(Request $request)
     {
-        $service->store($request->all());
+        $this->service->store($request->all());
     }
 
     /**
