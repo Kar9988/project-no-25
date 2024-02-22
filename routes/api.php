@@ -20,4 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', [RegisterController::class, 'store']);
 Route::post('/login', [LoginController::class, 'store']);
 Route::post('/home', [LoginController::class, 'store']);
+Route::get('/getAuth', function(){
+    return response()->json(['auth' => auth()->user(),'status' => 400]);
+})->middleware('auth:api');
 Route::apiResource('plans', PlanController::class);
