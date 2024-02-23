@@ -7,7 +7,6 @@ import Auth from "../layouts/Auth.vue";
 import Dashboard from "../pages/admin/Dashboard.vue";
 import Settings from "../pages/admin/Settings.vue";
 import Tables from "../pages/admin/Tables.vue";
-import Maps from "../pages/admin/Maps.vue";
 
 // views for Auth layout
 
@@ -30,6 +29,7 @@ const routes = [
             {
                 path: "/admin/dashboard",
                 component: Dashboard,
+
             },
             {
                 path: "/admin/settings",
@@ -38,10 +38,6 @@ const routes = [
             {
                 path: "/admin/tables",
                 component: Tables,
-            },
-            {
-                path: "/admin/maps",
-                component: Maps,
             },
         ],
     },
@@ -72,7 +68,7 @@ const routes = [
         path: "/",
         component: Index,
     },
-    { path: "/:pathMatch(.*)*", redirect: "/" },
+    { path: "/:pathMatch(.*)*", redirect: "/auth/login" },
 ];
 
 const router = createRouter({
@@ -80,5 +76,4 @@ const router = createRouter({
     routes,
 });
 
-createApp(App).use(router).mount("#app");
 export default router;

@@ -19,6 +19,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [RegisterController::class, 'store']);
 Route::post('/login', [LoginController::class, 'store']);
+Route::post('/home', [LoginController::class, 'store']);
 Route::middleware('auth:api')->group(function () {
+  Route::get('/getAuth', function(){
+    return response()->json(['auth' => auth()->user(),'status' => 400]);
+});
     Route::apiResource('plans', PlanController::class)->middleware('admin');
 });
