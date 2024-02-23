@@ -38,6 +38,18 @@ export const useAdminStore = defineStore('adminStore', {
             }).then((res) => {
                 this.admin = res.data.data
             })
+        },
+        logout() {
+            axios({
+                method: 'DELETE',
+                url: 'http://127.0.0.1:8000/api/logout/',
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                }
+            }).then(response => {
+                localStorage.removeItem('token');
+                router.push({path: '/auth/login'})
+            })
         }
     }
 })
