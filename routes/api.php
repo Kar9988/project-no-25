@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\LoginController;
 use App\Http\Controllers\API\PlanController;
 use App\Http\Controllers\API\RegisterController;
@@ -20,9 +21,11 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', [RegisterController::class, 'store']);
 Route::post('/login', [LoginController::class, 'store']);
 Route::post('/home', [LoginController::class, 'store']);
+
 Route::middleware('auth:api')->group(function () {
-    Route::get('/getAuth', function(){
-        return response()->json(['auth' => auth()->user(),'status' => 400]);
+    Route::get('/auth/user', [AuthController::class, 'getAuthUser']);
+    Route::get('logout', [AuthController::class, 'logout']);
+    Route::prefix('admin')->middleware('admin')->group(function () {
+        Route::apiResource('plans', PlanController::class);
     });
-    Route::apiResource('plans', PlanController::class)->middleware('admin');
 });
