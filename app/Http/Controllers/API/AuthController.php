@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\AuthUserResource;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -12,7 +13,8 @@ class AuthController extends Controller
      */
     public function getAuthUser(): \Illuminate\Http\JsonResponse
     {
-        return response()->json(['data' => auth()->user(), 'status' => 401]);
+        $user =  auth()->user();
+        return response()->json(['data' =>  new AuthUserResource($user), 'status' => 401]);
     }
 
     /**
