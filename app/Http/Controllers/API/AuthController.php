@@ -15,7 +15,8 @@ class AuthController extends Controller
     {
         return response()->json([
             'data' => new AuthUserResource(auth()->user()),
-            'status' => 401]);
+            'status' => true,
+            'type'=>'success']);
     }
 
     /**
