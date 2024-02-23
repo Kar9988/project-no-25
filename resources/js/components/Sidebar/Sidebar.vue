@@ -13,20 +13,14 @@
       >
         <i class="fas fa-bars"></i>
       </button>
-      <!-- Brand -->
-      <router-link
-        class="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
-        to="/"
-      >
-        Vue Notus
-      </router-link>
+
       <!-- User -->
       <ul class="md:hidden items-center flex flex-wrap list-none">
         <li class="inline-block relative">
           <notification-dropdown />
         </li>
         <li class="inline-block relative">
-          <user-dropdown />
+<!--          <user-dropdown />-->
         </li>
       </ul>
       <!-- Collapse -->
@@ -42,9 +36,8 @@
             <div class="w-6/12">
               <router-link
                 class="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
-                to="/"
+                to="/admin/dashboard"
               >
-                Vue Notus
               </router-link>
             </div>
             <div class="w-6/12 flex justify-end">
