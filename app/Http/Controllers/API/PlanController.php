@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\API\PlanRequest;
+use App\Http\Requests\API\PlanStoreRequest;
+use App\Http\Requests\PlanUpdateRequest;
 use App\Http\Resources\PlanResource;
 use App\Models\Plan;
 use App\Services\PlanService;
@@ -31,10 +32,10 @@ class PlanController extends Controller
     }
 
     /**
-     * @param PlanRequest $request
+     * @param PlanStoreRequest $request
      * @return JsonResponse
      */
-    public function store(PlanRequest $request): JsonResponse
+    public function store(PlanStoreRequest $request): JsonResponse
     {
         $data = $this->service->store($request->all());
         return response()->json(['success' => true, 'type' => 'success', 'plan' => new PlanResource($data)]);
@@ -55,7 +56,7 @@ class PlanController extends Controller
      * @param string $id
      * @return JsonResponse
      */
-    public function update(Request $request, string $id): JsonResponse
+    public function update(PlanUpdateRequest $request, string $id): JsonResponse
     {
         $updateData = $this->service->update($request->all(), $id);
         if ($updateData === 1) {
