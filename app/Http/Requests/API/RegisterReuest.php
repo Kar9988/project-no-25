@@ -24,9 +24,9 @@ class RegisterReuest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|min:2|max:15',
+            'name'     => 'required|min:2|max:15',
             'password' => 'required|min:2|max:15',
-            'email' => 'required|email|min:5|max:30|email|unique:users',
+            'email'    => 'required|email|min:5|max:30|email|unique:users',
         ];
     }
 
@@ -35,8 +35,8 @@ class RegisterReuest extends FormRequest
         $errors = $validator->errors();
 
         $response = response()->json([
-            'message' => 'Invalid data send',
-            'details' => $errors->messages(),
+            'message' => $validator->getMessageBag()->first(),
+            'errors'  => $errors->messages(),
         ], 422);
 
         throw new HttpResponseException($response);
