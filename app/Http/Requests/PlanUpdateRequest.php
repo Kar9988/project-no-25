@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\API;
+namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class PlanRequest extends FormRequest
+class PlanUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
