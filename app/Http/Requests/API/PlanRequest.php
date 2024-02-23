@@ -37,8 +37,8 @@ class PlanRequest extends FormRequest
         $errors = $validator->errors();
 
         $response = response()->json([
-            'message' => 'Invalid plans send',
-            'details' => $errors->messages(),
+            'message' => $validator->getMessageBag()->first(),
+            'errors'  => $errors->messages(),
         ], 422);
 
         throw new HttpResponseException($response);
