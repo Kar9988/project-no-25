@@ -13,8 +13,9 @@ class AuthController extends Controller
      */
     public function getAuthUser(): \Illuminate\Http\JsonResponse
     {
-        $user =  auth()->user();
-        return response()->json(['data' =>  new AuthUserResource($user), 'status' => 401]);
+        return response()->json([
+            'data' => new AuthUserResource(auth()->user()),
+            'status' => 401]);
     }
 
     /**
@@ -25,7 +26,10 @@ class AuthController extends Controller
     {
         if ($request->user()) {
             $request->user()->token()->revoke();
-            return response()->json(['message' => 'Successfully logged out', 'success' => true, 'type' => 'success']);
+            return response()->json([
+                'message' => 'Successfully logged out',
+                'success' => true,
+                'type' => 'success']);
         }
 
         return response()->json(['message' => 'User not authenticated'], 401);
