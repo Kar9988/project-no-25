@@ -4,14 +4,10 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\RegisterReuest;
-use App\Mail\VerifyMail;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
 
 
 class RegisterController extends Controller
@@ -23,7 +19,7 @@ class RegisterController extends Controller
     public function store(RegisterReuest $request): JsonResponse
     {
 
-        $userData = User::create([
+        User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),

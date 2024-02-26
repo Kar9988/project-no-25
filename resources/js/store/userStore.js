@@ -13,7 +13,8 @@ export const useUserStore = defineStore('userStore', {
     actions: {
         getUsers() {
             return new Promise((resolve, reject) => {
-                axios.get('http://127.0.0.1:8000/api/admin/users')
+                axios.get('http://127.0.0.1:8000/api/admin/users',
+                    {headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}})
                     .then(({data}) => {
                         this.users = data
                         resolve(data)
@@ -23,9 +24,8 @@ export const useUserStore = defineStore('userStore', {
             })
         },
         deleteUser(userId) {
-            console.log(userId)
             return new Promise((resolve, reject) => {
-                axios.get(`http://127.0.0.1:8000/api/admin/delete/${userId}`,
+                axios.delete(`http://127.0.0.1:8000/api/admin/users/${userId}`,
                     {headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}})
                     .then(response => {
                         console.log(response)
@@ -46,7 +46,7 @@ export const useUserStore = defineStore('userStore', {
         getUser(userId) {
             return new Promise((resolve, reject) => {
                 console.log(userId)
-                axios.get(`http://127.0.0.1:8000/api/admin/edit/${userId}`,
+                axios.get(`http://127.0.0.1:8000/api/admin/users/${userId}`,
                     {headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}})
                     .then(response => {
                         this.user = response.data.user;
@@ -60,8 +60,7 @@ export const useUserStore = defineStore('userStore', {
         async updateForm(id, form) {
 
             try {
-                console.log(id)
-                await axios.put(`http://127.0.0.1:8000/api/admin/update/${id}`, {
+                await axios.put(`http://127.0.0.1:8000/api/admin/users/${id}`, {
                         name: form.name,
                         email: form.email,
                     },

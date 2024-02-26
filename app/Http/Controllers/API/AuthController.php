@@ -4,14 +4,15 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AuthUserResource;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function getAuthUser(): \Illuminate\Http\JsonResponse
+    public function getAuthUser(): JsonResponse
     {
         return response()->json([
             'data' => new AuthUserResource(auth()->user()),
@@ -21,9 +22,9 @@ class AuthController extends Controller
 
     /**
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function logout(Request $request): \Illuminate\Http\JsonResponse
+    public function logout(Request $request): JsonResponse
     {
         if ($request->user()) {
             $request->user()->token()->revoke();

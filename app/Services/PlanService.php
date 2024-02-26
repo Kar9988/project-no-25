@@ -3,12 +3,11 @@
 namespace App\Services;
 
 use App\Models\Plan;
-use mysql_xdevapi\Collection;
 
 class PlanService
 {
     /**
-     * @param $data
+     * @param array $data
      * @return mixed
      */
     public function store(array $data): mixed

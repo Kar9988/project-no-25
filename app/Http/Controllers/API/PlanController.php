@@ -6,21 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\API\PlanStoreRequest;
 use App\Http\Requests\PlanUpdateRequest;
 use App\Http\Resources\PlanResource;
-use App\Models\Plan;
 use App\Services\PlanService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
+
 class PlanController extends Controller
 {
-    protected $service;
-
     /**
      * @param PlanService $service
      */
-    public function __construct(PlanService $service)
+    public function __construct(protected PlanService $service)
     {
-        $this->service = $service;
     }
 
     /**
@@ -28,7 +25,10 @@ class PlanController extends Controller
      */
     public function index(): JsonResponse
     {
-        return response()->json(['data' => PlanResource::collection($this->service->index()), 'success' => true, 'type' => 'success']);
+        return response()->json([
+            'data' => PlanResource::collection($this->service->index()),
+            'success' => true, 'type' => 'success'
+        ]);
     }
 
     /**
@@ -38,6 +38,7 @@ class PlanController extends Controller
     public function store(PlanStoreRequest $request): JsonResponse
     {
         $data = $this->service->store($request->all());
+
         return response()->json(['success' => true, 'type' => 'success', 'plan' => new PlanResource($data)]);
     }
 
@@ -48,6 +49,7 @@ class PlanController extends Controller
     public function show(string $id): JsonResponse
     {
         $plan = $this->service->getById($id);
+
         return response()->json(['success' => true, 'type' => 'success', 'plan' => new PlanResource($plan)]);
     }
 
@@ -60,8 +62,10 @@ class PlanController extends Controller
     {
         $updateData = $this->service->update($request->all(), $id);
         if ($updateData === 1) {
+
             return response()->json(['success' => true, 'type' => 'success']);
         }
+
         return response()->json(['success' => false, 'type' => 'error']);
     }
 
@@ -72,8 +76,10 @@ class PlanController extends Controller
     public function destroy(string $id): JsonResponse
     {
         if ($this->service->delete($id) === 1) {
+
             return response()->json(['success' => true, 'type' => 'success']);
         };
+
         return response()->json(['success' => false, 'type' => 'error']);
 
     }

@@ -12,10 +12,10 @@ export const useAdminStore = defineStore('adminStore', {
             return new Promise((resolve, reject) => {
                 axios.post(`http://127.0.0.1:8000/api/login`, data)
                     .then(response => {
-                        if (response.status === 200) {
-                            this.admin = response.data.user
-                            localStorage.setItem('token', response.data.token)
-                            router.push({path: 'dashboard'})
+                        // if (response.status === 200) {
+                        //     this.admin = response.data.user
+                        //     localStorage.setItem('token', response.data.token)
+                        //     router.push({path: 'dashboard'})
                         if (response.status === 200){
                             console.log(response.data.user)
                             this.admin = response.data.user
@@ -26,7 +26,6 @@ export const useAdminStore = defineStore('adminStore', {
                     reject(e);
                 });
             })
-        },
         },
         getAuthUser() {
             const token = localStorage.getItem('token');
