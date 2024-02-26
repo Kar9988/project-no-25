@@ -10,7 +10,6 @@ export default defineConfig({
         vue(),
 
         laravel({
-            buildDirectory: 'build',
             input: ['resources/css/app.css', 'resources/js/app.js'],
             refresh: true,
         }),

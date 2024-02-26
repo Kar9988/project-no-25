@@ -16,7 +16,8 @@ class AuthController extends Controller
         return response()->json([
             'data' => new AuthUserResource(auth()->user()),
             'status' => true,
-            'type'=>'success']);
+            'type'=>'success'
+        ]);
     }
 
     /**
@@ -30,7 +31,8 @@ class AuthController extends Controller
             return response()->json([
                 'message' => 'Successfully logged out',
                 'success' => true,
-                'type' => 'success']);
+                'type' => 'success'
+            ]);
         }
 
         return response()->json(['message' => 'User not authenticated'], 401);
