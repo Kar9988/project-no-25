@@ -90,5 +90,20 @@ const router = createRouter({
     history: createWebHistory(),
     routes,
 });
-
+router.beforeEach((to, from, next) => {
+    let token = localStorage.getItem('token');
+    if (token) {
+        if (to.path === '/auth/register' || to.path === '/auth/login') {
+            next('/admin/dashboard');
+        } else {
+            next();
+        }
+    } else {
+        if (to.path !== '/auth/login' && to.path !== '/auth/register') {
+            next('/auth/login');
+        } else {
+            next();
+        }
+    }
+});
 export default router;

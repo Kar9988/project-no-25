@@ -1,0 +1,124 @@
+{
+  "resources/assets/img/angular.jpg": {
+    "file": "assets/angular-BTgdTcYl.jpg",
+    "src": "resources/assets/img/angular.jpg"
+  },
+  "resources/assets/img/bootstrap.jpg": {
+    "file": "assets/bootstrap-BcGpxscy.jpg",
+    "src": "resources/assets/img/bootstrap.jpg"
+  },
+  "resources/assets/img/component-btn-pink.png": {
+    "file": "assets/component-btn-pink-6HjkwmMw.png",
+    "src": "resources/assets/img/component-btn-pink.png"
+  },
+  "resources/assets/img/component-btn.png": {
+    "file": "assets/component-btn-HZ8mWs0m.png",
+    "src": "resources/assets/img/component-btn.png"
+  },
+  "resources/assets/img/component-info-2.png": {
+    "file": "assets/component-info-2-CzPaH5LV.png",
+    "src": "resources/assets/img/component-info-2.png"
+  },
+  "resources/assets/img/component-info-card.png": {
+    "file": "assets/component-info-card-CHC2qspG.png",
+    "src": "resources/assets/img/component-info-card.png"
+  },
+  "resources/assets/img/component-menu.png": {
+    "file": "assets/component-menu-DbFVwBH_.png",
+    "src": "resources/assets/img/component-menu.png"
+  },
+  "resources/assets/img/component-profile-card.png": {
+    "file": "assets/component-profile-card-CS2-DoDT.png",
+    "src": "resources/assets/img/component-profile-card.png"
+  },
+  "resources/assets/img/documentation.png": {
+    "file": "assets/documentation-CSz4ajZz.png",
+    "src": "resources/assets/img/documentation.png"
+  },
+  "resources/assets/img/github.svg": {
+    "file": "assets/github-f4-qxVuk.svg",
+    "src": "resources/assets/img/github.svg"
+  },
+  "resources/assets/img/google.svg": {
+    "file": "assets/google-Cshz__zw.svg",
+    "src": "resources/assets/img/google.svg"
+  },
+  "resources/assets/img/landing.jpg": {
+    "file": "assets/landing-BHHb9s_a.jpg",
+    "src": "resources/assets/img/landing.jpg"
+  },
+  "resources/assets/img/login.jpg": {
+    "file": "assets/login-nsjZWpIS.jpg",
+    "src": "resources/assets/img/login.jpg"
+  },
+  "resources/assets/img/pattern_vue.png": {
+    "file": "assets/pattern_vue-DhxSmRzW.png",
+    "src": "resources/assets/img/pattern_vue.png"
+  },
+  "resources/assets/img/profile.jpg": {
+    "file": "assets/profile-6zoiRWAE.jpg",
+    "src": "resources/assets/img/profile.jpg"
+  },
+  "resources/assets/img/react.jpg": {
+    "file": "assets/react-BRzYEhFd.jpg",
+    "src": "resources/assets/img/react.jpg"
+  },
+  "resources/assets/img/register_bg_2.png": {
+    "file": "assets/register_bg_2-AH3mfCwx.png",
+    "src": "resources/assets/img/register_bg_2.png"
+  },
+  "resources/assets/img/sketch.jpg": {
+    "file": "assets/sketch-D2jxFpeu.jpg",
+    "src": "resources/assets/img/sketch.jpg"
+  },
+  "resources/assets/img/team-1-800x800.jpg": {
+    "file": "assets/team-1-800x800-CAZr3VGL.jpg",
+    "src": "resources/assets/img/team-1-800x800.jpg"
+  },
+  "resources/assets/img/team-2-800x800.jpg": {
+    "file": "assets/team-2-800x800-BkiBLi7M.jpg",
+    "src": "resources/assets/img/team-2-800x800.jpg"
+  },
+  "resources/assets/img/team-3-800x800.jpg": {
+    "file": "assets/team-3-800x800-DXb1npd2.jpg",
+    "src": "resources/assets/img/team-3-800x800.jpg"
+  },
+  "resources/assets/img/team-4-470x470.png": {
+    "file": "assets/team-4-470x470-DqR9OhpQ.png",
+    "src": "resources/assets/img/team-4-470x470.png"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-DVLB_3UB.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-C9axp-wS.js",
+    "src": "resources/js/app.js",
+    "isEntry": true,
+    "assets": [
+      "assets/team-1-800x800-CAZr3VGL.jpg",
+      "assets/register_bg_2-AH3mfCwx.png",
+      "assets/team-2-800x800-BkiBLi7M.jpg",
+      "assets/bootstrap-BcGpxscy.jpg",
+      "assets/angular-BTgdTcYl.jpg",
+      "assets/sketch-D2jxFpeu.jpg",
+      "assets/react-BRzYEhFd.jpg",
+      "assets/team-3-800x800-DXb1npd2.jpg",
+      "assets/team-4-470x470-DqR9OhpQ.png",
+      "assets/github-f4-qxVuk.svg",
+      "assets/google-Cshz__zw.svg",
+      "assets/pattern_vue-DhxSmRzW.png",
+      "assets/component-btn-HZ8mWs0m.png",
+      "assets/component-profile-card-CS2-DoDT.png",
+      "assets/component-info-card-CHC2qspG.png",
+      "assets/component-info-2-CzPaH5LV.png",
+      "assets/component-menu-DbFVwBH_.png",
+      "assets/component-btn-pink-6HjkwmMw.png",
+      "assets/documentation-CSz4ajZz.png",
+      "assets/login-nsjZWpIS.jpg",
+      "assets/profile-6zoiRWAE.jpg",
+      "assets/landing-BHHb9s_a.jpg"
+    ]
+  }
+}

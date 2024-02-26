@@ -35,12 +35,24 @@ export const useAdminStore = defineStore('adminStore', {
                     Authorization: `Bearer ${token}`
                 }
             };
-            return axios.get(`http://127.0.0.1:8001/api/getAuth`, {
+            return axios.get(`http://127.0.0.1:8000/api/auth/user`, {
                 headers: {
                     Authorization: 'Bearer ' + localStorage.getItem('token')
                 }
             }).then((res) => {
-                this.admin = res.data.auth
+                this.admin = res.data.data
+            })
+        },
+        logout() {
+            axios({
+                method: 'DELETE',
+                url: 'http://127.0.0.1:8000/api/logout/',
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                }
+            }).then(response => {
+                localStorage.removeItem('token');
+                router.push({path: '/auth/login'})
             })
         }
     }
