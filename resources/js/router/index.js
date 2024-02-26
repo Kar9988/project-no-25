@@ -31,6 +31,7 @@ const routes = [
             {
                 path: "/admin/dashboard",
                 component: Dashboard,
+
             },
             {
                 path: "/admin/settings",
@@ -82,7 +83,7 @@ const routes = [
         path: "/",
         component: Index,
     },
-    { path: "/:pathMatch(.*)*", redirect: "/" },
+    { path: "/:pathMatch(.*)*", redirect: "/auth/login" },
 ];
 
 const router = createRouter({

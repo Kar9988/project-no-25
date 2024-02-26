@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\LoginController;
 use App\Http\Controllers\API\PlanController;
 use App\Http\Controllers\API\RegisterController;
@@ -22,13 +22,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [RegisterController::class, 'store']);
 Route::post('/login', [LoginController::class, 'store']);
-Route::post('/home', [LoginController::class, 'store']);
-Route::apiResource('plans', PlanController::class);
 
-Route::prefix('admin')->group(function () {
+Route::middleware('auth:api')->group(function () {
+    Route::get('/auth/user', [AuthController::class, 'getAuthUser']);
+    Route::get('logout', [AuthController::class, 'logout']);
+    Route::prefix('admin')->middleware('admin')->group(function () {
     Route::get('/users', [APIUserController::class, 'index']);
     Route::get('/delete/{id?}', [AdminUserController::class, 'destroy'])->middleware('auth:api');
     Route::get('/edit/{user}', [AdminUserController::class, 'edit'])->middleware('auth:api');
     Route::put('/update/{user}', [AdminUserController::class, 'update'])->middleware('auth:api');
+    Route::apiResource('plans', PlanController::class);
+    });
 });
-

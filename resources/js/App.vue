@@ -10,7 +10,9 @@ import {onMounted} from "vue";
 const adminUserStore = useAdminStore();
 const userStore = useUserStore();
 
+
 onMounted(() => {
-    userStore.getUsers()
+    adminUserStore.getAuthUser()
+        userStore.getUsers()
 })
 </script>

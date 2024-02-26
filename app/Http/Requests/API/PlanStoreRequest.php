@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class PlanRequest extends FormRequest
+class PlanStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -37,8 +37,8 @@ class PlanRequest extends FormRequest
         $errors = $validator->errors();
 
         $response = response()->json([
-            'message' => 'Invalid plans send',
-            'details' => $errors->messages(),
+            'message' => $validator->getMessageBag()->first(),
+            'errors'  => $errors->messages(),
         ], 422);
 
         throw new HttpResponseException($response);

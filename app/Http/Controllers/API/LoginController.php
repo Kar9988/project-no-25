@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\LoginRequest;
+use App\Http\Resources\AuthUserResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +22,7 @@ class LoginController extends Controller
             $token = auth()->user()->createToken('API Token')->accessToken;
 
             return response()->json([
-                'user' => auth()->user(),
+                'user' => new AuthUserResource(auth()->user()),
                 'token' => $token
             ], 200);
         } else {
