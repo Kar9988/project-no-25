@@ -10,7 +10,7 @@ export const useAdminStore = defineStore('adminStore', {
     actions: {
         adminLogin(data) {
             return new Promise((resolve, reject) => {
-                axios.post(`http://127.0.0.1:8000/api/login`,data)
+                axios.post(`/api/login`,data)
                     .then(response => {
                         if (response.status === 200){
                             console.log(response.data.user)
@@ -31,7 +31,7 @@ export const useAdminStore = defineStore('adminStore', {
                     Authorization: `Bearer ${token}`
                 }
             };
-            return axios.get(`http://127.0.0.1:8000/api/auth/user`, {
+            return axios.get(`/api/auth/user`, {
                 headers: {
                     Authorization: 'Bearer ' + localStorage.getItem('token')
                 }
@@ -40,9 +40,7 @@ export const useAdminStore = defineStore('adminStore', {
             })
         },
         logout() {
-            axios({
-                method: 'DELETE',
-                url: 'http://127.0.0.1:8000/api/logout/',
+                axios.get(`/api/auth/user`,{
                 headers: {
                     Authorization: 'Bearer ' + localStorage.getItem('token')
                 }

@@ -20,10 +20,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [RegisterController::class, 'store']);
 Route::post('/login', [LoginController::class, 'store']);
-Route::post('/home', [LoginController::class, 'store']);
 Route::middleware('auth:api')->group(function () {
     Route::get('/auth/user', [AuthController::class, 'getAuthUser']);
-    Route::DELETE('/logout', [AuthController::class, 'logout']);
+    Route::get('/logout', [AuthController::class, 'logout']);
     Route::prefix('admin')->middleware('admin')->group(function () {
         Route::apiResource('plans', PlanController::class);
     });
