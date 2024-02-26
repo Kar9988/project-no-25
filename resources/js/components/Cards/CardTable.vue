@@ -1,8 +1,7 @@
 <template>
   <div
     class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded"
-    :class="[color === 'light' ? 'bg-white' : 'bg-emerald-900 text-white']"
-  >
+    :class="[color === 'light' ? 'bg-white' : 'bg-emerald-900 text-white']">
     <div class="rounded-t mb-0 px-4 py-3 border-0">
       <div class="flex flex-wrap items-center">
         <div class="relative w-full px-4 max-w-full flex-grow flex-1">
@@ -476,16 +475,16 @@
 <script>
 import TableDropdown from "../../components/Dropdowns/TableDropdown.vue";
 
-// import bootstrap from "../../../assets/img/bootstrap.jpg";
-// import angular from "../../../assets/img/angular.jpg";
-// import sketch from "../../../assets/img/sketch.jpg";
-// import react from "../../../assets/img/react.jpg";
-// import vue from "../../../assets/img/react.jpg";
+import bootstrap from "../../../assets/img/bootstrap.jpg";
+import angular from "../../../assets/img/angular.jpg";
+import sketch from "../../../assets/img/sketch.jpg";
+import react from "../../../assets/img/react.jpg";
+import vue from "../../../assets/img/react.jpg";
 
-// import team1 from "../../../assets/img/team-1-800x800.jpg";
-// import team2 from "../../../assets/img/team-2-800x800.jpg";
-// import team3 from "../../../assets/img/team-3-800x800.jpg";
-// import team4 from "../../../assets/img/team-4-470x470.png";
+import team1 from "../../../assets/img/team-1-800x800.jpg";
+import team2 from "../../../assets/img/team-2-800x800.jpg";
+import team3 from "../../../assets/img/team-3-800x800.jpg";
+import team4 from "../../../assets/img/team-4-470x470.png";
 
 export default {
   data() {
