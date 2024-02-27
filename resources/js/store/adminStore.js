@@ -33,7 +33,7 @@ export const useAdminStore = defineStore('adminStore', {
             })
         },
         logout() {
-                axios.get(`/auth/user`,{
+                axios.get(`/logout`,{
             }).then(response => {
                 localStorage.removeItem('token');
                 router.push({path: '/auth/login'})

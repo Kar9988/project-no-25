@@ -14,8 +14,9 @@ class AuthController extends Controller
      */
     public function getAuthUser(): JsonResponse
     {
+
         return response()->json([
-            'data' => new AuthUserResource(auth()->user()),
+            'data' => new AuthUserResource(auth()->user()->load('role')),
             'status' => true,
             'type'=>'success'
         ]);
