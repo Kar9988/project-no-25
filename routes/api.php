@@ -22,7 +22,7 @@ Route::post('/register', [RegisterController::class, 'store']);
 Route::post('/login', [LoginController::class, 'store']);
 Route::middleware('auth:api')->group(function () {
     Route::get('/auth/user', [AuthController::class, 'getAuthUser']);
-    Route::get('/logout', [AuthController::class, 'logout']);
+    Route::get('/auth/logout', [AuthController::class, 'logout']);
     Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
         Route::apiResource('users', UserController::class)->only(['update', 'index', 'show', 'destroy']);
         Route::apiResource('plans', PlanController::class);

@@ -1,6 +1,7 @@
 import {defineStore} from "pinia";
 import axios from "../axios-configured.js";
 import router from "../router/index.js";
+import Swal from "sweetalert2";
 
 export const useAdminStore = defineStore('adminStore', {
     state: () => ({
@@ -35,8 +36,25 @@ export const useAdminStore = defineStore('adminStore', {
         logout() {
                 axios.get(`/api/logout`,{
             }).then(response => {
-                localStorage.removeItem('token');
-                router.push({path: '/auth/login'})
+                    Swal.fire({
+                        title: "do you want to log out ?",
+                        icon: "info",
+                        showCloseButton: true,
+                        showCancelButton: true,
+                        focusConfirm: false,
+                        confirmButtonText: `<i class="fa fa-thumbs-up"></i> Yes!`,
+                        confirmButtonAriaLabel: "Thumbs up, great!",
+                        cancelButtonText: `<i class="fa fa-thumbs-down"> No </i>`,
+                        cancelButtonAriaLabel: "Thumbs down"
+                    }).then((res) => {
+                        if (res.isConfirmed === true) {
+                            localStorage.removeItem('token');
+                            router.push({path: '/auth/login'})
+                        }else{
+                            router.push({path: '/admin/dashboard'})
+                        }
+                    });
+
             })
         }
     }

@@ -93,13 +93,13 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-RytgQPcn.js",
+    "file": "assets/app-x_EWpIPu.js",
     "src": "resources/js/app.js",
     "isEntry": true,
     "assets": [
       "assets/team-1-800x800-CAZr3VGL.jpg",
-      "assets/team-2-800x800-BkiBLi7M.jpg",
       "assets/register_bg_2-AH3mfCwx.png",
+      "assets/team-2-800x800-BkiBLi7M.jpg",
       "assets/bootstrap-BcGpxscy.jpg",
       "assets/angular-BTgdTcYl.jpg",
       "assets/sketch-D2jxFpeu.jpg",
