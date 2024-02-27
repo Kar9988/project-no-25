@@ -143,6 +143,17 @@
                             </a>
                         </router-link>
                     </li>
+                    <li class="items-center">
+                        <a
+                            @click="logout"
+                            class="text-xs uppercase py-3 cursor-pointer font-bold block"
+                        >
+                            <i
+                                class="fas fa-table mr-2 text-sm"
+                            ></i>
+                            Logout
+                        </a>
+                    </li>
                 </ul>
 
             </div>
