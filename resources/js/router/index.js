@@ -7,7 +7,7 @@ import Auth from "../layouts/Auth.vue";
 import Dashboard from "../pages/admin/Dashboard.vue";
 import Settings from "../pages/admin/Settings.vue";
 import Tables from "../pages/admin/Tables.vue";
-
+import Users from "../pages/admin/Users.vue";
 // views for Auth layout
 
 import Login from "../pages/auth/Login.vue";
@@ -18,6 +18,7 @@ import Register from "../pages/auth/Register.vue";
 import Landing from "../pages/Landing.vue";
 import Profile from "../pages/Profile.vue";
 import Index from "../pages/Index.vue";
+import Edit from "../pages/admin/Edit.vue";
 import {createApp} from "vue";
 import App from "../App.vue";
 const routes = [
@@ -38,6 +39,15 @@ const routes = [
             {
                 path: "/admin/tables",
                 component: Tables,
+            },
+            {
+                path: "/admin/users",
+                component: Users,
+            },
+            {
+                path: "/admin/edit/:id",
+                name: "admin.edit",
+                component: Edit,
             },
         ],
     },
