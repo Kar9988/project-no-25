@@ -1,8 +1,7 @@
 import {defineStore} from "pinia";
-import axios from "axios";
+import axios from "../axios-configured.js";
 import router from "../router/index.js";
-import admin from "../layouts/Admin.vue";
-// import router from "@/js/router";
+
 export const useAdminStore = defineStore('adminStore', {
     state: () => ({
         admin: {},
@@ -10,7 +9,7 @@ export const useAdminStore = defineStore('adminStore', {
     actions: {
         adminLogin(data) {
             return new Promise((resolve, reject) => {
-                axios.post(`http://127.0.0.1:8000/api/login`, data)
+                axios.post(`/login`, data)
                     .then(response => {
                         // if (response.status === 200) {
                         //     this.admin = response.data.user
@@ -28,27 +27,13 @@ export const useAdminStore = defineStore('adminStore', {
             })
         },
         getAuthUser() {
-            const token = localStorage.getItem('token');
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            };
-            return axios.get(`http://127.0.0.1:8000/api/auth/user`, {
-                headers: {
-                    Authorization: 'Bearer ' + localStorage.getItem('token')
-                }
+            return axios.get(`/auth/user`, {
             }).then((res) => {
                 this.admin = res.data.data
             })
         },
         logout() {
-            axios({
-                method: 'DELETE',
-                url: 'http://127.0.0.1:8000/api/logout/',
-                headers: {
-                    Authorization: 'Bearer ' + localStorage.getItem('token')
-                }
+                axios.get(`/auth/user`,{
             }).then(response => {
                 localStorage.removeItem('token');
                 router.push({path: '/auth/login'})

@@ -20,7 +20,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [RegisterController::class, 'store']);
 Route::post('/login', [LoginController::class, 'store']);
-
 Route::middleware('auth:api')->group(function () {
     Route::get('/auth/user', [AuthController::class, 'getAuthUser']);
     Route::get('/logout', [AuthController::class, 'logout']);

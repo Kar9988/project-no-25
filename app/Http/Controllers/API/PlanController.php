@@ -27,7 +27,8 @@ class PlanController extends Controller
     {
         return response()->json([
             'data' => PlanResource::collection($this->service->index()),
-            'success' => true, 'type' => 'success'
+            'success' => true,
+            'type' => 'success'
         ]);
     }
 
@@ -39,7 +40,11 @@ class PlanController extends Controller
     {
         $data = $this->service->store($request->all());
 
-        return response()->json(['success' => true, 'type' => 'success', 'plan' => new PlanResource($data)]);
+        return response()->json([
+            'success' => true,
+            'type' => 'success',
+            'plan' => new PlanResource($data)
+        ]);
     }
 
     /**
@@ -50,7 +55,11 @@ class PlanController extends Controller
     {
         $plan = $this->service->getById($id);
 
-        return response()->json(['success' => true, 'type' => 'success', 'plan' => new PlanResource($plan)]);
+        return response()->json([
+            'success' => true,
+            'type' => 'success',
+            'plan' => new PlanResource($plan)
+        ]);
     }
 
     /**
@@ -62,7 +71,6 @@ class PlanController extends Controller
     {
         $updateData = $this->service->update($request->all(), $id);
         if ($updateData === 1) {
-
             return response()->json(['success' => true, 'type' => 'success']);
         }
 
@@ -77,10 +85,15 @@ class PlanController extends Controller
     {
         if ($this->service->delete($id) === 1) {
 
-            return response()->json(['success' => true, 'type' => 'success']);
-        };
+            return response()->json([
+                'success' => true,
+                'type' => 'success'
+            ]);
+        }
 
-        return response()->json(['success' => false, 'type' => 'error']);
-
+        return response()->json([
+            'success' => false,
+            'type' => 'error'
+        ]);
     }
 }
