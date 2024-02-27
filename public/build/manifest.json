@@ -93,11 +93,7 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-<<<<<<< HEAD:public/build/manifest.json
-    "file": "assets/app-7vftuitV.js",
-=======
-    "file": "assets/app-CZdbcweu.js",
->>>>>>> 8bdde8260afd7138d959fd44f13f5dddbb98a8ac:public/build/mix-manifest.json
+    "file": "assets/app-BVv4_G_z.js",
     "src": "resources/js/app.js",
     "isEntry": true,
     "assets": [
