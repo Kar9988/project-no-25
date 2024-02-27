@@ -39,7 +39,6 @@
       >
         Tables
       </router-link>
-
       <div class="h-0 mx-4 my-2 border border-solid border-blueGray-100" />
       <span
         class="text-sm pt-2 pb-0 px-4 font-bold block w-full whitespace-nowrap bg-transparent text-blueGray-400"

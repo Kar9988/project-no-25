@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\API;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class PlanUpdateRequest extends FormRequest
+class UserUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,8 @@ class PlanUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
-            'price' => 'required',
-            'points' => 'required',
-            'description' => 'required',
-            'discount' => 'required',
+            'name' => 'required|min:2|max:15',
+            'email' => 'required|email|min:5|max:30',
         ];
     }
 
@@ -37,7 +34,7 @@ class PlanUpdateRequest extends FormRequest
         $errors = $validator->errors();
 
         $response = response()->json([
-            'message' => 'Invalid plans send',
+            'message' => 'Invalid data send',
             'details' => $errors->messages(),
         ], 422);
 

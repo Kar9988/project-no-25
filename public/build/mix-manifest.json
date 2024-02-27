@@ -88,12 +88,16 @@
     "src": "resources/assets/img/team-4-470x470.png"
   },
   "resources/css/app.css": {
-    "file": "assets/app-DVLB_3UB.css",
+    "file": "assets/app-C2WN2veY.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/js/app.js": {
+<<<<<<< HEAD:public/build/manifest.json
     "file": "assets/app-7vftuitV.js",
+=======
+    "file": "assets/app-CZdbcweu.js",
+>>>>>>> 8bdde8260afd7138d959fd44f13f5dddbb98a8ac:public/build/mix-manifest.json
     "src": "resources/js/app.js",
     "isEntry": true,
     "assets": [
