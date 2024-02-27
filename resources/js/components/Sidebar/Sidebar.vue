@@ -143,8 +143,18 @@
                             </a>
                         </router-link>
                     </li>
+                    <li class="items-center">
+                        <a
+                            @click="logout"
+                            class="text-xs uppercase py-3 cursor-pointer font-bold block"
+                        >
+                            <i
+                                class="fas fa-table mr-2 text-sm"
+                            ></i>
+                            Logout
+                        </a>
+                    </li>
                 </ul>
-
             </div>
         </div>
     </nav>
@@ -153,15 +163,11 @@
 <script>
 import { ref } from 'vue';
 import NotificationDropdown from "../../components/Dropdowns/NotificationDropdown.vue";
-import UserDropdown from "../../components/Dropdowns/UserDropdown.vue";
-import Settings from "../../pages/admin/Settings.vue";
-// import UserDropdown from "../../components/Dropdowns/UserDropdown.vue";
 import { useAdminStore } from "../../store/adminStore.js";
 
 export default {
     components: {
         NotificationDropdown,
-        // UserDropdown,
     },
     setup() {
         const collapseShow = ref("hidden");
