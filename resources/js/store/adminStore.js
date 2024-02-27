@@ -9,7 +9,7 @@ export const useAdminStore = defineStore('adminStore', {
     actions: {
         adminLogin(data) {
             return new Promise((resolve, reject) => {
-                axios.post(`/login`, data)
+                axios.post(`/api/login`, data)
                     .then(response => {
                         // if (response.status === 200) {
                         //     this.admin = response.data.user
@@ -27,13 +27,13 @@ export const useAdminStore = defineStore('adminStore', {
             })
         },
         getAuthUser() {
-            return axios.get(`/auth/user`, {
+            return axios.get(`/api/auth/user`, {
             }).then((res) => {
                 this.admin = res.data.data
             })
         },
         logout() {
-                axios.get(`/logout`,{
+                axios.get(`/api/logout`,{
             }).then(response => {
                 localStorage.removeItem('token');
                 router.push({path: '/auth/login'})

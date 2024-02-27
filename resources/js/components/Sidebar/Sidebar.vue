@@ -155,7 +155,6 @@
                         </a>
                     </li>
                 </ul>
-
             </div>
         </div>
     </nav>
@@ -164,15 +163,11 @@
 <script>
 import { ref } from 'vue';
 import NotificationDropdown from "../../components/Dropdowns/NotificationDropdown.vue";
-import UserDropdown from "../../components/Dropdowns/UserDropdown.vue";
-import Settings from "../../pages/admin/Settings.vue";
-// import UserDropdown from "../../components/Dropdowns/UserDropdown.vue";
 import { useAdminStore } from "../../store/adminStore.js";
 
 export default {
     components: {
         NotificationDropdown,
-        // UserDropdown,
     },
     setup() {
         const collapseShow = ref("hidden");
