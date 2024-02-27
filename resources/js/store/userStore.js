@@ -1,7 +1,5 @@
 import {defineStore} from "pinia";
-import axios from "axios";
-import router from "../router/index.js";
-// import router from "@/js/router";
+import axios from "../axios-configured.js";
 import Swal from 'sweetalert2';
 
 
@@ -13,8 +11,7 @@ export const useUserStore = defineStore('userStore', {
     actions: {
         getUsers() {
             return new Promise((resolve, reject) => {
-                axios.get('/api/admin/users',
-                    {headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}})
+                axios.get('/api/admin/users',)
                     .then(({data}) => {
                         this.users = data
                         resolve(data)
@@ -25,8 +22,7 @@ export const useUserStore = defineStore('userStore', {
         },
         deleteUser(userId) {
             return new Promise((resolve, reject) => {
-                axios.delete(`/api/admin/users/${userId}`,
-                    {headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}})
+                axios.delete(`/api/admin/users/${userId}`,)
                     .then(response => {
                         console.log(response)
                         if (Array.isArray(this.users)) {
@@ -45,9 +41,7 @@ export const useUserStore = defineStore('userStore', {
         },
         getUser(userId) {
             return new Promise((resolve, reject) => {
-                console.log(userId)
-                axios.get(`/api/admin/users/${userId}`,
-                    {headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}})
+                axios.get(`/api/admin/users/${userId}`,)
                     .then(response => {
                         this.user = response.data.user;
                         resolve(response.data);
@@ -63,10 +57,7 @@ export const useUserStore = defineStore('userStore', {
                 await axios.put(`/api/admin/users/${id}`, {
                         name: form.name,
                         email: form.email,
-                    },
-                    {
-                        headers: {Authorization: 'Bearer ' + localStorage.getItem('token')}
-                    })
+                    },)
                     .then(() => {
                         Swal.fire({
                             position: "top",

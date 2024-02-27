@@ -7,12 +7,15 @@
 import {useAdminStore} from "./store/adminStore.js";
 import {useUserStore} from "./store/userStore.js";
 import {onMounted} from "vue";
+
 const adminUserStore = useAdminStore();
 const userStore = useUserStore();
 
 
 onMounted(() => {
-    adminUserStore.getAuthUser()
+    if (localStorage.getItem('token')) {
+        adminUserStore.getAuthUser()
         userStore.getUsers()
+    }
 })
 </script>
