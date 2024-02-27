@@ -9,30 +9,24 @@
             <button
                 class="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
                 type="button"
-                v-on:click="toggleCollapseShow('bg-white m-2 py-3 px-6')"
+                @click="toggleCollapseShow('bg-white m-2 py-3 px-6')"
             >
                 <i class="fas fa-bars"></i>
             </button>
-            <!-- Brand -->
-            <router-link
-                class="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
-                to="/"
-            >
-                Vue Notus
-            </router-link>
+
             <!-- User -->
             <ul class="md:hidden items-center flex flex-wrap list-none">
                 <li class="inline-block relative">
-                    <notification-dropdown />
+                    <NotificationDropdown />
                 </li>
                 <li class="inline-block relative">
-                    <user-dropdown />
+                    <!--          <UserDropdown />-->
                 </li>
             </ul>
             <!-- Collapse -->
             <div
                 class="md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:mt-4 md:shadow-none shadow absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden h-auto items-center flex-1 rounded"
-                v-bind:class="collapseShow"
+                :class="collapseShow"
             >
                 <!-- Collapse header -->
                 <div
@@ -42,16 +36,15 @@
                         <div class="w-6/12">
                             <router-link
                                 class="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
-                                to="/"
+                                to="/admin/dashboard"
                             >
-                                Vue Notus
                             </router-link>
                         </div>
                         <div class="w-6/12 flex justify-end">
                             <button
                                 type="button"
                                 class="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
-                                v-on:click="toggleCollapseShow('hidden')"
+                                @click="toggleCollapseShow('hidden')"
                             >
                                 <i class="fas fa-times"></i>
                             </button>
@@ -127,10 +120,9 @@
                             </a>
                         </router-link>
                     </li>
-
                     <li class="items-center">
                         <router-link
-                            to="/admin/tables"
+                            to="/admin/users"
                             v-slot="{ href, navigate, isActive }"
                         >
                             <a
@@ -144,37 +136,50 @@
                 ]"
                             >
                                 <i
-                                    class="fas fa-table mr-2 text-sm"
+                                    class="fas fa-tools mr-2 text-sm"
                                     :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
                                 ></i>
-                                Tables
+                                Users
                             </a>
                         </router-link>
                     </li>
                 </ul>
+
             </div>
         </div>
     </nav>
 </template>
 
 <script>
+import { ref } from 'vue';
 import NotificationDropdown from "../../components/Dropdowns/NotificationDropdown.vue";
 import UserDropdown from "../../components/Dropdowns/UserDropdown.vue";
+import Settings from "../../pages/admin/Settings.vue";
+// import UserDropdown from "../../components/Dropdowns/UserDropdown.vue";
+import { useAdminStore } from "../../store/adminStore.js";
 
 export default {
-    data() {
-        return {
-            collapseShow: "hidden",
-        };
-    },
-    methods: {
-        toggleCollapseShow: function (classes) {
-            this.collapseShow = classes;
-        },
-    },
     components: {
         NotificationDropdown,
-        UserDropdown,
+        // UserDropdown,
+    },
+    setup() {
+        const collapseShow = ref("hidden");
+        const adminStore = useAdminStore();
+
+        const toggleCollapseShow = (classes) => {
+            collapseShow.value = classes;
+        };
+
+        const logout = () => {
+            adminStore.logout();
+        };
+
+        return {
+            collapseShow,
+            toggleCollapseShow,
+            logout,
+        };
     },
 };
 </script>
