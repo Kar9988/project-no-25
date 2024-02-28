@@ -12,16 +12,15 @@ class UserController extends Controller
     public function delete(UserService $service)
     {
         auth()->user()->token()->revoke();
-        $res = $service->delete(auth()->id());
-        if ($res) {
+        if ($service->delete(auth()->id())) {
             return response()->json([
                 'success' => true,
-                'message' => 'account successfully deleted'
+                'message' => 'Account successfully deleted'
             ], 201);
         }
         return response()->json([
             'success' => false,
-            'message' => 'account not deleted'
-        ], 401);
+            'message' => 'Something went wrong'
+        ]);
     }
 }
