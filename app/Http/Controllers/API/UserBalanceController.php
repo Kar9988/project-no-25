@@ -76,7 +76,7 @@ class UserBalanceController extends Controller
         return response()->json([
             'success' => false,
             'message' => 'something was wrong'
-        ], 422);
+        ]);
     }
 
     /**
@@ -96,6 +96,6 @@ class UserBalanceController extends Controller
         return response()->json([
             'success' => false,
             'message' => 'something was wrong'
-        ],422);
+        ]);
     }
 }

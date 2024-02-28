@@ -10,7 +10,7 @@ class UserBalanceService
      * @param array $data
      * @return mixed
      */
-    public function store(array $data): mixed
+    public function store(array $data): UserBalance
     {
         return UserBalance::create($data);
     }
@@ -18,7 +18,7 @@ class UserBalanceService
     /**
      * @return mixed
      */
-    public function index(): mixed
+    public function index(): UserBalance
     {
         return UserBalance::all();
     }
@@ -27,7 +27,7 @@ class UserBalanceService
      * @param int $id
      * @return mixed
      */
-    public function getById(int $id): mixed
+    public function getById(int $id): UserBalance
     {
         return UserBalance::query()->findOrFail($id);
     }
@@ -47,7 +47,7 @@ class UserBalanceService
      * @param int $id
      * @return mixed
      */
-    public function delete(int $id): mixed
+    public function delete(int $id): UserBalance
     {
         return UserBalance::query()->where('id', $id)->delete();
     }

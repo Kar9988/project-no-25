@@ -16,7 +16,7 @@ class UserBalanceResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->amount,
+            'amount' => $this->amount,
             'created_at' => $this->created_at,
             'updated_at	' => $this->updated_at
         ];
