@@ -11,7 +11,7 @@ export const useUserStore = defineStore('userStore', {
     actions: {
         getUsers() {
             return new Promise((resolve, reject) => {
-                axios.get('/api/admin/users',)
+                axios.get('/admin/users',)
                     .then(({data}) => {
                         this.users = data
                         resolve(data)
@@ -22,7 +22,7 @@ export const useUserStore = defineStore('userStore', {
         },
         deleteUser(userId) {
             return new Promise((resolve, reject) => {
-                axios.delete(`/api/admin/users/${userId}`,)
+                axios.delete(`/admin/users/${userId}`,)
                     .then(response => {
                         console.log(response)
                         if (Array.isArray(this.users)) {
@@ -41,7 +41,7 @@ export const useUserStore = defineStore('userStore', {
         },
         getUser(userId) {
             return new Promise((resolve, reject) => {
-                axios.get(`/api/admin/users/${userId}`,)
+                axios.get(`/admin/users/${userId}`,)
                     .then(response => {
                         this.user = response.data.user;
                         resolve(response.data);
@@ -54,7 +54,7 @@ export const useUserStore = defineStore('userStore', {
         async updateForm(id, form) {
 
             try {
-                await axios.put(`/api/admin/users/${id}`, {
+                await axios.put(`/admin/users/${id}`, {
                         name: form.name,
                         email: form.email,
                     },)
