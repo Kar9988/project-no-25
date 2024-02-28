@@ -16,7 +16,7 @@ class UserController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Account successfully deleted'
-            ], 201);
+            ]);
         }
         return response()->json([
             'success' => false,
