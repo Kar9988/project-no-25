@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\Admin\UserController as AdminUserController;
-use App\Http\Controllers\API\Admin\UserController;
+use App\Http\Controllers\API\Admin\VideoController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\LoginController;
 use App\Http\Controllers\API\PlanController;
