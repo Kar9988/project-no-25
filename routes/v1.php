@@ -21,4 +21,5 @@ Route::middleware('auth:api')->group(function () {
         Route::apiResource('plans', PlanController::class);
         Route::apiResource('videos', VideoController::class);
     });
+    Route::get('/videos', [VideoController::class, 'index']);
 });
