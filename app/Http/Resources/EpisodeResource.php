@@ -16,9 +16,9 @@ class EpisodeResource extends JsonResource
     {
         return [
             'id'         => $this->id,
-            'name'       => $this->name,
-            'cover_img'  => $this->cover_img,
-            'video_path' => $this->video_path,
+            'title'       => $this->title,
+            'thumb'  => $this->thumb,
+            'source' => $this->source,
             'duration'   => $this->duration
         ];
     }

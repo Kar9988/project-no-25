@@ -25,14 +25,14 @@ class VideoStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'video.name'            => 'required|string',
+            'video.title'            => 'required|string',
             'video.cover_img'       => 'required|image',
             'video.is_new_arrival'  => 'boolean',
             'video.is_top_rated'    => 'boolean',
-            'episodes.*.name'       => 'sometimes|required|string',
+            'episodes.*.title'       => 'sometimes|required|string',
             'episodes.*.duration'   => 'sometimes',
-            'episodes.*.cover_img'  => 'sometimes|image',
-            'episodes.*.video_path' => 'sometimes|required|mimes:mp4,mov,ogg,qt'
+            'episodes.*.thumb'  => 'sometimes|image',
+            'episodes.*.source' => 'sometimes|required|mimes:mp4,mov,ogg,qt'
         ];
     }
 

@@ -31,19 +31,20 @@ class EpisodeService
             $filePaths = [];
             foreach ($data as $datum) {
                 $episodeCreateData = [
-                    'name' => $datum['name'],
-                    'duration' => $datum['duration'],
+                    'title' => $datum['title'],
+                    'duration' => $datum['duration']??0,
                     'is_new_arrival' => $datum['is_new_arrival'],
                     'is_top_rated' => $datum['is_top_rated']
                 ];
-                if ($datum['cover_img']) {
+
+                if ($datum['cover_img']??null) {
                     $coverPath = $this->fileManagerService->storeCover("videos/$video->id/episodes/cover", $datum['cover_img']);
-                    $episodeCreateData['cover_img'] = $coverPath;
+                    $episodeCreateData['thumb'] = $coverPath;
                     $filePaths[] = $coverPath;
                 }
-                if ($datum['video_path']) {
-                    $videoPath = $this->fileManagerService->storeVideo("videos/$video->id/episodes", $datum['video_path']);
-                    $episodeCreateData['video_path'] = $videoPath;
+                if ($datum['source']??null) {
+                    $videoPath = $this->fileManagerService->storeVideo("videos/$video->id/episodes", $datum['source']);
+                    $episodeCreateData['source'] = $videoPath;
                     $filePaths[] = $videoPath;
                 }
                 $episodesData[] = $episodeCreateData;
