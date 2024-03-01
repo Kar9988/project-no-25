@@ -8,6 +8,7 @@ use App\Http\Controllers\API\PlanController;
 use App\Http\Controllers\API\RegisterController;
 use App\Http\Controllers\API\UserBalanceController;
 use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\ViewController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,6 +29,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/auth/user', [AuthController::class, 'getAuthUser']);
     Route::get('/auth/logout', [AuthController::class, 'logout']);
     Route::apiResource('user/balance', UserBalanceController::class);
+    Route::apiResource('view', ViewController::class);
     Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
         Route::apiResource('users', AdminUserController::class)->only(['update', 'index', 'show', 'destroy']);
         Route::apiResource('plans', PlanController::class);
