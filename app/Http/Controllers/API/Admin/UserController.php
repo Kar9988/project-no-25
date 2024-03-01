@@ -4,10 +4,12 @@ namespace App\Http\Controllers\API\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\UserUpdateRequest;
+use App\Http\Requests\CreateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Role;
 use App\Models\User;
 use App\Services\AdminService;
+use http\Env\Request;
 use Illuminate\Http\JsonResponse;
 
 
@@ -68,5 +70,19 @@ class UserController extends Controller
             'success' => true,
             'message' => 'product was successfully deleted'
         ], 200);
+    }
+
+    /**
+     * @param CreateUserRequest $request
+     * @return JsonResponse
+     */
+    public function store(CreateUserRequest $request): JsonResponse
+    {
+       $this->service->create($request->all());
+        return response()->json([
+            'success' => true,
+            'message' => 'User successfully created',
+            'type'    => 'success'
+        ], 201);
     }
 }

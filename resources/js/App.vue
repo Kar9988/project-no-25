@@ -15,7 +15,6 @@ const userStore = useUserStore();
 onMounted(() => {
     if (localStorage.getItem('token')) {
         adminUserStore.getAuthUser()
-        userStore.getUsers()
     }
 })
 </script>

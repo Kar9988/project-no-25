@@ -21,10 +21,6 @@ class LoginController extends Controller
         $data = $request->except('_token');
         if (Auth::attempt($data)) {
             $token = auth()->user()->createToken('API Token')->accessToken;
-//            $token->expires_at =
-//                Carbon::now()->addYears(100);
-//            $token->save();
-
             return response()->json([
                 'user' => new AuthUserResource(auth()->user()),
                 'token' => $token
