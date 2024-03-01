@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Episode;
 use App\Models\Video;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -18,6 +19,15 @@ class EpisodeService
     {
 
         $this->fileManagerService = $fileManagerService;
+    }
+
+    /**
+     * @param int $id
+     * @return Episode
+     */
+    public function getById(int $id): Episode
+    {
+        return Episode::findOrFail($id);
     }
 
     /**

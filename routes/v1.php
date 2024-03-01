@@ -1,6 +1,8 @@
 <?php
 use App\Http\Controllers\API\Admin\UserController as AdminUserController;
 use App\Http\Controllers\API\Admin\VideoController;
+use App\Http\Controllers\API\EpisodeController;
+use App\Http\Controllers\API\VideoController as UserVideoController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\LoginController;
 use App\Http\Controllers\API\PlanController;
@@ -21,4 +23,6 @@ Route::middleware('auth:api')->group(function () {
         Route::apiResource('plans', PlanController::class);
         Route::apiResource('videos', VideoController::class);
     });
+    Route::get('episode/source/{episodeId}', [EpisodeController::class, 'getVideoStream']);
 });
+Route::get('videos', [UserVideoController::class, 'index'])->name('episode.video');
