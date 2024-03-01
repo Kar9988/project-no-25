@@ -17,7 +17,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/auth/user', [AuthController::class, 'getAuthUser']);
     Route::get('/auth/logout', [AuthController::class, 'logout']);
     Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
-        Route::apiResource('users', AdminUserController::class)->only(['update', 'index', 'show', 'destroy']);
+        Route::apiResource('users', AdminUserController::class);
         Route::apiResource('plans', PlanController::class);
         Route::apiResource('videos', VideoController::class);
     });

@@ -74,10 +74,6 @@ const routes = [
         path: "/profile",
         component: Profile,
     },
-    {
-        path: "/",
-        component: Index,
-    },
     { path: "/:pathMatch(.*)*", redirect: "/auth/login" },
 ];
 

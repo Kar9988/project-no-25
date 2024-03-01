@@ -16,4 +16,13 @@ class AdminService
     {
         return User::query()->where('id', $id)->update($data);
     }
+
+    /**
+     * @param array $data
+     * @return mixed
+     */
+    public function create(array $data): mixed
+    {
+        return User::create($data);
+    }
 }
