@@ -23,6 +23,6 @@ Route::middleware('auth:api')->group(function () {
         Route::apiResource('plans', PlanController::class);
         Route::apiResource('videos', VideoController::class);
     });
-    Route::get('episode/source/{episodeId}', [EpisodeController::class, 'getVideoStream']);
+    Route::get('episode/source/{episodeId}', [EpisodeController::class, 'getVideoStream'])->name('episode.video');
+    Route::get('videos', [UserVideoController::class, 'index']);
 });
-Route::get('videos', [UserVideoController::class, 'index'])->name('episode.video');
