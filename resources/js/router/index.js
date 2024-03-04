@@ -21,6 +21,8 @@ import Index from "../pages/Index.vue";
 import Edit from "../pages/admin/Edit.vue";
 import {createApp} from "vue";
 import App from "../App.vue";
+import VideosList from "../pages/admin/VideosList.vue";
+import VideosShow from "../pages/admin/VideoShow.vue";
 const routes = [
     {
         path: "/admin",
@@ -31,6 +33,16 @@ const routes = [
                 path: "/admin/dashboard",
                 component: Dashboard,
 
+            },
+            {
+                path: "/admin/videos",
+                component: VideosList,
+
+            },
+            {
+                path: "/admin/videos/:id",
+                component: VideosShow,
+                name: "video.edit",
             },
             {
                 path: "/admin/settings",

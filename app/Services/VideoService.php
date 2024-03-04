@@ -34,10 +34,11 @@ class VideoService
     {
         try {
             DB::beginTransaction();
-            $videoData = Arr::except($data['video'], 'cover_img');
+            $videoData = Arr::except($data, ['episodes', 'cover_img']);
+
             $video = Video::create($videoData);
-            if (isset($data['video']['cover_img'])) {
-                $coverPath = $this->fileManagerService->storeCover("videos/$video->id/cover", $data['video']['cover_img']);
+            if (isset($data['cover_img'])) {
+                $coverPath = $this->fileManagerService->storeCover("videos/$video->id/cover", $data['cover_img']);
                 $video->update(['cover_img' => $coverPath]);
             }
             if (isset($data['episodes'])) {
@@ -57,15 +58,60 @@ class VideoService
         }
     }
 
+    public function updateVideo(int $id, array $data)
+    {
+        try {
+            DB::beginTransaction();
+            $videoData = Arr::except($data, ['episodes', 'cover_img']);
+
+            if (isset($data['cover_img'])) {
+                $coverPath = $this->fileManagerService->storeCover("videos/$id/cover", $data['cover_img']);
+                $videoData['cover_img'] = $coverPath;
+            }
+            $videoUpdated = Video::where('id', $id)->update($videoData);
+            if (isset($data['episodes'])) {
+                $this->episodeService->updateEpisodes($id, array_filter($data['episodes'], function ($item) {
+                    return isset($item['id']);
+                }));
+                $newEpisodes = array_filter($data['episodes'], function ($item) {
+                    return !isset($item['id']);
+                });
+                if (count($newEpisodes)) {
+                    $video = Video::where('id', $id)->first();
+                    $this->episodeService->createEpisodes($video, $newEpisodes);
+                }
+            }
+            DB::commit();
+
+            return $videoUpdated;
+        } catch (\Exception $exception) {
+            Log::error($exception);
+            DB::rollBack();
+            if (isset($coverPath)) {
+                $this->fileManagerService->deleteFiles([$coverPath]);
+            }
+
+            return false;
+        }
+    }
+
     /**
      * @param $page
-     * @return AnonymousResourceCollection
+     * @return array
      */
-    public function paginateVideos($page): AnonymousResourceCollection
+    public function paginateVideos($page): array
     {
-        $videos = Video::paginate($page);
+        $videos = Video::paginate();
 
-        return VideoResource::collection($videos);
+        return [
+            'data' => VideoResource::collection($videos),
+            'per_page' => $videos->perPage(),
+            'total' => $videos->total(),
+            'current_page' => $videos->currentPage(),
+            'last_page' => $videos->lastPage(),
+            'next_page_url' => $videos->nextPageUrl(),
+            'prev_page_url' => $videos->previousPageUrl(),
+        ];
     }
 
     /**
@@ -74,7 +120,7 @@ class VideoService
      */
     public function getById($id): Video
     {
-        return Video::where('id', $id)->first();
+        return Video::where('id', $id)->with('episodes')->first();
     }
 
     /**

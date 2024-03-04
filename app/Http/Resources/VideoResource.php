@@ -16,9 +16,10 @@ class VideoResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'description' => $this->description,
             'title'  => $this->title,
             'cover_img' => $this->cover_img,
-            'episodes' => EpisodeResource::collection($this->episodes)
+            'episodes' => EpisodeResource::collection($this->episodes),
         ];
     }
 }

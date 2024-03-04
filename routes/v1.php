@@ -21,7 +21,8 @@ Route::middleware('auth:api')->group(function () {
     Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
         Route::apiResource('users', AdminUserController::class);
         Route::apiResource('plans', PlanController::class);
-        Route::apiResource('videos', VideoController::class);
+        Route::post('/video/{video}', [VideoController::class, 'update']);
+        Route::apiResource('videos', VideoController::class)->except('edit', 'update');
     });
     Route::get('videos', [UserVideoController::class, 'index']);
 });

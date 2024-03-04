@@ -21,18 +21,3 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-Route::post('/register', [RegisterController::class, 'store']);
-Route::post('/login', [LoginController::class, 'store']);
-Route::middleware('auth:api')->group(function () {
-    Route::delete('/delete', [UserController::class, 'delete']);
-    Route::get('/auth/user', [AuthController::class, 'getAuthUser']);
-    Route::get('/auth/logout', [AuthController::class, 'logout']);
-    Route::apiResource('user/balance', UserBalanceController::class);
-    Route::apiResource('view', ViewController::class);
-    Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
-        Route::apiResource('users', AdminUserController::class)->only(['update', 'index', 'show', 'destroy']);
-        Route::apiResource('plans', PlanController::class);
-        Route::apiResource('videos', VideoController::class);
-    });
-});

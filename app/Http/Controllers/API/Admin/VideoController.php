@@ -4,8 +4,11 @@ namespace App\Http\Controllers\API\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\VideoStoreRequest;
+use App\Http\Requests\API\VideoUpdateRequest;
+use App\Http\Resources\VideoResource;
 use App\Services\VideoService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Arr;
 
 class VideoController extends Controller
 {
@@ -31,7 +34,8 @@ class VideoController extends Controller
         return response()->json([
             'success' => true,
             'type'    => 'success',
-            'videos'   => $result
+            'videos'   => $result['data'],
+            ...Arr::except($result, 'data')
         ]);
     }
 
@@ -44,7 +48,7 @@ class VideoController extends Controller
         return response()->json([
             'success' => true,
             'type'    => 'success',
-            'video'   => $this->videoService->getById($id)
+            'video'   => new VideoResource($this->videoService->getById($id))
         ]);
     }
 
@@ -55,6 +59,25 @@ class VideoController extends Controller
     public function store(VideoStoreRequest $request): JsonResponse
     {
         $video = $this->videoService->createVideo($request->all());
+        if ($video) {
+
+            return response()->json([
+                'success' => true,
+                'type'    => 'success',
+                'video'   => $video
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'type'    => 'error',
+            'message' => 'Something went wrong'
+        ]);
+    }
+
+    public function update($videoId, VideoUpdateRequest $updateRequest)
+    {
+        $video = $this->videoService->updateVideo($videoId, $updateRequest->all());
         if ($video) {
 
             return response()->json([

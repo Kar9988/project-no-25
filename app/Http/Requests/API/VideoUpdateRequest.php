@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Validator;
 
-class VideoStoreRequest extends FormRequest
+class VideoUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +26,7 @@ class VideoStoreRequest extends FormRequest
     {
         return [
             'title'                 => 'required|string',
-            'cover_img'             => 'required|image',
+            'cover_img'             => 'sometimes|image',
             'description'           => 'required|string',
             'is_new_arrival'        => 'boolean',
             'is_top_rated'          => 'boolean',

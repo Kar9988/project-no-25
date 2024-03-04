@@ -47,6 +47,7 @@ onClickOutside(target, ()=>emit('modal-close'))
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
+    overflow: auto;
 }
 .modal-container {
     margin: 150px auto;
