@@ -88,14 +88,17 @@
     "src": "resources/assets/img/team-4-470x470.png"
   },
   "resources/css/app.css": {
-    "file": "assets/app-C2WN2veY.css",
+    "file": "assets/app-DZbvz212.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-x_EWpIPu.js",
+    "file": "assets/app-C76pAFJI.js",
     "src": "resources/js/app.js",
     "isEntry": true,
+    "css": [
+      "assets/app-D39BuWaf.css"
+    ],
     "assets": [
       "assets/team-1-800x800-CAZr3VGL.jpg",
       "assets/register_bg_2-AH3mfCwx.png",
@@ -107,18 +110,7 @@
       "assets/team-3-800x800-DXb1npd2.jpg",
       "assets/team-4-470x470-DqR9OhpQ.png",
       "assets/github-f4-qxVuk.svg",
-      "assets/google-Cshz__zw.svg",
-      "assets/pattern_vue-DhxSmRzW.png",
-      "assets/component-btn-HZ8mWs0m.png",
-      "assets/component-profile-card-CS2-DoDT.png",
-      "assets/component-info-card-CHC2qspG.png",
-      "assets/component-info-2-CzPaH5LV.png",
-      "assets/component-menu-DbFVwBH_.png",
-      "assets/component-btn-pink-6HjkwmMw.png",
-      "assets/documentation-CSz4ajZz.png",
-      "assets/login-nsjZWpIS.jpg",
-      "assets/profile-6zoiRWAE.jpg",
-      "assets/landing-BHHb9s_a.jpg"
+      "assets/google-Cshz__zw.svg"
     ]
   }
 }
