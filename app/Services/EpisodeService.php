@@ -11,11 +11,12 @@ class EpisodeService
 {
 
     private FileManagerService $fileManagerService;
+    private ViewService $viewService;
 
     /**
      * @param FileManagerService $fileManagerService
      */
-    public function __construct(FileManagerService $fileManagerService)
+    public function __construct(FileManagerService $fileManagerService, ViewService $viewService)
     {
 
         $this->fileManagerService = $fileManagerService;
@@ -48,12 +49,12 @@ class EpisodeService
                     'position' => $datum['position'] ?? 1
                 ];
 
-                if ($datum['thumb'] ?? null) {
+                if ($datum['thumb'] ?? false) {
                     $coverPath = $this->fileManagerService->storeCover("videos/$videoId/episodes/cover", $datum['thumb']);
                     $episodeUpdateData['thumb'] = $coverPath;
                     $filePaths[] = $coverPath;
                 }
-                if ($datum['source'] ?? null) {
+                if ($datum['source'] ?? false) {
                     $videoPath = $this->fileManagerService->storeVideo("videos/$videoId/episodes", $datum['source']);
                     $episodeUpdateData['source'] = $videoPath;
                     $filePaths[] = $videoPath;
