@@ -29,7 +29,7 @@ class VideoController extends Controller
         return response()->json([
             'success' => true,
             'type'    => 'success',
-            'videos'   => $result
+            'videos'  => $result
         ]);
     }
 }

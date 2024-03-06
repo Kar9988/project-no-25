@@ -139,7 +139,6 @@ const deleteUser = async (userId) => {
                             </div>
                             <div>
                                 <div class="text-black">Selected: {{ user.role}}</div>
-
                                 <select v-model="user.role">
                                     <option disabled value="">Please select one</option>
                                     <option value="1">Admin</option>

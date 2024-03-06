@@ -23,6 +23,8 @@ import {createApp} from "vue";
 import App from "../App.vue";
 import VideosList from "../pages/admin/VideosList.vue";
 import VideosShow from "../pages/admin/VideoShow.vue";
+import Categories from "../pages/admin/Categories.vue";
+import EditCategory from "../pages/admin/EditCategory.vue";
 const routes = [
     {
         path: "/admin",
@@ -39,6 +41,12 @@ const routes = [
                 component: VideosList,
 
             },
+            {
+                path: "/admin/categories",
+                component: Categories,
+
+            },
+
             {
                 path: "/admin/videos/:id",
                 component: VideosShow,
@@ -61,6 +69,12 @@ const routes = [
                 name: "admin.edit",
                 component: Edit,
             },
+            {
+                path: "/admin/edit/categories:id",
+                name: "categories.edit",
+                component: EditCategory,
+            },
+
         ],
     },
     {
