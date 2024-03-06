@@ -16,6 +16,7 @@ const episodeSkilleton = ref({
     cover_img: null,
     source: null,
     position: null,
+    price:null,
 })
 const addEpisode = () => {
     episodeSkilleton.value.position = video.value.episodes.length+1
@@ -97,11 +98,11 @@ const submitHandler = () => {
         if (typeof episode.source !== 'string') {
             form.append(`episodes[${episodeKey}][source]`, episode.source)
         }
-        form.append(`episodes[${episodeKey}][title]`, episode.title)
         if (episode.id) {
             form.append(`episodes[${episodeKey}][id]`, episode.id)
         }
         form.append(`episodes[${episodeKey}][title]`, episode.title)
+        form.append(`episodes[${episodeKey}][price]`, episode.price)
         form.append(`episodes[${episodeKey}][position]`, episode.position)
     })
     videoStore.updateVideo(video.value.id, form).then(() => {
@@ -182,6 +183,18 @@ const submitHandler = () => {
                                 Title
                             </label>
                             <input v-model="episode.title"
+                                   type="text"
+                                   class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                   placeholder="Name"
+                            />
+                        </div>
+                        <div class="relative w-full mb-3">
+                            <label
+                                class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                            >
+                                Price
+                            </label>
+                            <input v-model="episode.price"
                                    type="text"
                                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                    placeholder="Name"

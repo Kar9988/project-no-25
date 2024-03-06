@@ -49,6 +49,7 @@ const submitHandler = () => {
         form.append(`episodes[${episodeKey}][thumb]`, episode.thumb)
         form.append(`episodes[${episodeKey}][source]`, episode.source)
         form.append(`episodes[${episodeKey}][title]`, episode.title)
+        form.append(`episodes[${episodeKey}][price]`, episode.price)
     })
     videoStore.createVideo(form).then(() => {
         errors.value = {}
@@ -184,7 +185,6 @@ const page = computed({
                                 <p v-if="errors.description" class="text-red-600 mt-1">{{ errors.description[0] }}</p>
 
                             </div>
-
                             <div class="relative w-full mb-3">
                                 <div class="">
                                     <label for="" class="block uppercase text-blueGray-600 text-xs font-bold mb-2">Thumbnail</label>
@@ -221,6 +221,19 @@ const page = computed({
                                             Title
                                         </label>
                                         <input v-model="episode.title"
+                                               type="email"
+                                               class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                               placeholder="Name"
+                                        />
+                                    </div>
+                                    <div class="relative w-full mb-3">
+                                        <label
+                                            class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                                            htmlFor="grid-password"
+                                        >
+                                            Price
+                                        </label>
+                                        <input v-model="episode.price"
                                                type="email"
                                                class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                                placeholder="Name"
