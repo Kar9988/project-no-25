@@ -23,6 +23,7 @@ class EpisodeResource extends JsonResource
             'position'      => $this->position,
             'duration'      => $this->duration,
             'views_count'   => $this->views_count,
+            'price'         =>$this->price,
         ];
     }
 }
