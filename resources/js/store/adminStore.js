@@ -14,7 +14,6 @@ export const useAdminStore = defineStore('adminStore', {
                 axios.post(`/login`, data)
                     .then(response => {
                         if (response.status === 200){
-                            console.log(response.data.user)
                             this.admin = response.data.user
                             localStorage.setItem('token', response.data.token)
                             router.push({path:'/admin/dashboard'})

@@ -101,8 +101,9 @@ class VideoService
      */
     public function paginateVideos($page): array
     {
-        $videos = Video::paginate();
-
+        $videos  = Video::with(['episodes' => function ($query) {
+            $query->withCount('views');
+        }])->paginate();
         return [
             'data' => VideoResource::collection($videos),
             'per_page' => $videos->perPage(),
@@ -120,7 +121,9 @@ class VideoService
      */
     public function getById($id): Video
     {
-        return Video::where('id', $id)->with('episodes')->first();
+        return Video::where('id', $id)->with(['episodes' => function ($query) {
+            $query->withCount('views');
+        }])->first();
     }
 
     /**
