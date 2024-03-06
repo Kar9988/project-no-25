@@ -19,7 +19,7 @@ class VideoResource extends JsonResource
             'description' => $this->description,
             'title'  => $this->title,
             'cover_img' => $this->cover_img,
-            'episodes' => EpisodeResource::collection($this->episodes),
+            'episodes' => $this->episodes,
         ];
     }
 }

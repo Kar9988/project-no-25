@@ -33,10 +33,7 @@ const getUser = async (userId) => {
     }
 };
 const UpdateUserData = async (userId, form) => {
-    console.log(form, 'form')
     try {
-        console.log(userId)
-
         await useUserStore().updateForm(userId, form);
     } catch (error) {
         console.error("Error deleting user:", error.message);

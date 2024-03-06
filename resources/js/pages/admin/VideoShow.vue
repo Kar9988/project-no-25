@@ -32,7 +32,6 @@ onMounted(() => {
     })
 })
 const urlByFile = async (episode, fileName, field) => {
-    console.log('episode, fileNameepisode, fileName', episode, fileName);
     if (typeof fileName === 'string') {
         let response = await fetch(`${window.location.origin}/storage/${fileName}`);
         let data = await response.blob();
@@ -60,9 +59,22 @@ const onEpisodeSourceChoosed = (e, index) => {
 }
 
 const onEpisodeThumbnailChoosed = (e, index) => {
-    console.log('video.value.episodes[index]video.value.episodes[index]video.value.episodes[index]', video.value.episodes[index]);
     video.value.episodes[index].thumb_src = URL.createObjectURL(e.target.files[0])
     video.value.episodes[index].thumb = e.target.files[0]
+}
+const changeViewsCount = (id,data)=>{
+    const form = {
+        episode_id:id,
+        views_count: data,
+    }
+    videoStore.changeViews(form)
+}
+const deleteViewsCount = (id,data)=>{
+    const form = {
+        episode_id:id,
+        views_count: data,
+    }
+    videoStore.deleteViews(form)
 }
 const submitHandler = () => {
     const form = new FormData;
@@ -72,13 +84,13 @@ const submitHandler = () => {
                 form.append(index, video.value[index][episodeKey])
             });
         } else {
-            console.log('video.value[index]video.value[index]', video.value[index], index);
             if (index !== 'cover_img' || typeof video.value[index] !== 'string') {
                 form.append(index, video.value[index])
             }
         }
     })
     video.value.episodes.forEach((episode, episodeKey) => {
+        console.log(episode,episodeKey)
         if (typeof episode.thumb !== 'string') {
             form.append(`episodes[${episodeKey}][thumb]`, episode.thumb)
         }
@@ -98,12 +110,13 @@ const submitHandler = () => {
         errors.value = e.details
     })
 }
+
 </script>
 
 <template>
     <div>
         <div v-if="video.id" class="mt-[15px] p-[20px] gap-[10px]">
-            <form class="p-[24px]">
+            <form class="p-[24px]" @submit.prevent>
                 <div class="relative w-full mb-3">
                     <label
                         class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
@@ -111,7 +124,7 @@ const submitHandler = () => {
                         Title
                     </label>
                     <input v-model="video.title"
-                           type="email"
+                           type="text"
                            class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                            placeholder="Name"
                     />
@@ -169,10 +182,27 @@ const submitHandler = () => {
                                 Title
                             </label>
                             <input v-model="episode.title"
-                                   type="email"
+                                   type="text"
                                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                    placeholder="Name"
                             />
+                        </div>
+                        <div class="relative w-full mb-3">
+                            <label
+                                class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                            >
+                                Views Count
+                            </label>
+                            <input v-model="episode.views_count"
+                                   type="text"
+                                   class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                                   placeholder="views"
+                            />
+                       <div class="gap-[10px] flex">
+                           <button class="p-[8px] py-2 px-5 bg-violet-500 text-white rounded-md mt-[10px] shadow-md hover:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-400 focus:ring-opacity-75" @click="changeViewsCount(video.episodes[index].id, episode.views_count)">Add Views</button>
+                           <button class="p-[8px] py-2 px-5 bg-red-500 text-white rounded-md mt-[10px] shadow-md hover:bg-red-700 focus:outline-none focus:ring focus:ring-red-400 focus:ring-opacity-75" @click="deleteViewsCount(video.episodes[index].id, episode.views_count)">Delete Views</button>
+
+                       </div>
                         </div>
                         <div class="relative w-full mb-3">
                             <label
