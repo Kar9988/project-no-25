@@ -50,6 +50,7 @@ const deleteCategory = async (videoId) => {
     }
     try {
         await useCategoryStore().deleteCategory(videoId);
+
     } catch (error) {
         console.error("Error deleting video:", error.message);
     }
@@ -159,7 +160,7 @@ const page = computed({
                 </tr>
                 </thead>
 
-                <tbody v-for="category in categories" :key="category.id">
+                <tbody v-for="category in categories.data" :key="category.id">
                 <tr>
                     <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                         {{ category.id }}
@@ -170,8 +171,6 @@ const page = computed({
                     <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                         {{ category.active === 1 ? 'true' : 'false' }}
                     </td>
-
-
                     <td>
                         <th class="flex p-[10px]">
                             <div class="pr-[8px]">

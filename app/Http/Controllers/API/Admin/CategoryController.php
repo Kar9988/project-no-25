@@ -26,22 +26,10 @@ class CategoryController extends Controller
 
     public function index(): JsonResponse
     {
-        $result = $this->service->paginateVideos(10);
-
         return response()->json([
+            'data' => CategoryResource::collection($this->service->index()),
             'success' => true,
-            'type' => 'success',
-            'categories' => $result['data'],
-            ...Arr::except($result, 'data')
-        ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        ], 200);
     }
 
     public function store(CategoryRequest $request)
@@ -68,15 +56,6 @@ class CategoryController extends Controller
             'categories' => new CategoryResource($this->service->getById($id))
         ]);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
     /**
      * @param CategoryRequest $request
      * @param string $id
@@ -84,7 +63,6 @@ class CategoryController extends Controller
      */
     public function update(CategoryRequest $request, string $id): JsonResponse
     {
-//        dd($request->all());
         $updateData = $this->service->update($request->all(), $id);
         if ($updateData === 1) {
             return response()->json(['success' => true, 'type' => 'success']);

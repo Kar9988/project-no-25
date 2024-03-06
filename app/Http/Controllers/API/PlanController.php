@@ -25,7 +25,6 @@ class PlanController extends Controller
      */
     public function index(): JsonResponse
     {
-        dd(10);
         return response()->json([
             'data' => PlanResource::collection($this->service->index()),
             'success' => true,

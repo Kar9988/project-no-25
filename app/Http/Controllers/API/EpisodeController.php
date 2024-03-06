@@ -24,6 +24,10 @@ class EpisodeController extends Controller
         $this->episodeService = $episodeService;
     }
 
+    /**
+     * @param $episodeId
+     * @return void
+     */
     public function getVideoStream($episodeId)
     {
 

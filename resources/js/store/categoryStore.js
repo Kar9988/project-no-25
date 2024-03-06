@@ -15,13 +15,10 @@ export const useCategoryStore = defineStore('categoryStore', {
     actions: {
         getCategories() {
             return new Promise((resolve, reject) => {
-                axios.get(`/admin/categories?page=${this.page}`)
+                axios.get(`/admin/categories`)
                     .then(({data}) => {
-                        this.categories = data.categories
-                        this.total = data.total
-                        this.nextPage = data.next_page_url
-                        this.prevPage = data.prev_page_url
-                        this.totalPages = Math.round(data.total / data.per_page)
+                        console.log(data)
+                        this.categories = data
                         resolve(data)
                     }).catch(e => {
                     reject(e)
