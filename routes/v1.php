@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\API\Admin\CategoryController;
 use App\Http\Controllers\API\Admin\UserController as AdminUserController;
 use App\Http\Controllers\API\Admin\VideoController;
 use App\Http\Controllers\API\EpisodeController;
@@ -23,6 +25,8 @@ Route::middleware('auth:api')->group(function () {
         Route::apiResource('plans', PlanController::class);
         Route::post('/video/{video}', [VideoController::class, 'update']);
         Route::apiResource('videos', VideoController::class)->except('edit', 'update');
+        Route::apiResource('categories', CategoryController::class);
+        Route::get('categories', [CategoryController::class, 'index']);
     });
     Route::get('videos', [UserVideoController::class, 'index']);
 });

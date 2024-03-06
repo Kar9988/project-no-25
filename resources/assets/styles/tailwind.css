@@ -263,7 +263,7 @@ Remove the inner padding in Chrome and Safari on macOS.
 */
 
 /*
-Interactive
+Inter
 ===========
 */
 
@@ -1433,7 +1433,7 @@ select {
   background-color: rgba(228, 228, 231, var(--tw-bg-opacity));
 }
 
-.active\:bg-indigo-600:active {
+.\:bg-indigo-600: {
   --tw-bg-opacity: 1;
   background-color: rgba(79, 70, 229, var(--tw-bg-opacity));
 }

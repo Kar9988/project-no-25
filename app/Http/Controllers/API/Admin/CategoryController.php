@@ -1,75 +1,90 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\API\PlanStoreRequest;
-use App\Http\Requests\PlanUpdateRequest;
-use App\Http\Resources\PlanResource;
-use App\Services\PlanService;
+use App\Http\Requests\API\CategoryRequest;
+use App\Http\Resources\CategoryResource;
+use App\Services\CategoryService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
-
-class PlanController extends Controller
+class CategoryController extends Controller
 {
     /**
-     * @param PlanService $service
+     * @param CategoryService $service
      */
-    public function __construct(protected PlanService $service)
+
+    public function __construct(protected CategoryService $service)
     {
     }
 
     /**
      * @return JsonResponse
      */
+
     public function index(): JsonResponse
     {
-        dd(10);
+        $result = $this->service->paginateVideos(10);
+
         return response()->json([
-            'data' => PlanResource::collection($this->service->index()),
             'success' => true,
-            'type' => 'success'
+            'type' => 'success',
+            'categories' => $result['data'],
+            ...Arr::except($result, 'data')
         ]);
     }
 
     /**
-     * @param PlanStoreRequest $request
-     * @return JsonResponse
+     * Show the form for creating a new resource.
      */
-    public function store(PlanStoreRequest $request): JsonResponse
+    public function create()
+    {
+        //
+    }
+
+    public function store(CategoryRequest $request)
     {
         $data = $this->service->store($request->all());
 
         return response()->json([
             'success' => true,
-            'type' => 'success',
-            'plan' => new PlanResource($data)
-        ]);
+            'message' => 'category created successfully',
+            'view' => new CategoryResource($data)
+        ], 201);
+
     }
 
     /**
-     * @param string $id
+     * @param $id
      * @return JsonResponse
      */
-    public function show(string $id): JsonResponse
+    public function show($id): JsonResponse
     {
-        $plan = $this->service->getById($id);
-
         return response()->json([
             'success' => true,
             'type' => 'success',
-            'plan' => new PlanResource($plan)
+            'categories' => new CategoryResource($this->service->getById($id))
         ]);
     }
 
     /**
-     * @param Request $request
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+    }
+
+    /**
+     * @param CategoryRequest $request
      * @param string $id
      * @return JsonResponse
      */
-    public function update(PlanUpdateRequest $request, string $id): JsonResponse
+    public function update(CategoryRequest $request, string $id): JsonResponse
     {
+//        dd($request->all());
         $updateData = $this->service->update($request->all(), $id);
         if ($updateData === 1) {
             return response()->json(['success' => true, 'type' => 'success']);
@@ -82,7 +97,8 @@ class PlanController extends Controller
      * @param string $id
      * @return JsonResponse
      */
-    public function destroy(string $id): JsonResponse
+
+    public function destroy(string $id)
     {
         if ($this->service->delete($id) === 1) {
 
