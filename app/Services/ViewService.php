@@ -39,7 +39,6 @@ class ViewService
                 'user_id' => $userId,
             ];
         }
-
         return View::insert($viewsData);
     }
 }

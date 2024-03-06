@@ -20,23 +20,6 @@ class ViewController extends Controller
     public function __construct(protected ViewService $service)
     {
     }
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        dd(88889898989898);
-    }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -65,31 +48,6 @@ class ViewController extends Controller
             ], 201);
         }
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
     /**
      * Remove the specified resource from storage.
      */
@@ -100,8 +58,8 @@ class ViewController extends Controller
                 ->where('user_id', auth()->id())
                 ->take($request->count)
                 ->delete();
-            return response()->json(['message' => $deletedRows . ' records deleted successfully'], 200);
+            return response()->json(['message' => $deletedRows . ' records deleted successfully']);
         }
-        return response()->json(['message' => 'not deleted rows'], 200);
+        return response()->json(['message' => 'There is no line to delete']);
     }
 }
