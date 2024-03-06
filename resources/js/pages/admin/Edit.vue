@@ -34,7 +34,6 @@ const getUser = async (userId) => {
     }
 };
 const UpdateUserData = async (userId, form) => {
-    console.log(form, 'form')
     try {
         console.log(userId)
 

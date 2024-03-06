@@ -93,5 +93,42 @@ export const useVideoStore = defineStore('videoStore', {
                 console.error('Error posting data:', error);
             }
         },
+        async changeViews(data) {
+            console.log(data)
+            try {
+                await axios.post(`/admin/views/`, data)
+                    .then(() => {
+                        Swal.fire({
+                            position: "top",
+                            icon: "success",
+                            title: "Episode updated successfully",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    })
+            } catch (error) {
+                console.error('Error posting data:', error);
+            }
+        },
+        async deleteViews(data) {
+            try {
+                await axios.delete(`/admin/views/${data.episode_id}`, {
+                    params:{
+                        count:data.views_count
+                    }
+                },)
+                    .then(() => {
+                        Swal.fire({
+                            position: "top",
+                            icon: "success",
+                            title: "Episode updated successfully",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    })
+            } catch (error) {
+                console.error('Error posting data:', error);
+            }
+        },
     }
 })

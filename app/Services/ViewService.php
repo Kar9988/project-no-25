@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\View;
+use Illuminate\Support\Facades\DB;
 
 class ViewService
 {
@@ -15,6 +16,14 @@ class ViewService
         return View::create($data);
     }
 
+    /**
+    * @param $data
+     * @return mixed
+     */
+    public function insert($data): mixed
+    {
+        return DB::table('views')->insert($data);
+    }
     /**
      * @param int $episodeId
      * @param int $userId
@@ -30,7 +39,6 @@ class ViewService
                 'user_id' => $userId,
             ];
         }
-
         return View::insert($viewsData);
     }
 }
