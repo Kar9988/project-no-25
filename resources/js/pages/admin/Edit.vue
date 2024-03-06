@@ -3,6 +3,7 @@ import {useAdminStore} from "../../store/adminStore.js";
 import {useUserStore} from "../../store/userStore.js";
 import {computed, onMounted, ref} from "vue";
 import {useRoute} from 'vue-router';
+import {useCategoryStore} from "../../store/categoryStore.js";
 
 
 const adminStore = useAdminStore()
@@ -34,7 +35,9 @@ const getUser = async (userId) => {
 };
 const UpdateUserData = async (userId, form) => {
     try {
-        await useUserStore().updateForm(userId, form);
+        console.log(userId)
+
+        await useCategoryStore().updateForm(userId, form);
     } catch (error) {
         console.error("Error deleting user:", error.message);
     }
