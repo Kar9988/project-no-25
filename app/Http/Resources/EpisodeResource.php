@@ -16,6 +16,7 @@ class EpisodeResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+<<<<<<< HEAD
             'id'            => $this->id,
             'title'         => $this->title,
             'thumb'         => $this->thumb,
@@ -24,6 +25,15 @@ class EpisodeResource extends JsonResource
             'duration'      => $this->duration,
             'views_count'   => $this->views_count,
 
+=======
+            'id'       => $this->id,
+            'title'    => $this->title,
+            'thumb'    => $this->thumb,
+            'source'   => $this->source,
+            'canSee'   => false,
+            'position' => $this->position,
+            'duration' => $this->duration
+>>>>>>> 4eb3661acc5f89c1704a2ae701fb79aa7567b2b5
         ];
     }
 }

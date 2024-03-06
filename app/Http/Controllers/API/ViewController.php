@@ -7,6 +7,7 @@ use App\Http\Resources\ViewResource;
 use App\Models\View;
 use App\Services\ViewService;
 use http\Client\Curl\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,7 +26,7 @@ class ViewController extends Controller
      */
     public function index()
     {
-        dd(323232323232323);
+        //
     }
 
     /**
@@ -39,11 +40,12 @@ class ViewController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $count = (int)$request->views_count;
-        if ($count) {
-            for ($i = 0; $i <= $count - 1; $i++) {
+        if ($count > 0) {
+            $data = [];
+            for ($i = 0; $i < $count; $i++) {
                 $data[] = [
                     'user_id' => auth()->id(),
                     'episode_id' => $request->episode_id
@@ -52,17 +54,16 @@ class ViewController extends Controller
             $this->service->insert($data);
             return response()->json([
                 'success' => true,
-                'message' => 'view created successfully',
+                'message' => 'Views created successfully',
             ], 201);
-        }else{
+        } else {
             $create = $this->service->store($request->all());
+            return response()->json([
+                'success' => true,
+                'message' => 'View created successfully',
+                'view' => new ViewResource($create)
+            ], 201);
         }
-
-        return response()->json([
-            'success' => true,
-            'message' => 'view created successfully',
-            'view' => new ViewResource($create)
-        ], 201);
     }
 
     /**
@@ -70,7 +71,6 @@ class ViewController extends Controller
      */
     public function show(string $id)
     {
-        dd(1111111222323);
         //
     }
 
@@ -87,7 +87,7 @@ class ViewController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        dd(22222222);
+        //
     }
 
     /**

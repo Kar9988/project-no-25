@@ -75,7 +75,12 @@ class VideoController extends Controller
         ]);
     }
 
-    public function update($videoId, VideoUpdateRequest $updateRequest)
+    /**
+     * @param $videoId
+     * @param VideoUpdateRequest $updateRequest
+     * @return JsonResponse
+     */
+    public function update($videoId, VideoUpdateRequest $updateRequest): JsonResponse
     {
         $video = $this->videoService->updateVideo($videoId, $updateRequest->all());
         if ($video) {

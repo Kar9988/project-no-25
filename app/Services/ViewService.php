@@ -17,11 +17,29 @@ class ViewService
     }
 
     /**
-     * @param $data
+    * @param $data
      * @return mixed
      */
     public function insert($data): mixed
     {
-      return  DB::table('views')->insert($data);
+        return DB::table('views')->insert($data);
+    }
+    /**
+     * @param int $episodeId
+     * @param int $userId
+     * @param int $count
+     * @return mixed
+     */
+    public function createMany(int $episodeId, int $userId, int $count): mixed
+    {
+        $viewsData = [];
+        for ($i = 0; $i < $count; $i++) {
+            $viewsData[] = [
+                'episode_id' => $episodeId,
+                'user_id' => $userId,
+            ];
+        }
+
+        return View::insert($viewsData);
     }
 }
