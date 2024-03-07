@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Http\Resources\DiscoverResource;
 use App\Http\Resources\VideoResource;
+use App\Models\Category;
 use App\Models\Video;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Arr;
@@ -96,22 +98,45 @@ class VideoService
     }
 
     /**
-     * @param $page
      * @return array
      */
-    public function paginateVideos($page): array
+    public function paginateVideos(): array
     {
-        $videos  = Video::with(['episodes' => function ($query) {
+        $videos = Video::with(['episodes' => function ($query) {
             $query->withCount('views');
-        }])->paginate();
+        }])
+            ->paginate();
+
         return [
-            'data' => VideoResource::collection($videos),
-            'per_page' => $videos->perPage(),
-            'total' => $videos->total(),
-            'current_page' => $videos->currentPage(),
-            'last_page' => $videos->lastPage(),
+            'data'          => VideoResource::collection($videos),
+            'per_page'      => $videos->perPage(),
+            'total'         => $videos->total(),
+            'current_page'  => $videos->currentPage(),
+            'last_page'     => $videos->lastPage(),
             'next_page_url' => $videos->nextPageUrl(),
             'prev_page_url' => $videos->previousPageUrl(),
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function discover(): array
+    {
+        $categories = Category::with(['videos' => function ($query) {
+            $query->with(['episodes' => function ($q) {
+                $q->withCount('views');
+            }]);
+        }])->paginate();
+
+        return [
+            'discover'      => DiscoverResource::collection($categories),
+            'per_page'      => $categories->perPage(),
+            'total'         => $categories->total(),
+            'current_page'  => $categories->currentPage(),
+            'last_page'     => $categories->lastPage(),
+            'next_page_url' => $categories->nextPageUrl(),
+            'prev_page_url' => $categories->previousPageUrl(),
         ];
     }
 

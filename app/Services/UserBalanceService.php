@@ -32,6 +32,15 @@ class UserBalanceService
         return UserBalance::query()->findOrFail($id);
     }
 
+    /**
+     * @param int $userId
+     * @return mixed
+     */
+    public function getByUserId(int $userId): UserBalance
+    {
+        return UserBalance::query()->where('user_id', $userId)->first();
+    }
+
 
     /**
      * @param array $data

@@ -4,6 +4,7 @@ use App\Http\Controllers\API\Admin\CategoryController;
 use App\Http\Controllers\API\Admin\UserController as AdminUserController;
 use App\Http\Controllers\API\Admin\VideoController;
 use App\Http\Controllers\API\EpisodeController;
+use App\Http\Controllers\API\PurchaseController;
 use App\Http\Controllers\API\VideoController as UserVideoController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\LoginController;
@@ -12,7 +13,6 @@ use App\Http\Controllers\API\RegisterController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\ViewController;
 use Illuminate\Support\Facades\Route;
-
 
 
 Route::post('/register', [RegisterController::class, 'store']);
@@ -30,6 +30,9 @@ Route::middleware('auth:api')->group(function () {
         Route::apiResource('categories', CategoryController::class);
         Route::get('categories', [CategoryController::class, 'index']);
     });
-    Route::get('videos', [UserVideoController::class, 'index']);
+    Route::post('purchase/video', [PurchaseController::class, 'store']);
+    Route::get('episode/source/{episodeId}', [EpisodeController::class, 'getVideoStream'])->name('episode.video');
+
+    Route::get('discover', [UserVideoController::class, 'discover']);
+
 });
-Route::get('episode/source/{episodeId}', [EpisodeController::class, 'getVideoStream'])->name('episode.video');

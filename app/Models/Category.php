@@ -12,6 +12,9 @@ class Category extends Model
 
     protected $guarded = [];
 
+    /**
+     * @return HasMany
+     */
     public function videos(): HasMany
     {
         return $this->hasMany(Video::class);

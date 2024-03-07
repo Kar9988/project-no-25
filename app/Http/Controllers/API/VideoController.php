@@ -24,7 +24,21 @@ class VideoController extends Controller
      */
     public function index(): JsonResponse
     {
-        $result = $this->videoService->paginateVideos(10);
+        $result = $this->videoService->paginateVideos();
+
+        return response()->json([
+            'success' => true,
+            'type'    => 'success',
+            'videos'  => $result
+        ]);
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function discover(): JsonResponse
+    {
+        $result = $this->videoService->discover();
 
         return response()->json([
             'success' => true,

@@ -15,11 +15,12 @@ class VideoResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'description' => $this->description,
-            'title'  => $this->title,
-            'cover_img' => $this->cover_img,
-            'episodes' => $this->episodes,
+            'id'            => $this->id,
+            'description'   => $this->description,
+            'title'         => $this->title,
+            'cover_img'     => $this->cover_img,
+            'category_name' => $this->category?->name,
+            'episodes'      => EpisodeResource::collection($this->episodes),
         ];
     }
 }

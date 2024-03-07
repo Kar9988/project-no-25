@@ -34,7 +34,7 @@ class VideoController extends Controller
         return response()->json([
             'success' => true,
             'type'    => 'success',
-            'videos'   => $result['data'],
+            'videos'  => $result['data'],
             ...Arr::except($result, 'data')
         ]);
     }
