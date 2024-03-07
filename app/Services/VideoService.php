@@ -119,9 +119,9 @@ class VideoService
     }
 
     /**
-     * @return array
+     * @return AnonymousResourceCollection
      */
-    public function discover(): array
+    public function discover(): AnonymousResourceCollection
     {
         $categories = Category::with(['videos' => function ($query) {
             $query->with(['episodes' => function ($q) {
@@ -129,9 +129,7 @@ class VideoService
             }]);
         }])->paginate();
 
-        return [
-            'discover'      => DiscoverResource::collection($categories),
-        ];
+        return DiscoverResource::collection($categories);
     }
 
     /**

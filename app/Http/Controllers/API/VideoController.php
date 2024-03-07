@@ -41,9 +41,9 @@ class VideoController extends Controller
         $result = $this->videoService->discover();
 
         return response()->json([
-            'success' => true,
-            'type'    => 'success',
-            'videos'  => $result
+            'success'  => true,
+            'type'     => 'success',
+            'discover' => $result
         ]);
     }
 }

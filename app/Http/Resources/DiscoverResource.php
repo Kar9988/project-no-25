@@ -15,6 +15,7 @@ class DiscoverResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id'     => $this->id,
             'name'   => $this->name,
             'videos' => VideoResource::collection($this->videos)
         ];
