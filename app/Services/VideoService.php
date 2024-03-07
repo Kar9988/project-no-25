@@ -131,12 +131,6 @@ class VideoService
 
         return [
             'discover'      => DiscoverResource::collection($categories),
-            'per_page'      => $categories->perPage(),
-            'total'         => $categories->total(),
-            'current_page'  => $categories->currentPage(),
-            'last_page'     => $categories->lastPage(),
-            'next_page_url' => $categories->nextPageUrl(),
-            'prev_page_url' => $categories->previousPageUrl(),
         ];
     }
 
