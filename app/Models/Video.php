@@ -22,8 +22,19 @@ class Video extends Model
         return $this->hasMany(Episode::class);
     }
 
+    /**
+     * @return BelongsTo
+     */
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * @return string
+     */
+    public function getCoverImgPathAttribute(): string
+    {
+        return asset("storage/$this->cover_img");
     }
 }
