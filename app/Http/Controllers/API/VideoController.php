@@ -49,6 +49,21 @@ class VideoController extends Controller
     }
 
     /**
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function show(int $id): JsonResponse
+    {
+        $video = $this->videoService->getVideo($id);
+
+        return response()->json([
+            'success' => true,
+            'type'    => 'success',
+            'video'   => $video
+        ]);
+    }
+
+    /**
      * @param int $categoryId
      * @return JsonResponse
      * @throws \Psr\Container\ContainerExceptionInterface

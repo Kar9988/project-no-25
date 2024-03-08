@@ -163,6 +163,17 @@ class VideoService
     }
 
     /**
+     * @param int $id
+     * @return VideoResource
+     */
+    public function getVideo(int $id): VideoResource
+    {
+        $video = $this->getById($id);
+
+        return new VideoResource($video);
+    }
+
+    /**
      * @param $id
      * @return bool
      */
