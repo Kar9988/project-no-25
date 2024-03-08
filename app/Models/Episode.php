@@ -22,11 +22,10 @@ class Episode extends Model
     }
 
     /**
-     * @param string $value
      * @return string
      */
-    public function getThumbAttribute(string $value): string
+    public function getThumbPathAttribute(): string
     {
-        return public_path("storage/$value");
+        return asset("storage/$this->thumb");
     }
 }
