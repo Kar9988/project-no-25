@@ -140,17 +140,15 @@ class VideoService
      */
     public function getByCategoryId(int $categoryId, int $page = 1, int $take = 10): ResourceCollection
     {
-        $categories = Category::where('id', $categoryId)
-            ->with(['videos' => function ($query) {
-                $query->with(['episodes' => function ($q) {
-                    $q->withCount('views');
-                }]);
+        $videos = Video::where('category_id', $categoryId)
+            ->with(['episodes' => function ($q) {
+                $q->withCount('views');
             }])
             ->skip($page * $take - $take)
             ->take($take)
             ->get();
 
-        return DiscoverResource::collection($categories);
+        return VideoResource::collection($videos);
     }
 
     /**

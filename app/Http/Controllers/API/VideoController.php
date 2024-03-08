@@ -59,9 +59,9 @@ class VideoController extends Controller
         $result = $this->videoService->getByCategoryId($categoryId, request()->get('page', 1));
 
         return response()->json([
-            'success'  => true,
-            'type'     => 'success',
-            'category' => $result
+            'success' => true,
+            'type'    => 'success',
+            'videos'  => $result
         ]);
     }
 }
