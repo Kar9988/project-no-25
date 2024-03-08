@@ -13,8 +13,20 @@ class Episode extends Model
 
     protected $guarded = [];
 
+    /**
+     * @return HasMany
+     */
     public function views(): HasMany
     {
         return $this->hasMany(View::class);
+    }
+
+    /**
+     * @param string $value
+     * @return string
+     */
+    public function getThumbAttribute(string $value): string
+    {
+        return public_path("storage/$value");
     }
 }

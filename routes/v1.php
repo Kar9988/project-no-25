@@ -34,5 +34,6 @@ Route::middleware('auth:api')->group(function () {
     Route::get('episode/source/{episodeId}', [EpisodeController::class, 'getVideoStream'])->name('episode.video');
 
     Route::get('discover', [UserVideoController::class, 'discover']);
+    Route::get('category/{categoryId}', [UserVideoController::class, 'filter']);
 
 });

@@ -6,7 +6,7 @@ use App\Http\Resources\DiscoverResource;
 use App\Http\Resources\VideoResource;
 use App\Models\Category;
 use App\Models\Video;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -119,15 +119,36 @@ class VideoService
     }
 
     /**
-     * @return AnonymousResourceCollection
+     * @return ResourceCollection
      */
-    public function discover(): AnonymousResourceCollection
+    public function discover(): ResourceCollection
     {
         $categories = Category::with(['videos' => function ($query) {
             $query->with(['episodes' => function ($q) {
                 $q->withCount('views');
             }]);
         }])->paginate();
+
+        return DiscoverResource::collection($categories);
+    }
+
+    /**
+     * @param int $categoryId
+     * @param int $page
+     * @param int $take
+     * @return ResourceCollection
+     */
+    public function getByCategoryId(int $categoryId, int $page = 1, int $take = 10): ResourceCollection
+    {
+        $categories = Category::where('id', $categoryId)
+            ->with(['videos' => function ($query) {
+                $query->with(['episodes' => function ($q) {
+                    $q->withCount('views');
+                }]);
+            }])
+            ->skip($page * $take - $take)
+            ->take($take)
+            ->get();
 
         return DiscoverResource::collection($categories);
     }

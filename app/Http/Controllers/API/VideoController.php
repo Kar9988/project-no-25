@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Services\VideoService;
 use Illuminate\Http\JsonResponse;
 
@@ -44,6 +45,23 @@ class VideoController extends Controller
             'success'  => true,
             'type'     => 'success',
             'discover' => $result
+        ]);
+    }
+
+    /**
+     * @param int $categoryId
+     * @return JsonResponse
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
+    public function filter(int $categoryId): JsonResponse
+    {
+        $result = $this->videoService->getByCategoryId($categoryId, request()->get('page', 1));
+
+        return response()->json([
+            'success'  => true,
+            'type'     => 'success',
+            'category' => $result
         ]);
     }
 }
