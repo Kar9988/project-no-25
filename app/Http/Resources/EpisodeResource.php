@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Episode;
+use App\Policies\UserPolicy;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -22,6 +22,7 @@ class EpisodeResource extends JsonResource
             'source'      => $this->source,
             'position'    => $this->position,
             'duration'    => $this->duration,
+            'canSee'      => UserPolicy::canViewEpisode(auth()->user(), $this->id),
             'views_count' => $this->views_count,
             'price'       => $this->price ?? 0,
         ];

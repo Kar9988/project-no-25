@@ -35,9 +35,8 @@ class PurchaseService
             DB::beginTransaction();
             $episode = $this->episodeService->getById($episodeId);
             $userBalance = $this->userBalanceService->getByUserId($userId);
-            if ($userBalance->balance < $episode->price) {
+            if ($userBalance->amount < $episode->price) {
                 DB::rollBack();
-
                 return [
                     'success' => false,
                     'type'    => 'error',
@@ -45,7 +44,7 @@ class PurchaseService
                 ];
             }
             $userBalance->update([
-                'balance' => $userBalance->balance - $episode->price
+                'amount' => $userBalance->amount - $episode->price
             ]);
             // todo:: for now it's only payment with coin, but in future will be with payment provider
             $paymentableData = [
@@ -54,6 +53,7 @@ class PurchaseService
             ];
             $this->paymentService->create([
                 'user_id'             => auth()->id(),
+                'amount'              => $episode->price,
                 'external_payment_id' => null, //null when payment is completed via coins otherwise it should be payment provider side id
                 'paymentable_type'    => $paymentableData['type'],
                 'paymentable_id'      => $paymentableData['id']
