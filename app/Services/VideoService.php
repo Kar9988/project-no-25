@@ -126,8 +126,7 @@ class VideoService
         $categories = Category::with(['videos' => function ($query) {
             $query->with(['episodes' => function ($q) {
                 $q->withCount('views');
-            }])
-            ->take(7);
+            }]);
         }])->get();
 
         return DiscoverResource::collection($categories);
