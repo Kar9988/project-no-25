@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
@@ -21,7 +22,7 @@ class FileManagerService
      * @param UploadedFile $file
      * @return bool|string
      */
-    public function storeCover(string $fileName, UploadedFile $file): bool|string
+    public function storeCover(string $fileName,  $file): bool|string
     {
         return $this->storage->putFile($fileName, $file);
     }
@@ -31,7 +32,7 @@ class FileManagerService
      * @param UploadedFile $file
      * @return bool|string
      */
-    public function storeVideo(string $fileName, UploadedFile $file): bool|string
+    public function storeVideo(string $fileName,  $file): bool|string
     {
 
         return $this->storage->putFile($fileName, $file);
