@@ -28,6 +28,8 @@ class EpisodeSeeder extends Seeder
      */
     public function run(): void
     {
+        DB::connection()->disableQueryLog();
+
         $categoryData = [
             [
                 'name'   => 'New Arrival',
