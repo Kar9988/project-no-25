@@ -22,7 +22,7 @@ return new class extends Migration {
         Schema::table('likes', function (Blueprint $table) {
             $table->softDeletes();
         });
-        Schema::table('role', function (Blueprint $table) {
+        Schema::table('roles', function (Blueprint $table) {
             $table->softDeletes();
         });
         Schema::table('user_plans', function (Blueprint $table) {
@@ -47,7 +47,7 @@ return new class extends Migration {
         Schema::table('likes', function (Blueprint $table) {
             $table->dropSoftDeletes();
         });
-        Schema::table('role', function (Blueprint $table) {
+        Schema::table('roles', function (Blueprint $table) {
             $table->dropSoftDeletes();
         });
         Schema::table('user_plans', function (Blueprint $table) {

@@ -6,6 +6,9 @@ use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Imagick;
+use Intervention\Image\Image;
+use Intervention\Image\ImageManager;
 
 class FileManagerService
 {
@@ -18,13 +21,17 @@ class FileManagerService
     }
 
     /**
-     * @param string $fileName
+     * @param string $filePath
      * @param UploadedFile $file
      * @return bool|string
      */
-    public function storeCover(string $fileName,  $file): bool|string
+    public function storeCover(string $filePath, $file): bool|string
     {
-        return $this->storage->putFile($fileName, $file);
+        $file = ImageManager::imagick()->read($file)->toWebp(30)->toString();
+        $fileName = time().'.webp';
+        $this->storage->put("$filePath/$fileName", $file);
+
+        return $fileName;
     }
 
     /**
