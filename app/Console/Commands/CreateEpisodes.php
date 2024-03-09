@@ -62,7 +62,7 @@ class CreateEpisodes extends Command
         ];
         DB::table('categories')->insert($categoryData);
         $faker = Faker::create();
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             $videoData = [
                 'title'       => $faker->name,
                 'description' => $faker->text,
