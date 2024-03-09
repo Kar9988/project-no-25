@@ -17,6 +17,6 @@ class Category extends Model
      */
     public function videos(): HasMany
     {
-        return $this->hasMany(Video::class)->limit(7);
+        return $this->hasMany(Video::class)->take(7);
     }
 }
