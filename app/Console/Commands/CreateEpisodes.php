@@ -39,27 +39,27 @@ class CreateEpisodes extends Command
      */
     public function handle()
     {
-        $categoryData = [
-            [
-                'name'   => 'New Arrival',
-                'active' => true
-            ],
-            [
-                'name'   => 'Top Rated',
-                'active' => true
-            ],
-            [
-                'name'   => 'Trading This week',
-                'active' => true
-            ],
-            [
-                'name'   => 'Test',
-                'active' => true
-            ]
-        ];
-        DB::table('categories')->insert($categoryData);
+        DB::connection()->disableQueryLog();
+//        $categoryData = [
+//            [
+//                'name'   => 'New Arrival',
+//                'active' => true
+//            ],
+//            [
+//                'name'   => 'Top Rated',
+//                'active' => true
+//            ],
+//            [
+//                'name'   => 'Trading This week',
+//                'active' => true
+//            ],
+//            [
+//                'name'   => 'Test',
+//                'active' => true
+//            ]
+//        ];
         $faker = Faker::create();
-        for ($i = 0; $i < 5; $i++) {
+//        for ($i = 0; $i < 5; $i++) {
             $videoData = [
                 'title'       => $faker->name,
                 'description' => $faker->text,
@@ -79,6 +79,6 @@ class CreateEpisodes extends Command
             }
             $result = $this->videoService->createVideo($videoData);
             $this->info($result->id);
-        }
+//        }
     }
 }
