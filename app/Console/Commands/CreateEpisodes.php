@@ -16,6 +16,7 @@ class CreateEpisodes extends Command
      * @var string
      */
     protected $signature = 'app:create-episodes';
+    public $timeout = 0;
 
     /**
      * The console command description.
