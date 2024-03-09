@@ -40,6 +40,7 @@ class CreateEpisodes extends Command
      */
     public function handle()
     {
+        set_time_limit(0);
         DB::connection()->disableQueryLog();
 //        $categoryData = [
 //            [
