@@ -6,6 +6,7 @@ use App\Http\Resources\DiscoverResource;
 use App\Http\Resources\VideoResource;
 use App\Models\Category;
 use App\Models\Video;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -116,6 +117,28 @@ class VideoService
             'next_page_url' => $videos->nextPageUrl(),
             'prev_page_url' => $videos->previousPageUrl(),
         ];
+    }
+
+    /**
+     * @param array $data
+     * @return AnonymousResourceCollection
+     */
+    public function randomVideos(array $data): ResourceCollection
+    {
+        $id = (int)$data['id'] ?? null;
+        $videos = Video::select('videos.*')
+            ->with(['episodes' => function ($query) {
+                $query->withCount('views');
+            }])
+            ->when($id, function ($query) use ($id) {
+                $query->orderByRaw("CASE WHEN id = $id THEN 1 ELSE 0 END DESC");
+            })
+            ->orderBy(DB::raw('RAND()'))
+            ->skip($data['skip'])
+            ->take($data['take'])
+            ->get();
+
+        return VideoResource::collection($videos);
     }
 
     /**
