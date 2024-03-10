@@ -25,13 +25,17 @@ class FileManagerService
      * @param UploadedFile $file
      * @return bool|string
      */
-    public function storeCover(string $filePath, $file): bool|string
+//    public function storeCover(string $filePath, $file): bool|string
+//    {
+//        $file = ImageManager::imagick()->read($file)->toWebp(30)->toString();
+//        $fileName = time().'.webp';
+//        $this->storage->put("$filePath/$fileName", $file);
+//
+//        return $fileName;
+//    }
+    public function storeCover(string $fileName,  $file): bool|string
     {
-        $file = ImageManager::imagick()->read($file)->toWebp(30)->toString();
-        $fileName = time().'.webp';
-        $this->storage->put("$filePath/$fileName", $file);
-
-        return $fileName;
+        return $this->storage->putFile($fileName, $file);
     }
 
     /**
