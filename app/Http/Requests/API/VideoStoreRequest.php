@@ -28,6 +28,7 @@ class VideoStoreRequest extends FormRequest
             'title'                 => 'required|string',
             'cover_img'             => 'required|image',
             'description'           => 'required|string',
+            'category_id'           => 'required',
             'is_new_arrival'        => 'boolean',
             'is_top_rated'          => 'boolean',
             'episodes.*.title'      => 'sometimes|required|string',

@@ -1,11 +1,17 @@
 <script setup>
 
-
 import {useVideoStore} from "../../store/videoStore.js";
 import {computed, onMounted} from "vue";
 
 const videoStore = useVideoStore();
 const videos = computed(() => videoStore?.videos);
+
+import {useCategoryStore} from "../../store/categoryStore.js";
+
+const categoryStore = useCategoryStore();
+const categories = computed(() => categoryStore?.categories);
+
+
 import {ref} from "vue";
 import ModalComponent from "../../components/Modal/Modal.vue";
 import router from "../../router/index.js";
@@ -15,6 +21,7 @@ const video = ref({
     title: '',
     description: '',
     cover_img: '',
+    category_id: '',
     episodes: []
 })
 const openModal = () => {
@@ -32,6 +39,7 @@ const episodeSkilleton = ref({
     duration: null,
     cover_img: null,
     source: null,
+    category_id: null,
 })
 const errors = ref({})
 const submitHandler = () => {
@@ -95,6 +103,7 @@ const fetchVideos = (pageVal) => {
 }
 onMounted(() => {
     videoStore.getVideos()
+    categoryStore.getCategories()
 })
 const deleteVideo = async (videoId) => {
     const confirmDelete = window.confirm("Are you sure you want to delete this video?");
@@ -130,6 +139,7 @@ const page = computed({
                 </div>
             </div>
         </div>
+        <pre></pre>
         <div class="block w-full overflow-x-auto px-4">
             <div>
                 <button @click="openModal">
@@ -167,6 +177,14 @@ const page = computed({
                                 />
                                 <p v-if="errors.title" class="text-red-600 mt-1">{{ errors.title[0] }}</p>
                             </div>
+                            <div  >
+                                <div  class="text-black"> Categories</div>
+                                <select v-model="video.category_id"  id="countries"
+                                        class="title bg-gray-100 border border-gray-300 p-2 mb-4 outline-none">
+                                    <option v-for="category in categories.data" :key="category.id" :value="category.id">{{category.name}}</option>
+                                </select>
+                            </div>
+
 
                             <div class="relative w-full mb-3">
                                 <label
@@ -329,9 +347,17 @@ const page = computed({
                     </th>
                     <th
                         class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left "
+                    > Category
+
+                    </th>
+
+
+                    <th
+                        class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left "
                         > Actions
 
                     </th>
+
                 </tr>
                 </thead>
                 <tbody v-for="video in videos.videos" :key="video.id">
@@ -351,6 +377,10 @@ const page = computed({
                     <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
                             <span class="ml-3 font-bold ">{{ video.episodes.length }}</span>
                     </td>
+                    <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left">
+                        <span class="ml-3 font-bold ">{{ video.category }}</span>
+                    </td>
+
                     <td>
                         <th class="flex p-[10px]">
                             <div class="pr-[8px]">

@@ -52,6 +52,7 @@ export const useVideoStore = defineStore('videoStore', {
             return new Promise((resolve, reject) => {
                 axios.get(`/admin/videos/${videoId}`,)
                     .then(response => {
+                        console.log(response);
                         this.video = response.data.video;
                         resolve(response.data);
                         return response.data.use
@@ -61,6 +62,7 @@ export const useVideoStore = defineStore('videoStore', {
             })
         },
         createVideo(payload) {
+
             return new Promise((resolve, reject) => {
                 axios.post(`/admin/videos`, payload)
                     .then(response => {
@@ -73,7 +75,7 @@ export const useVideoStore = defineStore('videoStore', {
                         });
                         resolve(response.data);
                     }).catch((e) => {
-                        reject(e.response.data);
+                    reject(e.response.data);
                 });
             })
         },
@@ -110,11 +112,45 @@ export const useVideoStore = defineStore('videoStore', {
                 console.error('Error posting data:', error);
             }
         },
+        async changeLikes(data) {
+            console.log(data, 'video')
+            try {
+                await axios.post(`/admin/likes/`, data)
+                    .then(() => {
+                        Swal.fire({
+                            position: "top",
+                            icon: "success",
+                            title: "Likes updated successfully",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    })
+            } catch (error) {
+                console.error('Error posting data:', error);
+            }
+        },
+        async changeEpisodesLikes(data) {
+            try {
+                await axios.post(`/admin/likes/`, data)
+                    .then(() => {
+                        Swal.fire({
+                            position: "top",
+                            icon: "success",
+                            title: "Likes updated successfully",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    })
+            } catch (error) {
+                console.error('Error posting data:', error);
+            }
+        },
+
         async deleteViews(data) {
             try {
                 await axios.delete(`/admin/views/${data.episode_id}`, {
-                    params:{
-                        count:data.views_count
+                    params: {
+                        count: data.views_count
                     }
                 },)
                     .then(() => {
@@ -122,6 +158,50 @@ export const useVideoStore = defineStore('videoStore', {
                             position: "top",
                             icon: "success",
                             title: "Episode updated successfully",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    })
+            } catch (error) {
+                console.error('Error posting data:', error);
+            }
+        },
+        async deleteLikes(data) {
+            console.log(data, 'esa')
+            try {
+                await axios.delete(`/admin/likes/${data.video_id}`, {
+                    params: {
+                        count: data.likes_count,
+                        video_id: data.video_id
+                    }
+                },)
+                    .then(() => {
+                        Swal.fire({
+                            position: "top",
+                            icon: "success",
+                            title: "Likes updated successfully",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    })
+            } catch (error) {
+                console.error('Error posting data:', error);
+            }
+        },
+        async deleteEpisodesLikesCount(data) {
+            console.log(data, 'esass')
+            try {
+                await axios.delete(`/admin/likes/${data.episode_id}`, {
+                    params: {
+                        count: data.likes_count,
+                        episode_id: data.episode_id
+                    }
+                },)
+                    .then(() => {
+                        Swal.fire({
+                            position: "top",
+                            icon: "success",
+                            title: "Likes updated successfully",
                             showConfirmButton: false,
                             timer: 1500
                         });

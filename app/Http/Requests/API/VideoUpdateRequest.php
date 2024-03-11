@@ -24,10 +24,12 @@ class VideoUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
+//        dd($this->all());
         return [
             'title'                 => 'required|string',
             'cover_img'             => 'sometimes|image',
             'description'           => 'required|string',
+            'category_id'           => 'required',
             'is_new_arrival'        => 'boolean',
             'is_top_rated'          => 'boolean',
             'episodes.*.title'      => 'sometimes|required|string',
