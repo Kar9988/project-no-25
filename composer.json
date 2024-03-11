@@ -9,11 +9,13 @@
         "andreaselia/laravel-api-to-postman": "^1.15",
         "guzzlehttp/guzzle": "^7.2",
         "imanghafoori/laravel-video": "^2.1",
+        "intervention/image": "^3.4",
         "laravel/framework": "^10.10",
         "laravel/passport": "^11.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
-        "pbmedia/laravel-ffmpeg": "^8.4"
+        "pbmedia/laravel-ffmpeg": "^8.4",
+        "staudenmeir/eloquent-eager-limit": "^1.8"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

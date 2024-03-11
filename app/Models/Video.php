@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Staudenmeir\EloquentEagerLimit\HasEagerLimit;
 
 class Video extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasEagerLimit;
 
     protected $guarded = [];
 
@@ -23,6 +24,9 @@ class Video extends Model
         return $this->hasMany(Episode::class);
     }
 
+    /**
+     * @return BelongsTo
+     */
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
@@ -33,4 +37,11 @@ class Video extends Model
         return $this->morphMany(Like::class, 'likeable');
     }
 
+    /**
+     * @return string
+     */
+    public function getCoverImgPathAttribute(): string
+    {
+        return asset("storage/$this->cover_img");
+    }
 }

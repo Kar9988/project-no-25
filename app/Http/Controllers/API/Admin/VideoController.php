@@ -59,6 +59,7 @@ class VideoController extends Controller
     public function store(VideoStoreRequest $request): JsonResponse
     {
         $video = $this->videoService->createVideo($request->all());
+
         if ($video) {
 
             return response()->json([
