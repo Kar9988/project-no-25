@@ -19,6 +19,7 @@ class UserResource extends JsonResource
             'name'       => $this->name,
             'email'      => $this->email,
             'balance'    => $this->userBalance->amount ?? 0,
+            'bonus'      => $this->userBalance->bonus,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
