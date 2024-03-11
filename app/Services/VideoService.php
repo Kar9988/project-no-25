@@ -192,12 +192,15 @@ class VideoService
      */
     public function getById($id): Video
     {
-        return Video::withCount('likes')
+        return Video::select('videos.*')
+            ->withCount('likes')
             ->join('episodes', 'episodes.video_id', 'videos.id')
-            ->where('id', $id)->with(['episodes' => function ($query) {
+            ->where('videos.id', $id)
+            ->with(['episodes' => function ($query) {
                 $query->withCount('views');
                 $query->withCount('likes');
-            }])->first();
+            }])
+            ->first();
     }
 
     /**
