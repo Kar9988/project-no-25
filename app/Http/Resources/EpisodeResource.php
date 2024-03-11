@@ -19,7 +19,7 @@ class EpisodeResource extends JsonResource
             'id'          => $this->id,
             'title'       => $this->title,
             'thumb'       => $this->thumb_path,
-            'source'      => $this->source,
+            'source'      => route('episode.video', $this->id),
             'position'    => $this->position,
             'duration'    => $this->duration,
             'can_see'     => UserPolicy::canViewEpisode(auth()->user(), $this->id),
