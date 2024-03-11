@@ -18,6 +18,8 @@ class ViewResource extends JsonResource
             'id' => $this->id,
             'user_id' => $this->user_id,
             'episode_id' => $this->episode_id,
+            'title' => $this->title,
+            'thumb' => $this->thumb,
         ];
     }
 }

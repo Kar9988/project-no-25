@@ -169,6 +169,7 @@ class VideoService
             ->with(['episodes' => function ($q) {
                 $q->withCount('views');
             }])
+            //es logican
             ->skip($page * $take - $take)
             ->take($take)
             ->get();
