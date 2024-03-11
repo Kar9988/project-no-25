@@ -19,7 +19,7 @@ class UserPolicy
             return true;
         }
 
-        if ($user->role->name === 'admin') {
+        if ($user?->role->name === 'admin') {
             return true;
         }
         return false;
