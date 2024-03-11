@@ -121,9 +121,11 @@ class VideoService
 
     /**
      * @param array $data
-     * @return AnonymousResourceCollection
+     * @param int $page
+     * @param int $take
+     * @return ResourceCollection
      */
-    public function randomVideos(array $data): ResourceCollection
+    public function randomVideos(array $data, int $page = 1, int $take = 10): ResourceCollection
     {
         $id = (int)$data['id'] ?? null;
         $videos = Video::select('videos.*')
@@ -134,8 +136,8 @@ class VideoService
                 $query->orderByRaw("CASE WHEN id = $id THEN 1 ELSE 0 END DESC");
             })
             ->orderBy(DB::raw('RAND()'))
-            ->skip($data['skip'])
-            ->take($data['take'])
+            ->skip($page * $take - $take)
+            ->take($take)
             ->get();
 
         return VideoResource::collection($videos);

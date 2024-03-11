@@ -26,11 +26,11 @@ class VideoController extends Controller
     public function index(): JsonResponse
     {
         $data = [
-            'skip' => request()->get('skip', 0),
+            'page' => request()->get('page', 0),
             'take' => request()->get('take', 10),
             'id'   => request()->get('id', null)
         ];
-        $result = $this->videoService->randomVideos($data);
+        $result = $this->videoService->randomVideos($data, $data['page'], $data['take']);
 
         return response()->json([
             'success' => true,
