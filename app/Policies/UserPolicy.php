@@ -14,14 +14,14 @@ class UserPolicy
      */
     public static function canViewEpisode(User $user, int $episodeId): bool
     {
-        foreach ($user->payments as $payment) {
-            $paymentable_id = $payment->paymentable_id;
+        $payment = $user->payments()->where('paymentable_id', $episodeId)->first();
+        if ($payment !== null) {
+            return true;
         }
 
         if ($user->role->name === 'admin') {
             return true;
         }
-
-        return $paymentable_id === $episodeId;
+        return false;
     }
 }
