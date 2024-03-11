@@ -138,6 +138,7 @@ class VideoService
             ->when($id, function ($query) use ($id) {
                 $query->orderByRaw("CASE WHEN videos.id = $id THEN 1 ELSE 0 END DESC");
             })
+            ->groupBy('videos.id')
             ->orderBy(DB::raw('RAND()'))
             ->skip($page * $take - $take)
             ->take($take)
