@@ -3,11 +3,16 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\EpisodeResource;
+use App\Http\Resources\ViewResource;
 use App\Services\EpisodeService;
 use App\Services\VideoStream;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class EpisodeController extends Controller
@@ -18,11 +23,27 @@ class EpisodeController extends Controller
     /**
      * @param EpisodeService $episodeService
      */
+
     public function __construct(EpisodeService $episodeService)
     {
-
         $this->episodeService = $episodeService;
     }
+
+    /**
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function index(): JsonResponse
+    {
+        $videoHistory = $this->episodeService->index(request()->get('page', 1));
+        return response()->json([
+            'success' => true,
+            'message' => 'This is user video history',
+            'video history' => ViewResource::collection($videoHistory)
+        ], 200);
+    }
+
 
     /**
      * @param $episodeId

@@ -23,9 +23,28 @@ class EpisodeService
     }
 
     /**
+     * @param int $page
+     * @param int $take
+     * @return mixed
+     */
+    public function index(int $page = 1, int $take = 10): mixed
+    {
+        return Episode::where('user_id', auth()->user()->id)
+            ->join('views', 'views.episode_id', '=', 'episodes.id')
+            ->select('episodes.title', 'episodes.thumb','episodes.id', 'episodes.created_at')
+            ->orderByDesc('episodes.created_at')
+            ->groupBy('episodes.id')
+            ->skip($page * $take - $take)
+            ->take($take)
+            ->get();
+
+    }
+
+    /**
      * @param int $id
      * @return Episode
      */
+
     public function getById(int $id): Episode
     {
         return Episode::findOrFail($id);
@@ -44,7 +63,7 @@ class EpisodeService
             $filePaths = [];
             foreach ($data as $datum) {
                 $episodeUpdateData = [
-                    'title'    => $datum['title'],
+                    'title' => $datum['title'],
                     'duration' => $datum['duration'] ?? 0,
                     'position' => $datum['position'] ?? 1,
                     'price' => $datum['price'] ?? 1,
@@ -88,7 +107,7 @@ class EpisodeService
             $filePaths = [];
             foreach ($data as $datum) {
                 $episodeCreateData = [
-                    'title'    => $datum['title'],
+                    'title' => $datum['title'],
                     'duration' => $datum['duration'] ?? 0,
                     'price' => $datum['price'] ?? 0
                 ];

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ViewResource;
+use App\Models\Episode;
 use App\Models\View;
 use App\Services\ViewService;
 use Illuminate\Http\JsonResponse;
@@ -19,6 +20,7 @@ class ViewController extends Controller
     public function __construct(protected ViewService $service)
     {
     }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -47,6 +49,7 @@ class ViewController extends Controller
             ], 201);
         }
     }
+
     /**
      * Remove the specified resource from storage.
      */
