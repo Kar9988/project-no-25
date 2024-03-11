@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ViewResource;
 use App\Models\View;
 use App\Services\ViewService;
-use http\Client\Curl\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -51,7 +50,7 @@ class ViewController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id, Request $request)
+    public function destroy(string $id, Request $request): JsonResponse
     {
         if (isset($request->count) && $request->count != null) {
             $deletedRows = View::query()->where('episode_id', $id)

@@ -33,8 +33,8 @@ class VideoController extends Controller
 
         return response()->json([
             'success' => true,
-            'type'    => 'success',
-            'videos'  => $result['data'],
+            'type' => 'success',
+            'videos' => $result['data'],
             ...Arr::except($result, 'data')
         ]);
     }
@@ -47,8 +47,8 @@ class VideoController extends Controller
     {
         return response()->json([
             'success' => true,
-            'type'    => 'success',
-            'video'   => new VideoResource($this->videoService->getById($id))
+            'type' => 'success',
+            'video' => new VideoResource($this->videoService->getById($id))
         ]);
     }
 
@@ -64,14 +64,14 @@ class VideoController extends Controller
 
             return response()->json([
                 'success' => true,
-                'type'    => 'success',
-                'video'   => $video
+                'type' => 'success',
+                'video' => $video
             ]);
         }
 
         return response()->json([
             'success' => false,
-            'type'    => 'error',
+            'type' => 'error',
             'message' => 'Something went wrong'
         ]);
     }
@@ -88,14 +88,14 @@ class VideoController extends Controller
 
             return response()->json([
                 'success' => true,
-                'type'    => 'success',
-                'video'   => $video
+                'type' => 'success',
+                'video' => $video
             ]);
         }
 
         return response()->json([
             'success' => false,
-            'type'    => 'error',
+            'type' => 'error',
             'message' => 'Something went wrong'
         ]);
     }

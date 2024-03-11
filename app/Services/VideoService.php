@@ -65,7 +65,7 @@ class VideoService
     {
         try {
             DB::beginTransaction();
-            $videoData = Arr::except($data, ['episodes', 'cover_img']);
+            $videoData = Arr::except($data, ['episodes', 'cover_img', 'category']);
 
             if (isset($data['cover_img'])) {
                 $coverPath = $this->fileManagerService->storeCover("videos/$id/cover", $data['cover_img']);
@@ -180,9 +180,11 @@ class VideoService
      */
     public function getById($id): Video
     {
-        return Video::where('id', $id)->with(['episodes' => function ($query) {
-            $query->withCount('views');
-        }])->first();
+        return Video::withCount('likes')
+            ->where('id', $id)->with(['episodes' => function ($query) {
+                $query->withCount('views');
+                $query->withCount('likes');
+            }])->first();
     }
 
     /**
