@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\API\BalanceRequest;
 use App\Http\Requests\API\UserBalanceRequest;
 use App\Http\Resources\UserBalanceResource;
 use App\Services\PaymentService;
@@ -100,15 +101,23 @@ class UserBalanceController extends Controller
         ]);
     }
 
-    public function addBalance(Request $request, $userId)
+    /**
+     * @param BalanceRequest $request
+     * @param $userId
+     * @return JsonResponse
+     */
+    public function addBalance(BalanceRequest $request, $userId): JsonResponse
     {
-        if ($this->service->addBalance($request->all(), $userId)) {
+        $updateBalance = $this->service->addBalance($request->all(), $userId);
+        if ($updateBalance['success'] === true) {
             return response()->json([
+                'type' => 'success',
                 'success' => true,
                 'message' => 'user balance updated successfully'
             ]);
         };
         return response()->json([
+            'type'=>'error',
             'success' => false,
             'message' => 'something was wrong'
         ]);

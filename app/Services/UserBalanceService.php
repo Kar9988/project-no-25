@@ -87,11 +87,13 @@ class UserBalanceService
              }
             if ($created) {
                 DB::commit();
-                return true;
+                return [
+                    'success' => true,
+                    'type'    => 'success',
+                ];
             }
         }
         catch (\Exception $exception){
-            dd($exception);
             DB::rollBack();
             return [
                 'success' => false,
