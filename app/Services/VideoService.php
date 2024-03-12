@@ -103,9 +103,11 @@ class VideoService
      */
     public function paginateVideos(): array
     {
-        $videos = Video::with(['episodes' => function ($query) {
-            $query->withCount('views');
-        }])
+        $videos = Video::select('videos.*')
+            ->join('episodes', 'episodes.video_id', 'videos.id')
+            ->with(['episodes' => function ($query) {
+                $query->withCount('views');
+            }])
             ->paginate();
 
         return [
@@ -121,21 +123,25 @@ class VideoService
 
     /**
      * @param array $data
-     * @return AnonymousResourceCollection
+     * @param int $page
+     * @param int $take
+     * @return ResourceCollection
      */
-    public function randomVideos(array $data): ResourceCollection
+    public function randomVideos(array $data, int $page = 1, int $take = 10): ResourceCollection
     {
         $id = (int)$data['id'] ?? null;
         $videos = Video::select('videos.*')
+            ->join('episodes', 'episodes.video_id', 'videos.id')
             ->with(['episodes' => function ($query) {
                 $query->withCount('views');
             }])
             ->when($id, function ($query) use ($id) {
-                $query->orderByRaw("CASE WHEN id = $id THEN 1 ELSE 0 END DESC");
+                $query->orderByRaw("CASE WHEN videos.id = $id THEN 1 ELSE 0 END DESC");
             })
+            ->groupBy('videos.id')
             ->orderBy(DB::raw('RAND()'))
-            ->skip($data['skip'])
-            ->take($data['take'])
+            ->skip($page * $take - $take)
+            ->take($take)
             ->get();
 
         return VideoResource::collection($videos);
@@ -146,11 +152,16 @@ class VideoService
      */
     public function discover(): ResourceCollection
     {
-        $categories = Category::with(['videos' => function ($query) {
-            $query->with(['episodes' => function ($q) {
-                $q->withCount('views');
-            }]);
-        }])->get();
+        $categories = Category::select('categories.*')
+            ->join('videos', function ($join) {
+                $join->on('videos.category_id', 'categories.id')
+                    ->join('episodes', 'episodes.video_id', 'videos.id');
+            })
+            ->with(['videos' => function ($query) {
+                $query->with(['episodes' => function ($q) {
+                    $q->withCount('views');
+                }]);
+            }])->get();
 
         return DiscoverResource::collection($categories);
     }
@@ -164,9 +175,11 @@ class VideoService
     public function getByCategoryId(int $categoryId, int $page = 1, int $take = 10): ResourceCollection
     {
         $videos = Video::where('category_id', $categoryId)
+            ->join('episodes', 'episodes.video_id', 'videos.id')
             ->with(['episodes' => function ($q) {
                 $q->withCount('views');
             }])
+            //es logican
             ->skip($page * $take - $take)
             ->take($take)
             ->get();
@@ -180,11 +193,15 @@ class VideoService
      */
     public function getById($id): Video
     {
-        return Video::withCount('likes')
-            ->where('id', $id)->with(['episodes' => function ($query) {
+        return Video::select('videos.*')
+            ->withCount('likes')
+            ->join('episodes', 'episodes.video_id', 'videos.id')
+            ->where('videos.id', $id)
+            ->with(['episodes' => function ($query) {
                 $query->withCount('views');
                 $query->withCount('likes');
-            }])->first();
+            }])
+            ->first();
     }
 
     /**

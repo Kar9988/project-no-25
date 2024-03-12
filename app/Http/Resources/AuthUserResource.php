@@ -15,10 +15,11 @@ class AuthUserResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
+            'id'         => $this->id,
             'first_name' => $this->name,
-            'email' => $this->email,
-            'role' => $this->whenLoaded('role', function () {
+            'email'      => $this->email,
+            'balance'    => $this->userBalance->amount ?? 0,
+            'role'       => $this->whenLoaded('role', function () {
                 return $this->role->name;
             }),
         ];

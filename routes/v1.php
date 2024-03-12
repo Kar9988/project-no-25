@@ -27,6 +27,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/auth/logout', [AuthController::class, 'logout']);
     Route::apiResource('likes', UserLikeController::class);
     Route::apiResource('episode/likes', EpisodeLikeController::class);
+    Route::get('video/history', [EpisodeController::class, 'index']);
     Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
         Route::post('/balance/{id}', [UserBalanceController::class, 'addBalance']);
         Route::apiResource('views', ViewController::class);
