@@ -29,7 +29,7 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('episode/likes', EpisodeLikeController::class);
     Route::get('video/history', [EpisodeController::class, 'index']);
     Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
-        Route::post('/balance/{id}', [UserBalanceController::class, 'addBalance']);
+        Route::post('/balance/{id}', [UserBalanceController::class, 'store']);
         Route::apiResource('views', ViewController::class);
         Route::apiResource('users', AdminUserController::class);
         Route::apiResource('plans', PlanController::class);

@@ -65,7 +65,13 @@ class UserBalanceService
     {
         return UserBalance::query()->where('id', $id)->delete();
     }
-    public function addBalance($data,$userId)
+
+    /**
+     * @param array $data
+     * @param int $userId
+     * @return array
+     */
+    public function addBalance(array $data, int $userId): array
     {
         try {
             DB::beginTransaction();
@@ -90,6 +96,11 @@ class UserBalanceService
                 return [
                     'success' => true,
                     'type'    => 'success',
+                ];
+            }else{
+                return [
+                    'success' => false,
+                    'type'    => 'error',
                 ];
             }
         }

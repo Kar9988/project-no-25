@@ -32,21 +32,6 @@ class UserBalanceController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(UserBalanceRequest $request): JsonResponse
-    {
-        $data = $this->service->store($request->all());
-
-        return response()->json([
-            'success' => true,
-            'message' => 'user balance created successfully',
-            'user balance' => new UserBalanceResource($data)
-        ],201);
-
-    }
-
-    /**
      * @param string $id
      * @return JsonResponse
      */
@@ -103,10 +88,10 @@ class UserBalanceController extends Controller
 
     /**
      * @param BalanceRequest $request
-     * @param $userId
+     * @param int $userId
      * @return JsonResponse
      */
-    public function addBalance(BalanceRequest $request, $userId): JsonResponse
+    public function store(BalanceRequest $request, int $userId): JsonResponse
     {
         $updateBalance = $this->service->addBalance($request->all(), $userId);
         if ($updateBalance['success'] === true) {
