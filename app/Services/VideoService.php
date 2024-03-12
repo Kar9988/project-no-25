@@ -161,7 +161,10 @@ class VideoService
                 $query->with(['episodes' => function ($q) {
                     $q->withCount('views');
                 }]);
-            }])->get();
+            }])
+            ->skip(request()->get('page', 1) * request()->get('take', 10) - request()->get('take', 10))
+            ->take(request()->get('take', 10))
+            ->get();
 
         return DiscoverResource::collection($categories);
     }
