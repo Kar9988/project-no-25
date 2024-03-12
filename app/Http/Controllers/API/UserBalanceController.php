@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\UserBalanceRequest;
 use App\Http\Resources\UserBalanceResource;
+use App\Services\PaymentService;
 use App\Services\UserBalanceService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,7 +15,7 @@ class UserBalanceController extends Controller
     /**
      * @param UserBalanceService $service
      */
-    public function __construct(protected UserBalanceService $service)
+    public function __construct(protected UserBalanceService $service, protected PaymentService  $paymentService)
     {
     }
 
@@ -93,6 +94,20 @@ class UserBalanceController extends Controller
             ]);
         }
 
+        return response()->json([
+            'success' => false,
+            'message' => 'something was wrong'
+        ]);
+    }
+
+    public function addBalance(Request $request, $userId)
+    {
+        if ($this->service->addBalance($request->all(), $userId)) {
+            return response()->json([
+                'success' => true,
+                'message' => 'user balance updated successfully'
+            ]);
+        };
         return response()->json([
             'success' => false,
             'message' => 'something was wrong'

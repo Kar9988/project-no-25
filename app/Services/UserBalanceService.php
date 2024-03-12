@@ -3,9 +3,14 @@
 namespace App\Services;
 
 use App\Models\UserBalance;
+use Illuminate\Support\Facades\DB;
 
 class UserBalanceService
 {
+    public function __construct(protected PaymentService $paymentService)
+    {
+    }
+
     /**
      * @param array $data
      * @return mixed
@@ -59,6 +64,41 @@ class UserBalanceService
     public function delete(int $id): UserBalance
     {
         return UserBalance::query()->where('id', $id)->delete();
+    }
+    public function addBalance($data,$userId)
+    {
+        try {
+            DB::beginTransaction();
+             $userBalance = UserBalance::query()->where('user_id',$userId)->first();
+             $userBalanceamount = (int)$userBalance['amount'] + (int)$data['amount'];
+             $updateData = [
+                 'amount' => $userBalanceamount
+             ];
+             $update = UserBalance::query()->where('id',  $userBalance['id'])->update($updateData);
+             if ($update){
+                 $paymentable = [
+                     'from_id' => auth()->id(),
+                     'user_id' =>$userId,
+                     'amount' => $data['amount'],
+                     'paymentable_type' => UserBalance::class,
+                     'Paymentable_id'   => $userBalance['id']
+                 ];
+                 $created = $this->paymentService->create($paymentable);
+             }
+            if ($created) {
+                DB::commit();
+                return true;
+            }
+        }
+        catch (\Exception $exception){
+            dd($exception);
+            DB::rollBack();
+            return [
+                'success' => false,
+                'type'    => 'error',
+                'message' => $exception->getMessage()
+            ];
+        }
     }
 
 }
