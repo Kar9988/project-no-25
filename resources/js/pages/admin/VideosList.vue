@@ -140,7 +140,6 @@ const page = computed({
                 </div>
             </div>
         </div>
-        <pre></pre>
         <div class="block w-full overflow-x-auto px-4">
             <div>
                 <button @click="openModal">

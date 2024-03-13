@@ -2,8 +2,6 @@
 
 use App\Http\Controllers\API\Admin\CategoryController;
 use App\Http\Controllers\API\Admin\LikeController;
-use App\Http\Controllers\API\EpisodeLikeController;
-use App\Http\Controllers\API\LikeController as UserLikeController;
 use App\Http\Controllers\API\Admin\UserController as AdminUserController;
 use App\Http\Controllers\API\Admin\VideoController;
 use App\Http\Controllers\API\EpisodeController;
@@ -24,9 +22,8 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('/account/delete', [UserController::class, 'delete']);
     Route::get('/auth/user', [AuthController::class, 'getAuthUser']);
     Route::get('/auth/logout', [AuthController::class, 'logout']);
-    Route::apiResource('likes', UserLikeController::class);
-    Route::apiResource('episode/likes', EpisodeLikeController::class);
-    Route::get('video/history', [EpisodeController::class, 'index']);
+    Route::apiResource('likes', LikeController::class);
+    Route::get('history', [EpisodeController::class, 'index']);
     Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
         Route::apiResource('views', ViewController::class);
         Route::apiResource('users', AdminUserController::class);
