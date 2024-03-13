@@ -49,13 +49,15 @@ trait LikesTrait
             return response()->json([
                 'success' => true,
                 'message' => 'Likes created successfully',
+                'type'   =>  'success'
             ], 201);
         } else {
             $create = $this->service->store($datum->all());
             return response()->json([
                 'success' => true,
                 'message' => 'Likes created successfully',
-                'likes' => new LikeResource($create)
+                'likes' => new LikeResource($create),
+                'type' => 'success',
             ], 201);
         }
     }
@@ -74,9 +76,17 @@ trait LikesTrait
                     ->where('likeable_type', Episode::class)
                     ->take($data['count'])
                     ->delete();
-                return response()->json(['message' => $deletedRows . ' records deleted successfully']);
+                return response()->json([
+                    'message' => $deletedRows . ' records deleted successfully',
+                    'success' => true,
+                    'type'    => 'success',
+                    ]);
             }
-            return response()->json(['message' => 'There is no line to delete']);
+            return response()->json([
+                'message' => 'There is no line to delete',
+                'type'    => 'error',
+                'success' => false,
+                ]);
         }
         if (isset($data['video_id'])) {
             if (isset($data['count']) && $data['count'] != null) {
@@ -85,9 +95,17 @@ trait LikesTrait
                     ->where('likeable_type', Video::class)
                     ->take($data['count'])
                     ->delete();
-                return response()->json(['message' => $deletedRows . ' records deleted successfully']);
+                return response()->json([
+                    'message' => $deletedRows . ' records deleted successfully',
+                    'success' => true,
+                    'type'    => 'success'
+                ]);
             }
-            return response()->json(['message' => 'There is no line to delete']);
+            return response()->json([
+                'message' => 'There is no line to delete',
+                'type'    => 'error',
+                'success' => false,
+                ]);
         }
     }
 }

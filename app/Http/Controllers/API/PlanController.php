@@ -43,7 +43,7 @@ class PlanController extends Controller
         return response()->json([
             'success' => true,
             'type' => 'success',
-            'plan' => new PlanResource($data)
+            'plan' => new PlanResource($data),
         ]);
     }
 
@@ -71,10 +71,16 @@ class PlanController extends Controller
     {
         $updateData = $this->service->update($request->all(), $id);
         if ($updateData === 1) {
-            return response()->json(['success' => true, 'type' => 'success']);
+            return response()->json([
+                'success' => true,
+                'type' => 'success'
+            ]);
         }
 
-        return response()->json(['success' => false, 'type' => 'error']);
+        return response()->json([
+            'success' => false,
+            'type' => 'error'
+        ]);
     }
 
     /**

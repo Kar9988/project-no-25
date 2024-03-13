@@ -41,7 +41,8 @@ class EpisodeController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'This is user video history',
-            'video history' => ViewResource::collection($videoHistory)
+            'video history' => ViewResource::collection($videoHistory),
+            'type'    => 'success'
         ], 200);
     }
 
