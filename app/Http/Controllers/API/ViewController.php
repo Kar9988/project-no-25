@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ViewUpdateRequest;
 use App\Http\Resources\ViewResource;
 use App\Models\Episode;
 use App\Models\View;
@@ -73,5 +74,27 @@ class ViewController extends Controller
             'success' => true,
             'type'   => 'error',
             ]);
+    }
+
+    /**
+     * @param ViewUpdateRequest $request
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function update(ViewUpdateRequest $request, int $id): JsonResponse
+    {
+        $update = $this->service->update($request->all(), $id);
+        if ($update) {
+            return response()->json([
+                'message' => 'row updated successfully',
+                'type' => 'success',
+                'success' => true
+            ]);
+        }
+        return response()->json([
+            'message' => 'There is no line to updated',
+            'type' => 'error',
+            'success' => false
+        ]);
     }
 }
