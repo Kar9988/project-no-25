@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::table('views', function (Blueprint $table) {
             $table->integer('duration')->default(null);
+            $table->softDeletes();
+
         });
     }
 
@@ -23,6 +25,8 @@ return new class extends Migration
     {
         Schema::table('views', function (Blueprint $table) {
             $table->dropColumn('duration');
+            $table->dropSoftDeletes();
+
         });
     }
 };

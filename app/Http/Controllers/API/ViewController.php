@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ViewUpdateRequest;
 use App\Http\Resources\ViewResource;
 use App\Models\Episode;
 use App\Models\View;
@@ -76,11 +77,11 @@ class ViewController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @param $id
-     * @return JsonResponse|void
+     * @param ViewUpdateRequest $request
+     * @param int $id
+     * @return JsonResponse
      */
-    public function update(Request $request, $id): JsonResponse
+    public function update(ViewUpdateRequest $request, int $id): JsonResponse
     {
         $update = $this->service->update($request->all(), $id);
         if ($update) {

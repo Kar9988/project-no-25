@@ -61,8 +61,6 @@ trait LikesTrait
                 'likes' => new LikeResource($create),
                 'type' => 'success',
             ], 201);
-        } else {
-            $this->service->store($datum);
         }
     }
 
@@ -110,22 +108,6 @@ trait LikesTrait
                 'type'    => 'error',
                 'success' => false,
                 ]);
-
-            $this->deleteLike($id, $data['count'] ?? null, Episode::class);
         }
-        if (isset($data['video_id'])) {
-            $this->deleteLike($id, $data['count'] ?? null, Video::class);
-        }
-    }
-
-    /**
-     * @param int $likeAbleId
-     * @param ?int $count
-     * @param string $type
-     * @return mixed
-     */
-    private function deleteLike(int $likeAbleId, ?int $count, string $type): mixed
-    {
-        $this->service->deleteLike($likeAbleId, $count, $type);
     }
 }
