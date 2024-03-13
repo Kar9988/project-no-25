@@ -22,13 +22,16 @@ class LoginController extends Controller
         if (Auth::attempt($data)) {
             $token = auth()->user()->createToken('API Token')->accessToken;
             return response()->json([
-                'user' => new AuthUserResource(auth()->user()),
-                'token' => $token
+                'success' => true,
+                'user'    => new AuthUserResource(auth()->user()),
+                'token'   => $token,
+                'type'    =>'success'
             ], 200);
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Wrong email or password'
+                'message' => 'Wrong email or password',
+                'type'    =>'error'
             ], 401);
         }
     }

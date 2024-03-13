@@ -2,8 +2,6 @@
 
 use App\Http\Controllers\API\Admin\CategoryController;
 use App\Http\Controllers\API\Admin\LikeController;
-use App\Http\Controllers\API\EpisodeLikeController;
-use App\Http\Controllers\API\LikeController as UserLikeController;
 use App\Http\Controllers\API\Admin\UserController as AdminUserController;
 use App\Http\Controllers\API\Admin\VideoController;
 use App\Http\Controllers\API\EpisodeController;
@@ -17,6 +15,7 @@ use App\Http\Controllers\API\PlanController;
 use App\Http\Controllers\API\RegisterController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\ViewController;
+use App\Http\Controllers\API\ViewController as AdminViewController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -29,12 +28,11 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('/account/delete', [UserController::class, 'delete']);
     Route::get('/auth/user', [AuthController::class, 'getAuthUser']);
     Route::get('/auth/logout', [AuthController::class, 'logout']);
-    Route::apiResource('likes', UserLikeController::class);
-    Route::apiResource('episode/likes', EpisodeLikeController::class);
-    Route::get('video/history', [EpisodeController::class, 'index']);
+    Route::apiResource('likes', LikeController::class);
+    Route::get('history', [EpisodeController::class, 'index']);
     Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
         Route::post('/balance/{id}', [UserBalanceController::class, 'store']);
-        Route::apiResource('views', ViewController::class);
+        Route::apiResource('views', AdminViewController::class);
         Route::apiResource('users', AdminUserController::class);
         Route::apiResource('plans', PlanController::class);
         Route::post('/video/{video}', [VideoController::class, 'update']);
@@ -45,6 +43,7 @@ Route::middleware('auth:api')->group(function () {
     });
     Route::post('purchase/video', [PurchaseController::class, 'store']);
     Route::get('episode/source/{episodeId}', [EpisodeController::class, 'getVideoStream'])->name('episode.video');
+    Route::apiResource('views', ViewController::class)
     Route::get('videos', [UserVideoController::class, 'index']);
     Route::get('video/{id}', [UserVideoController::class, 'show']);
     Route::get('discover', [UserVideoController::class, 'discover']);

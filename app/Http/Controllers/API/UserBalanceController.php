@@ -28,6 +28,7 @@ class UserBalanceController extends Controller
         return response()->json([
             'data' => UserBalanceResource::collection($this->service->index()),
             'success' => true,
+            'type'    => 'success'
         ], 200);
     }
 
@@ -41,7 +42,8 @@ class UserBalanceController extends Controller
 
         return response()->json([
             'success' => true,
-            'plan' => new UserBalanceResource($plan)
+            'plan' => new UserBalanceResource($plan),
+            'type' => 'success'
         ],200);
     }
 
@@ -56,13 +58,15 @@ class UserBalanceController extends Controller
         if ($updateData) {
             return response()->json([
                 'success' => true,
-                'message' => 'user balance updated successfully'
+                'message' => 'user balance updated successfully',
+                'type'    => 'success'
             ], 200);
         }
 
         return response()->json([
             'success' => false,
-            'message' => 'something was wrong'
+            'message' => 'something was wrong',
+            'type'    => 'error'
         ]);
     }
 
@@ -76,13 +80,15 @@ class UserBalanceController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'user balance deleted successfully'
+                'message' => 'user balance deleted successfully',
+                'type'    => 'success'
             ]);
         }
 
         return response()->json([
             'success' => false,
-            'message' => 'something was wrong'
+            'message' => 'something was wrong',
+            'type'    => 'error'
         ]);
     }
 

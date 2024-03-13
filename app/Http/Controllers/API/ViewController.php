@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ViewUpdateRequest;
 use App\Http\Resources\ViewResource;
 use App\Models\Episode;
 use App\Models\View;
@@ -39,13 +40,15 @@ class ViewController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Views created successfully',
+                'type'    => 'success',
             ], 201);
         } else {
             $create = $this->service->store($request->all());
             return response()->json([
                 'success' => true,
                 'message' => 'View created successfully',
-                'view' => new ViewResource($create)
+                'view' => new ViewResource($create),
+                'type' => 'success'
             ], 201);
         }
     }
@@ -60,8 +63,38 @@ class ViewController extends Controller
                 ->where('user_id', auth()->id())
                 ->take($request->count)
                 ->delete();
-            return response()->json(['message' => $deletedRows . ' records deleted successfully']);
+            return response()->json([
+                'message' => $deletedRows . ' records deleted successfully',
+                'type'    => 'success',
+                'success' => true
+                ]);
         }
-        return response()->json(['message' => 'There is no line to delete']);
+        return response()->json([
+            'message' => 'There is no line to delete',
+            'success' => true,
+            'type'   => 'error',
+            ]);
+    }
+
+    /**
+     * @param ViewUpdateRequest $request
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function update(ViewUpdateRequest $request, int $id): JsonResponse
+    {
+        $update = $this->service->update($request->all(), $id);
+        if ($update) {
+            return response()->json([
+                'message' => 'row updated successfully',
+                'type' => 'success',
+                'success' => true
+            ]);
+        }
+        return response()->json([
+            'message' => 'There is no line to updated',
+            'type' => 'error',
+            'success' => false
+        ]);
     }
 }

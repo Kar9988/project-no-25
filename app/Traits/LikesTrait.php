@@ -7,11 +7,11 @@ use App\Models\Episode;
 use App\Models\Like;
 use App\Models\Video;
 use App\Services\LIkeService;
+use Dflydev\DotAccessData\Data;
 use Illuminate\Http\JsonResponse;
 
 trait LikesTrait
 {
-
     /**
      * @param LIkeService $service
      */
@@ -26,8 +26,10 @@ trait LikesTrait
      */
     public function like($datum): JsonResponse
     {
-        $count = (int)$datum['likes_count'];
-        if ($count > 0) {
+        if (isset($datum['likes_count'])) {
+            $count = (int)$datum['likes_count'];
+        }
+        if (isset($count) && $count > 0) {
             $data = [];
             for ($i = 0; $i < $count; $i++) {
                 if (isset($datum['video_id'])) {
@@ -49,13 +51,15 @@ trait LikesTrait
             return response()->json([
                 'success' => true,
                 'message' => 'Likes created successfully',
+                'type'   =>  'success'
             ], 201);
         } else {
             $create = $this->service->store($datum->all());
             return response()->json([
                 'success' => true,
                 'message' => 'Likes created successfully',
-                'likes' => new LikeResource($create)
+                'likes' => new LikeResource($create),
+                'type' => 'success',
             ], 201);
         }
     }
@@ -74,9 +78,17 @@ trait LikesTrait
                     ->where('likeable_type', Episode::class)
                     ->take($data['count'])
                     ->delete();
-                return response()->json(['message' => $deletedRows . ' records deleted successfully']);
+                return response()->json([
+                    'message' => $deletedRows . ' records deleted successfully',
+                    'success' => true,
+                    'type'    => 'success',
+                    ]);
             }
-            return response()->json(['message' => 'There is no line to delete']);
+            return response()->json([
+                'message' => 'There is no line to delete',
+                'type'    => 'error',
+                'success' => false,
+                ]);
         }
         if (isset($data['video_id'])) {
             if (isset($data['count']) && $data['count'] != null) {
@@ -85,9 +97,17 @@ trait LikesTrait
                     ->where('likeable_type', Video::class)
                     ->take($data['count'])
                     ->delete();
-                return response()->json(['message' => $deletedRows . ' records deleted successfully']);
+                return response()->json([
+                    'message' => $deletedRows . ' records deleted successfully',
+                    'success' => true,
+                    'type'    => 'success'
+                ]);
             }
-            return response()->json(['message' => 'There is no line to delete']);
+            return response()->json([
+                'message' => 'There is no line to delete',
+                'type'    => 'error',
+                'success' => false,
+                ]);
         }
     }
 }

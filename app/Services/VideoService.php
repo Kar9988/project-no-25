@@ -162,7 +162,7 @@ class VideoService
                     $q->withCount('views');
                 }]);
             }])
-                ->groupBy('categories.id')
+            ->groupBy('categories.id')
             ->skip(request()->get('page', 1) * request()->get('take', 10) - request()->get('take', 10))
             ->take(request()->get('take', 10))
             ->get();
@@ -178,12 +178,13 @@ class VideoService
      */
     public function getByCategoryId(int $categoryId, int $page = 1, int $take = 10): ResourceCollection
     {
-        $videos = Video::where('category_id', $categoryId)
+        $videos = Video::select('videos.*')
+            ->where('category_id', $categoryId)
             ->join('episodes', 'episodes.video_id', 'videos.id')
             ->with(['episodes' => function ($q) {
                 $q->withCount('views');
             }])
-            //es logican
+            ->groupBy('videos.id')
             ->skip($page * $take - $take)
             ->take($take)
             ->get();
