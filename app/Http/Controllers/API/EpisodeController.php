@@ -36,11 +36,11 @@ class EpisodeController extends Controller
      */
     public function index(): JsonResponse
     {
-        $video = $this->episodeService->index(request()->get('page', 1));
+        $history = $this->episodeService->index(request()->get('page', 1));
         return response()->json([
             'success' => true,
             'message' => 'This is user video history',
-            'video history' => ViewResource::collection($video)
+            'history' => ViewResource::collection($history)
         ], 200);
     }
 
