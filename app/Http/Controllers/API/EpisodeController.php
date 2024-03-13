@@ -74,6 +74,7 @@ class EpisodeController extends Controller
         } else {
             return response()->json([
                 'success' => false,
+                'type'    => 'error',
                 'message' => 'Please buy episode',
             ], 403);
         }
