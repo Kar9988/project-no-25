@@ -162,7 +162,7 @@ class VideoService
                     $q->withCount('views');
                 }]);
             }])
-                ->groupBy('categories.id')
+            ->groupBy('categories.id')
             ->skip(request()->get('page', 1) * request()->get('take', 10) - request()->get('take', 10))
             ->take(request()->get('take', 10))
             ->get();
