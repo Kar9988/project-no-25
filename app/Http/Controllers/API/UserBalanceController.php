@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\API\BalanceRequest;
 use App\Http\Requests\API\UserBalanceRequest;
 use App\Http\Resources\UserBalanceResource;
+use App\Services\PaymentService;
 use App\Services\UserBalanceService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,7 +16,7 @@ class UserBalanceController extends Controller
     /**
      * @param UserBalanceService $service
      */
-    public function __construct(protected UserBalanceService $service)
+    public function __construct(protected UserBalanceService $service, protected PaymentService  $paymentService)
     {
     }
 
@@ -27,21 +29,6 @@ class UserBalanceController extends Controller
             'data' => UserBalanceResource::collection($this->service->index()),
             'success' => true,
         ], 200);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(UserBalanceRequest $request): JsonResponse
-    {
-        $data = $this->service->store($request->all());
-
-        return response()->json([
-            'success' => true,
-            'message' => 'user balance created successfully',
-            'user balance' => new UserBalanceResource($data)
-        ],201);
-
     }
 
     /**
@@ -94,6 +81,28 @@ class UserBalanceController extends Controller
         }
 
         return response()->json([
+            'success' => false,
+            'message' => 'something was wrong'
+        ]);
+    }
+
+    /**
+     * @param BalanceRequest $request
+     * @param int $userId
+     * @return JsonResponse
+     */
+    public function store(BalanceRequest $request, int $userId): JsonResponse
+    {
+        $updateBalance = $this->service->addBalance($request->all(), $userId);
+        if ($updateBalance['success'] === true) {
+            return response()->json([
+                'type' => 'success',
+                'success' => true,
+                'message' => 'user balance updated successfully'
+            ]);
+        };
+        return response()->json([
+            'type'=>'error',
             'success' => false,
             'message' => 'something was wrong'
         ]);

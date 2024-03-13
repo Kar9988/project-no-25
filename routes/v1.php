@@ -8,6 +8,7 @@ use App\Http\Controllers\API\Admin\UserController as AdminUserController;
 use App\Http\Controllers\API\Admin\VideoController;
 use App\Http\Controllers\API\EpisodeController;
 use App\Http\Controllers\API\PurchaseController;
+use App\Http\Controllers\API\UserBalanceController;
 use App\Http\Controllers\API\VideoController as UserVideoController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\LoginController;
@@ -28,6 +29,7 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('episode/likes', EpisodeLikeController::class);
     Route::get('video/history', [EpisodeController::class, 'index']);
     Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
+        Route::post('/balance/{id}', [UserBalanceController::class, 'store']);
         Route::apiResource('views', ViewController::class);
         Route::apiResource('users', AdminUserController::class);
         Route::apiResource('plans', PlanController::class);
