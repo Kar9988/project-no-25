@@ -7,11 +7,11 @@ use App\Models\Episode;
 use App\Models\Like;
 use App\Models\Video;
 use App\Services\LIkeService;
+use Dflydev\DotAccessData\Data;
 use Illuminate\Http\JsonResponse;
 
 trait LikesTrait
 {
-
     /**
      * @param LIkeService $service
      */
@@ -26,8 +26,10 @@ trait LikesTrait
      */
     public function like($datum): JsonResponse
     {
-        $count = (int)$datum['likes_count'];
-        if ($count > 0) {
+        if (isset($datum['likes_count'])) {
+            $count = (int)$datum['likes_count'];
+        }
+        if (isset($count) && $count > 0) {
             $data = [];
             for ($i = 0; $i < $count; $i++) {
                 if (isset($datum['video_id'])) {
@@ -59,6 +61,8 @@ trait LikesTrait
                 'likes' => new LikeResource($create),
                 'type' => 'success',
             ], 201);
+        } else {
+            $this->service->store($datum);
         }
     }
 
@@ -106,6 +110,22 @@ trait LikesTrait
                 'type'    => 'error',
                 'success' => false,
                 ]);
+
+            $this->deleteLike($id, $data['count'] ?? null, Episode::class);
         }
+        if (isset($data['video_id'])) {
+            $this->deleteLike($id, $data['count'] ?? null, Video::class);
+        }
+    }
+
+    /**
+     * @param int $likeAbleId
+     * @param ?int $count
+     * @param string $type
+     * @return mixed
+     */
+    private function deleteLike(int $likeAbleId, ?int $count, string $type): mixed
+    {
+        $this->service->deleteLike($likeAbleId, $count, $type);
     }
 }
