@@ -18,6 +18,10 @@ class LikeController extends Controller
     public function store(Request $request): JsonResponse
     {
         return $this->like($request->all());
+        return response()->json([
+            'success' => true,
+            'message' => 'Likes created successfully',
+        ], 201);
     }
 
     /**
@@ -26,5 +30,6 @@ class LikeController extends Controller
     public function destroy(string $id, Request $request): JsonResponse
     {
         return $this->destroyLike($id, $request->all());
+        return response()->json(['message' => 'records deleted successfully']);
     }
 }
