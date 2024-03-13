@@ -16,7 +16,10 @@ use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\ViewController;
 use Illuminate\Support\Facades\Route;
 
-
+Route::get('test', function () {
+    $fileService = new \App\Services\FileManagerService();
+    $fileService->test();
+});
 Route::post('/register', [RegisterController::class, 'store']);
 Route::post('/login', [LoginController::class, 'store']);
 Route::middleware('auth:api')->group(function () {
@@ -39,9 +42,12 @@ Route::middleware('auth:api')->group(function () {
     Route::post('purchase/video', [PurchaseController::class, 'store']);
     Route::get('episode/source/{episodeId}', [EpisodeController::class, 'getVideoStream'])->name('episode.video');
 
+
     Route::get('videos', [UserVideoController::class, 'index']);
     Route::get('video/{id}', [UserVideoController::class, 'show']);
     Route::get('discover', [UserVideoController::class, 'discover']);
     Route::get('category/{categoryId}', [UserVideoController::class, 'filter']);
 
 });
+
+
