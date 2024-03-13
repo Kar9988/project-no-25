@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\EpisodeResource;
 use App\Http\Resources\ViewResource;
+use App\Policies\UserPolicy;
 use App\Services\EpisodeService;
 use App\Services\VideoStream;
 use Illuminate\Http\JsonResponse;
@@ -55,21 +56,28 @@ class EpisodeController extends Controller
         $episode = $this->episodeService->getById($episodeId);
 
         $videoPath = public_path("storage/$episode->source");
+        $userPolicy = UserPolicy::canViewEpisode(auth()->user(), $episodeId);
+        if ($userPolicy) {
+            $stream = new VideoStream($videoPath);
+            $response = Response::stream(function () use ($stream) {
+                $stream->start();
+            }, 200, [
+                'Content-Type' => 'video/mp4',
+                'Cache-Control' => 'no-cache, no-store, must-revalidate',
+                'Pragma' => 'no-cache',
+                'Expires' => '0',
+                'Content-Range' => 1000,
+                'Content-Disposition' => 'inline',
+                'X-Content-Type-Options' => 'nosniff',
+            ]);
+            $response->send();
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Please buy episode',
+            ], 403);
+        }
 
-        $stream = new VideoStream($videoPath);
-        $response = Response::stream(function () use ($stream) {
-            $stream->start();
-        }, 200, [
-            'Content-Type' => 'video/mp4',
-            'Cache-Control' => 'no-cache, no-store, must-revalidate',
-            'Pragma' => 'no-cache',
-            'Expires' => '0',
-            'Content-Range' => 1000,
-            'Content-Disposition' => 'inline',
-            'X-Content-Type-Options' => 'nosniff',
-        ]);
-
-        $response->send();
     }
 
 }
