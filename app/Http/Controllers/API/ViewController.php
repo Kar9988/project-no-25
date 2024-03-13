@@ -74,4 +74,26 @@ class ViewController extends Controller
             'type'   => 'error',
             ]);
     }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse|void
+     */
+    public function update(Request $request, $id): JsonResponse
+    {
+        $update = $this->service->update($request->all(), $id);
+        if ($update) {
+            return response()->json([
+                'message' => 'row updated successfully',
+                'type' => 'success',
+                'success' => true
+            ]);
+        }
+        return response()->json([
+            'message' => 'There is no line to updated',
+            'type' => 'error',
+            'success' => false
+        ]);
+    }
 }
