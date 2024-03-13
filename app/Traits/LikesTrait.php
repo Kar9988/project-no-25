@@ -48,6 +48,19 @@ trait LikesTrait
                 }
             }
             $this->service->insert($data);
+            return response()->json([
+                'success' => true,
+                'message' => 'Likes created successfully',
+                'type'   =>  'success'
+            ], 201);
+        } else {
+            $create = $this->service->store($datum->all());
+            return response()->json([
+                'success' => true,
+                'message' => 'Likes created successfully',
+                'likes' => new LikeResource($create),
+                'type' => 'success',
+            ], 201);
         } else {
             $this->service->store($datum);
         }
@@ -61,6 +74,43 @@ trait LikesTrait
     public function destroyLike($id, $data): JsonResponse
     {
         if (isset($data['episode_id'])) {
+            if (isset($data['count']) && $data['count'] != null) {
+                $deletedRows = Like::query()->where('likeable_id', $id)
+                    ->where('user_id', auth()->id())
+                    ->where('likeable_type', Episode::class)
+                    ->take($data['count'])
+                    ->delete();
+                return response()->json([
+                    'message' => $deletedRows . ' records deleted successfully',
+                    'success' => true,
+                    'type'    => 'success',
+                    ]);
+            }
+            return response()->json([
+                'message' => 'There is no line to delete',
+                'type'    => 'error',
+                'success' => false,
+                ]);
+        }
+        if (isset($data['video_id'])) {
+            if (isset($data['count']) && $data['count'] != null) {
+                $deletedRows = Like::query()->where('likeable_id', $id)
+                    ->where('user_id', auth()->id())
+                    ->where('likeable_type', Video::class)
+                    ->take($data['count'])
+                    ->delete();
+                return response()->json([
+                    'message' => $deletedRows . ' records deleted successfully',
+                    'success' => true,
+                    'type'    => 'success'
+                ]);
+            }
+            return response()->json([
+                'message' => 'There is no line to delete',
+                'type'    => 'error',
+                'success' => false,
+                ]);
+
             $this->deleteLike($id, $data['count'] ?? null, Episode::class);
         }
         if (isset($data['video_id'])) {
