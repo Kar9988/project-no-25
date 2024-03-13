@@ -24,7 +24,6 @@ class VideoUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-//        dd($this->all());
         return [
             'title'                 => 'required|string',
             'cover_img'             => 'sometimes|image',

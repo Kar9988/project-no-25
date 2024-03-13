@@ -4,6 +4,7 @@ use App\Http\Controllers\API\Admin\CategoryController;
 use App\Http\Controllers\API\Admin\LikeController;
 use App\Http\Controllers\API\Admin\UserController as AdminUserController;
 use App\Http\Controllers\API\Admin\VideoController;
+use App\Http\Controllers\API\ContactUSController;
 use App\Http\Controllers\API\EpisodeController;
 use App\Http\Controllers\API\PurchaseController;
 use App\Http\Controllers\API\UserBalanceController;
@@ -37,6 +38,8 @@ Route::middleware('auth:api')->group(function () {
         Route::apiResource('likes', LikeController::class);
         Route::get('categories', [CategoryController::class, 'index']);
     });
+    Route::post('/send-email', [ContactUSController::class, 'contactUSPost']);
+
     Route::post('purchase/video', [PurchaseController::class, 'store']);
     Route::get('episode/source/{episodeId}', [EpisodeController::class, 'getVideoStream'])->name('episode.video');
     Route::apiResource('views', ViewController::class);
