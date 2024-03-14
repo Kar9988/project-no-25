@@ -6,6 +6,7 @@ use App\Http\Controllers\API\Admin\UserController as AdminUserController;
 use App\Http\Controllers\API\Admin\VideoController;
 use App\Http\Controllers\API\EpisodeController;
 use App\Http\Controllers\API\PurchaseController;
+use App\Http\Controllers\API\SocialiteController;
 use App\Http\Controllers\API\UserBalanceController;
 use App\Http\Controllers\API\VideoController as UserVideoController;
 use App\Http\Controllers\API\AuthController;
@@ -20,6 +21,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [RegisterController::class, 'store']);
 Route::post('/login', [LoginController::class, 'store']);
+Route::get('auth/google', [SocialiteController::class, 'redirectToGoogle']);
+Route::get('auth/google/callback', [SocialiteController::class, 'handleGoogleCallback']);
+
 Route::middleware('auth:api')->group(function () {
     Route::delete('/account/delete', [UserController::class, 'delete']);
     Route::get('/auth/user', [AuthController::class, 'getAuthUser']);
@@ -39,10 +43,9 @@ Route::middleware('auth:api')->group(function () {
     });
     Route::post('purchase/video', [PurchaseController::class, 'store']);
     Route::get('episode/source/{episodeId}', [EpisodeController::class, 'getVideoStream'])->name('episode.video');
-    Route::apiResource('views', ViewController::class);
+    Route::apiResource('views', ViewController::class)
     Route::get('videos', [UserVideoController::class, 'index']);
     Route::get('video/{id}', [UserVideoController::class, 'show']);
     Route::get('discover', [UserVideoController::class, 'discover']);
     Route::get('category/{categoryId}', [UserVideoController::class, 'filter']);
-
 });
