@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Facades\Storage;
 
 class Episode extends Model
 {
@@ -35,6 +36,9 @@ class Episode extends Model
         return $this->hasMany(View::class);
     }
 
+    /**
+     * @return MorphMany
+     */
     public function likes(): MorphMany
     {
         return $this->morphMany(Like::class, 'likeable');
@@ -45,6 +49,14 @@ class Episode extends Model
      */
     public function getThumbPathAttribute(): string
     {
-        return asset("storage/$this->thumb");
+        return Storage::disk('spaces')->temporaryUrl($this->thumb, now()->addMinutes(50));
+    }
+
+    /**
+     * @return string
+     */
+    public function getSourcePathAttribute(): string
+    {
+        return Storage::disk('spaces')->temporaryUrl($this->source, now()->addMinutes(50));
     }
 }

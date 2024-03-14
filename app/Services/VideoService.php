@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Http\Resources\DiscoverResource;
 use App\Http\Resources\VideoResource;
+use App\Jobs\CreateEpisodeJob;
 use App\Models\Category;
 use App\Models\Video;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -11,6 +12,7 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class VideoService
 {
@@ -45,7 +47,11 @@ class VideoService
                 $video->update(['cover_img' => $coverPath]);
             }
             if (isset($data['episodes'])) {
-                $this->episodeService->createEpisodes($video, $data['episodes']);
+                foreach ($data['episodes'] as $episode) {
+                    $episode['thumb'] = Storage::disk('public')->putFile('tmp', $episode['thumb']);
+                    $episode['source'] = Storage::disk('public')->putFile('tmp', $episode['source']);
+                    CreateEpisodeJob::dispatch($video, $episode);
+                }
             }
             DB::commit();
 
