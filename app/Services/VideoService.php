@@ -103,6 +103,7 @@ class VideoService
      */
     public function paginateVideos(): array
     {
+
         $videos = Video::select('videos.*')
             ->join('episodes', 'episodes.video_id', 'videos.id')
             ->with(['episodes' => function ($query) {
