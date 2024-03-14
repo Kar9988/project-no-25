@@ -38,7 +38,7 @@ Route::middleware('auth:api')->group(function () {
         Route::apiResource('likes', LikeController::class);
         Route::get('categories', [CategoryController::class, 'index']);
     });
-    Route::post('/send-email', [ContactUSController::class, 'contactUSPost']);
+    Route::post('/send-email', [ContactUSController::class, 'sendMail']);
 
     Route::post('purchase/video', [PurchaseController::class, 'store']);
     Route::get('episode/source/{episodeId}', [EpisodeController::class, 'getVideoStream'])->name('episode.video');

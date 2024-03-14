@@ -4,35 +4,24 @@ namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Mail\Attachment;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class sendMail extends Mailable
+class SendEmail extends Mailable
 {
     use Queueable, SerializesModels;
-    public $user;
 
     /**
-     * Create a new message instance.
+     * @param array $user
+     * @param array $files
      */
-    public function __construct($user)
+    public function __construct(public array $user, public array $files = [])
     {
         $this->user = $user;
-    }
-
-    /**
-     * @return sendMail
-     */
-    public function build()
-    {
-        // The view method specifies which Blade template to use for the email content
-        return $this->view('emails.example')
-            ->subject('Send Mail')
-            ->with([
-                'user' => $this->user,
-            ]);
+        $this->files = $this->files;
     }
 
     /**
@@ -41,7 +30,7 @@ class sendMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Send Mail',
+            subject: 'Send Email',
         );
     }
 
@@ -50,8 +39,10 @@ class sendMail extends Mailable
      */
     public function content(): Content
     {
+
         return new Content(
-            view: 'emails.example',
+            view: 'email.email',
+            with: ['user' => $this->user,],
         );
     }
 
@@ -62,6 +53,13 @@ class sendMail extends Mailable
      */
     public function attachments(): array
     {
-        return [];
+        if ($this->files != null){
+            foreach ($this->files as $file){
+                return [
+                    Attachment::fromPath($file['file'])
+                ];
+            }
+        }
+       return [];
     }
 }

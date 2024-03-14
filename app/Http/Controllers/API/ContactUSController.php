@@ -4,52 +4,53 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\EmailRequest;
-use App\Mail\sendMail;
-use App\Services\FileManagerService;
-use http\Env\Response;
+use App\Mail\SendEmail;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
 class ContactUSController extends Controller
 {
-    public function __construct(protected FileManagerService $fileService)
-    {
-
-    }
-
-
     /**
      * @param EmailRequest $request
      * @return JsonResponse
      */
-    public function contactUSPost(EmailRequest $request): JsonResponse
+    public function sendMail(EmailRequest $request): JsonResponse|string
     {
-        $baseUrl = '';
-        if (isset($request->file)) {
-            $imagePath = $this->fileService->storeCover('uploads/' . $request->file('file')->getFilename() . now(), $request->file('file'));
-            $baseUrl = config('app.url') . '/' . $imagePath;
-        }
         $user = [
-            'image' => $baseUrl,
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'message' => $request->message,
+            'first_name' => $request['first_name'],
+            'last_name' => $request['last_name'],
+            'email' => $request['email'],
+            'message' => $request['message'],
         ];
 
-        $sendMail = Mail::to($user['email'])->send(new sendMail($user));
-        if ($sendMail) {
+        $files = $request->file('file');
+
+        if ($files != null) {
+            foreach ($files as $file) {
+                if ($file && $file->isValid()) {
+                    $attachmentData[] = [
+                        'file' => $file->getPathname()
+                    ];
+                } else {
+                    return response()->json([
+                        'message' => 'Failed to send email to address',
+                        'success' => false,
+                        'type' => 'error'
+                    ]);
+                }
+            }
+            Mail::to($user['email'])->send(new SendEmail($user, $attachmentData));
             return response()->json([
+                'message' => 'Email sent successfully',
                 'success' => true,
-                'message' => 'email send successfully',
-                'type' => 'success',
+                'type' => 'success'
             ]);
         }
+        Mail::to($user['email'])->queue(new SendEmail($user));
         return response()->json([
-            'success' => false,
-            'message' => 'something was wrong',
-            'type' => 'error',
+            'message' => 'Email sent successfully',
+            'success' => true,
+            'type' => 'success'
         ]);
     }
 }
