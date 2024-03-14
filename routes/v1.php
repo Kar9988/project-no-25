@@ -46,7 +46,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::post('purchase/video', [PurchaseController::class, 'store']);
     Route::get('episode/source/{episodeId}', [EpisodeController::class, 'getVideoStream'])->name('episode.video');
-    Route::apiResource('views', ViewController::class)
+    Route::apiResource('views', ViewController::class);
     Route::get('videos', [UserVideoController::class, 'index']);
     Route::get('video/{id}', [UserVideoController::class, 'show']);
     Route::get('discover', [UserVideoController::class, 'discover']);
