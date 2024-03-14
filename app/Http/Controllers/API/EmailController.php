@@ -8,7 +8,7 @@ use App\Mail\SendEmail;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Mail;
 
-class ContactUSController extends Controller
+class EmailController extends Controller
 {
     /**
      * @param EmailRequest $request
