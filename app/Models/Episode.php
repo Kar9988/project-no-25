@@ -49,7 +49,7 @@ class Episode extends Model
      */
     public function getThumbPathAttribute(): string
     {
-        return Storage::disk('spaces')->temporaryUrl($this->thumb, now()->addMinutes(50));
+        return Storage::disk('spaces')->url($this->thumb);
     }
 
     /**
@@ -57,6 +57,6 @@ class Episode extends Model
      */
     public function getSourcePathAttribute(): string
     {
-        return Storage::disk('spaces')->temporaryUrl($this->source, now()->addMinutes(50));
+        return Storage::disk('spaces')->url($this->source);
     }
 }

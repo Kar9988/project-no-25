@@ -46,6 +46,6 @@ class Video extends Model
      */
     public function getCoverImgPathAttribute(): string
     {
-        return Storage::disk('spaces')->temporaryUrl($this->cover_img, now()->addMinutes(5));
+        return Storage::disk('spaces')->url($this->cover_img);
     }
 }
