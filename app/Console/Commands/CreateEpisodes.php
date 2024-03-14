@@ -44,6 +44,27 @@ class CreateEpisodes extends Command
 //        $files = glob(base_path('test_videos/*'));
 //        $file = Storage::disk('spaces')->putFile("videos/test/cover", new File($files[0]), 'public');
 //        dd($file);
+        $categoryData = [
+            [
+                'name'   => 'New Arrival',
+                'active' => true
+            ],
+            [
+                'name'   => 'Top Rated',
+                'active' => true
+            ],
+            [
+                'name'   => 'Trading This week',
+                'active' => true
+            ],
+            [
+                'name'   => 'Test',
+                'active' => true
+            ]
+        ];
+        DB::table('categories')->insert($categoryData);
+
+        return
 
         set_time_limit(0);
         DB::connection()->disableQueryLog();
