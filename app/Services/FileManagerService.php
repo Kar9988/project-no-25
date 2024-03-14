@@ -32,10 +32,11 @@ class FileManagerService
         $image->setImageCompressionQuality(80);
         $image->setOption('webp:progressive', 'true');
         $image->writeImage(storage_path("app/public/$file"));
-        $fileName = $this->storage->putFile($filePath, new File(storage_path("app/public/$file")), 'public');
+        $fileName = time().'.webp';
+        $this->storage->put("$filePath/$fileName", file_get_contents(new File(storage_path("app/public/$file"))), 'public');
         Storage::disk('public')->delete($file);
 
-        return $fileName;
+        return "$filePath/$fileName";
     }
 
     /**
@@ -46,17 +47,16 @@ class FileManagerService
      */
     public function storeThumb(string $filePath, $file): string
     {
-        chmod(storage_path("app/public/$file"), 0777);
         $image = new Imagick(storage_path("app/public/$file"));
         $image->setImageFormat('webp');
         $image->setImageCompressionQuality(80);
         $image->setOption('webp:progressive', 'true');
         $image->writeImage(storage_path("app/public/$file"));
         $fileName = time().'.webp';
-        $this->storage->put("$filePath/$fileName", $file, 'public');
+        $this->storage->put("$filePath/$fileName", file_get_contents(new File(storage_path("app/public/$file"))), 'public');
         Storage::disk('public')->delete($file);
 
-        return $fileName;
+        return "$filePath/$fileName";
     }
 
     /**
