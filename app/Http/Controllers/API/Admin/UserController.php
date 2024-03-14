@@ -32,7 +32,8 @@ class UserController extends Controller
     {
         return response()->json([
             'success' => true,
-            'users' => UserResource::collection(User::where('role_id', '!=', Role::ADMIN_ID)->get())
+            'users'   => UserResource::collection(User::where('role_id', '!=', Role::ADMIN_ID)->get()),
+            'type'    => 'success'
         ]);
     }
 
@@ -44,7 +45,8 @@ class UserController extends Controller
     {
         return response()->json([
             'success' => true,
-            'user' => $user
+            'user' => $user,
+            'type' => 'success'
         ], 200);
     }
 
@@ -55,9 +57,15 @@ class UserController extends Controller
     {
         $updateData = $this->service->update($request->all(), $user->id);
         if ($updateData === 1) {
-            return response()->json(['success' => true, 'type' => 'success']);
+            return response()->json([
+                'success' => true,
+                'type' => 'success'
+            ]);
         }
-        return response()->json(['success' => false, 'type' => 'error']);
+        return response()->json([
+            'success' => false,
+            'type' => 'error'
+        ]);
     }
 
     /**
@@ -68,7 +76,8 @@ class UserController extends Controller
         User::where('id', $id)->delete();
         return response()->json([
             'success' => true,
-            'message' => 'product was successfully deleted'
+            'message' => 'product was successfully deleted',
+            'type'    => 'success'
         ], 200);
     }
 

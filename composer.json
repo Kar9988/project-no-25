@@ -13,6 +13,7 @@
         "laravel/framework": "^10.10",
         "laravel/passport": "^11.10",
         "laravel/sanctum": "^3.3",
+        "laravel/socialite": "^5.12",
         "laravel/tinker": "^2.8",
         "pbmedia/laravel-ffmpeg": "^8.4",
         "staudenmeir/eloquent-eager-limit": "^1.8"

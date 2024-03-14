@@ -27,19 +27,25 @@ class CategoryController extends Controller
     public function index(): JsonResponse
     {
         return response()->json([
-            'data' => CategoryResource::collection($this->service->index()),
+            'data'    => CategoryResource::collection($this->service->index()),
             'success' => true,
+            'type'   => 'success'
         ], 200);
     }
 
-    public function store(CategoryRequest $request)
+    /**
+     * @param CategoryRequest $request
+     * @return JsonResponse
+     */
+    public function store(CategoryRequest $request): JsonResponse
     {
         $data = $this->service->store($request->all());
 
         return response()->json([
             'success' => true,
             'message' => 'category created successfully',
-            'view' => new CategoryResource($data)
+            'view' => new CategoryResource($data),
+            'type' => 'success'
         ], 201);
 
     }
@@ -65,10 +71,16 @@ class CategoryController extends Controller
     {
         $updateData = $this->service->update($request->all(), $id);
         if ($updateData === 1) {
-            return response()->json(['success' => true, 'type' => 'success']);
+            return response()->json([
+                'success' => true,
+                'type' => 'success'
+            ]);
         }
 
-        return response()->json(['success' => false, 'type' => 'error']);
+        return response()->json([
+            'success' => false,
+            'type' => 'error'
+        ]);
     }
 
     /**

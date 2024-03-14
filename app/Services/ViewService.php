@@ -41,4 +41,14 @@ class ViewService
         }
         return View::insert($viewsData);
     }
+
+    /**
+     * @param array $data
+     * @param int $id
+     * @return int
+     */
+    public function update(array $data, int $id): int
+    {
+        return View::query()->where('episode_id', $id)->update($data);
+    }
 }
