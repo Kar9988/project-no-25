@@ -103,6 +103,7 @@ class VideoService
      */
     public function paginateVideos(): array
     {
+
         $videos = Video::select('videos.*')
             ->join('episodes', 'episodes.video_id', 'videos.id')
             ->with(['episodes' => function ($query) {
@@ -183,7 +184,6 @@ class VideoService
             ->with(['episodes' => function ($q) {
                 $q->withCount('views');
             }])
-            //es logican
             ->skip($page * $take - $take)
             ->take($take)
             ->get();
