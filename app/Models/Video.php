@@ -21,7 +21,7 @@ class Video extends Model
      */
     public function episodes(): HasMany
     {
-        return $this->hasMany(Episode::class);
+        return $this->hasMany(Episode::class)->orderBy('position');
     }
 
     /**
@@ -32,6 +32,9 @@ class Video extends Model
         return $this->belongsTo(Category::class);
     }
 
+    /**
+     * @return MorphMany
+     */
     public function likes(): MorphMany
     {
         return $this->morphMany(Like::class, 'likeable');
