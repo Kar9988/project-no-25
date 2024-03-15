@@ -25,6 +25,7 @@ import VideosShow from "../pages/admin/VideoShow.vue";
 import Categories from "../pages/admin/Categories.vue";
 import EditCategory from "../pages/admin/EditCategory.vue";
 import PrivacyPolicy from "../pages/PrivacyPolicy.vue";
+import plans from "../pages/Plans.vue";
 const routes = [
     {
         path: "/admin",
@@ -56,6 +57,11 @@ const routes = [
                 path: "/admin/privacy-policy",
                 name: "admin.PrivacyPolicy",
                 component: PrivacyPolicy,
+            },
+            {
+                path: "/admin/plans",
+                name: "admin.plans",
+                component: plans,
             },
             {
                 path: "/admin/tables",

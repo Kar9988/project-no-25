@@ -36,7 +36,7 @@ class PlanController extends Controller
      * @param PlanStoreRequest $request
      * @return JsonResponse
      */
-    public function store(PlanStoreRequest $request): JsonResponse
+    public function store(Request $request): JsonResponse
     {
         $data = $this->service->store($request->all());
 
@@ -67,7 +67,7 @@ class PlanController extends Controller
      * @param string $id
      * @return JsonResponse
      */
-    public function update(PlanUpdateRequest $request, string $id): JsonResponse
+    public function update(Request $request, string $id): JsonResponse
     {
         $updateData = $this->service->update($request->all(), $id);
         if ($updateData === 1) {
