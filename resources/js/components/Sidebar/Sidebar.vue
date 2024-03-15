@@ -147,7 +147,7 @@
 
                     <li class="items-center">
                         <router-link
-                            to="/admin/settings"
+                            to="/admin/privacy-policy"
                             v-slot="{ href, navigate, isActive }"
                         >
                             <a
@@ -164,7 +164,7 @@
                                     class="fas fa-tools mr-2 text-sm"
                                     :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
                                 ></i>
-                                Settings
+                                Privacy Policy
                             </a>
                         </router-link>
                     </li>

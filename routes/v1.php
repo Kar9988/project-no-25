@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\API\Admin\CategoryController;
-use App\Http\Controllers\API\Admin\LikeController;
+use App\Http\Controllers\API\Admin\LikeController as UserLikeController;
+use App\Http\Controllers\API\Admin\LikeController as AdminLikeController;
 use App\Http\Controllers\API\Admin\UserController as AdminUserController;
 use App\Http\Controllers\API\Admin\VideoController;
 use App\Http\Controllers\API\ContactUsController;
@@ -29,25 +30,48 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('/account/delete', [UserController::class, 'delete']);
     Route::get('/auth/user', [AuthController::class, 'getAuthUser']);
     Route::get('/auth/logout', [AuthController::class, 'logout']);
-    Route::apiResource('likes', LikeController::class);
+    Route::apiResource('likes', UserLikeController::class)->names([
+        'index' => 'userLikes.index',
+        'store' => 'userLikes.store',
+        'show' => 'userLikes.show',
+        'update' => 'userLikes.update',
+        'destroy' => 'userLikes.destroy',
+    ]);
     Route::get('history', [EpisodeController::class, 'index']);
     Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
         Route::post('/balance/{id}', [UserBalanceController::class, 'store']);
-        Route::apiResource('views', AdminViewController::class);
+        Route::apiResource('views', AdminViewController::class)->names([
+            'index' => 'adminViews.index',
+            'store' => 'adminViews.store',
+            'show' => 'adminViews.show',
+            'update' => 'adminViews.update',
+            'destroy' => 'adminViews.destroy',
+        ]);
         Route::apiResource('users', AdminUserController::class);
         Route::apiResource('plans', PlanController::class);
         Route::post('/video/{video}', [VideoController::class, 'update']);
         Route::apiResource('videos', VideoController::class)->except('edit', 'update');
         Route::apiResource('categories', CategoryController::class);
-        Route::apiResource('likes', LikeController::class);
+        Route::apiResource('likes', AdminLikeController::class)->names([
+            'index' => 'adminLikes.index',
+            'store' => 'adminLikes.store',
+            'show' => 'adminLikes.show',
+            'update' => 'adminLikes.update',
+            'destroy' => 'adminLikes.destroy',
+        ]);
         Route::get('categories', [CategoryController::class, 'index']);
     });
     Route::post('/send-email', [ContactUsController::class, 'sendMail']);
 
     Route::post('purchase/video', [PurchaseController::class, 'store']);
     Route::get('episode/source/{episodeId}', [EpisodeController::class, 'getVideoStream'])->name('episode.video');
-    Route::apiResource('views', ViewController::class);
-    Route::get('videos', [UserVideoController::class, 'index']);
+    Route::apiResource('views', ViewController::class)->names([
+        'index' => 'userViews.index',
+        'store' => 'userViews.store',
+        'show' => 'userViews.show',
+        'update' => 'userViews.update',
+        'destroy' => 'userViews.destroy',
+    ]);    Route::get('videos', [UserVideoController::class, 'index']);
     Route::get('video/{id}', [UserVideoController::class, 'show']);
     Route::get('discover', [UserVideoController::class, 'discover']);
     Route::get('category/{categoryId}', [UserVideoController::class, 'filter']);

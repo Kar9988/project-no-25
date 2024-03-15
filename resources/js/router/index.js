@@ -5,7 +5,6 @@ import Auth from "../layouts/Auth.vue";
 // views for Admin layout
 
 import Dashboard from "../pages/admin/Dashboard.vue";
-import Settings from "../pages/admin/Settings.vue";
 import Tables from "../pages/admin/Tables.vue";
 import Users from "../pages/admin/Users.vue";
 // views for Auth layout
@@ -25,6 +24,7 @@ import VideosList from "../pages/admin/VideosList.vue";
 import VideosShow from "../pages/admin/VideoShow.vue";
 import Categories from "../pages/admin/Categories.vue";
 import EditCategory from "../pages/admin/EditCategory.vue";
+import PrivacyPolicy from "../pages/PrivacyPolicy.vue";
 const routes = [
     {
         path: "/admin",
@@ -53,8 +53,9 @@ const routes = [
                 name: "video.edit",
             },
             {
-                path: "/admin/settings",
-                component: Settings,
+                path: "/admin/privacy-policy",
+                name: "admin.PrivacyPolicy",
+                component: PrivacyPolicy,
             },
             {
                 path: "/admin/tables",
