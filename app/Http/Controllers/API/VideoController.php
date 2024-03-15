@@ -30,6 +30,7 @@ class VideoController extends Controller
             'take' => request()->get('take', 10),
             'id'   => request()->get('id', null)
         ];
+        $result = $this->videoService->randomVideos($data, $data['page'], $data['take']);
 
         return response()->json([
             'success' => true,
