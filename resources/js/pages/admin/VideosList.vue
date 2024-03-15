@@ -243,7 +243,7 @@ const page = computed({
                                 </div>
                             </div>
                             <div id="episodesParent" v-if="video.episodes.length">
-                                <h3 class="font-bold mb-4">Episodesssssss</h3>
+                                <h3 class="font-bold mb-4">Episodes</h3>
                                 <div v-for="(episode, index) in video.episodes" :key="index" class="pl-8 " :class="video.episodes[index+1] ? 'border-b-2 pb-3 mb-3' : ''">
                                     <div class="relative w-full mb-3">
                                         <label
@@ -329,7 +329,7 @@ const page = computed({
                                     </span>
                                 </div>
                             </div>
-                            <div class="p-5 mt-[5px] bg-slate-400 rounded-2xl cursor-pointer">
+                            <div v-if="video.episodes.length" class="p-5 mt-[5px] bg-slate-400 rounded-2xl cursor-pointer">
                                 <div class="flex items-center justify-between" @click="deleteEpisode(video.episodes.length - 1)">
                                     close episode
                                     <span class="mr-2">
