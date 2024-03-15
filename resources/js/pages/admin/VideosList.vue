@@ -29,12 +29,18 @@ const openModal = () => {
 };
 
 const addEpisode = () => {
+    episodeSkilleton.value.click = true
     video.value.episodes.push({...episodeSkilleton.value});
 };
+const deleteEpisode = (index) => {
+    video.value.episodes.splice(index, 1);
+};
+
 const closeModal = () => {
     isModalOpened.value = false;
 };
 const episodeSkilleton = ref({
+    click:false,
     title: null,
     duration: null,
     cover_img: null,
@@ -68,7 +74,13 @@ const submitHandler = () => {
 }
 const fileUrl = computed(() => video.value.cover_img ? URL.createObjectURL(video.value.cover_img): '')
 const onFileChoosed = (e) => {
+    if(e.target.files[0].type == "video/mp4") {
+        errors.value.cover_img = []
+        errors.value.cover_img.push( 'Please select image.')
+        return
+    }
     video.value.cover_img = e.target.files[0]
+    errors.value.cover_img = ''
 }
 const onReplaceFile = (e) => {
     video.value.cover_img = null
@@ -91,6 +103,9 @@ const onEpisodeSourceChoosed = (e, index) => {
 }
 
 const onEpisodeThumbnailChoosed = (e, index) => {
+    if(e.target.files[0].type == "video/mp4") {
+        return
+    }
     video.value.episodes[index].thumb = e.target.files[0]
 }
 
@@ -227,8 +242,8 @@ const page = computed({
 
                                 </div>
                             </div>
-                            <div v-if="video.episodes.length">
-                                <h3 class="font-bold mb-4">Episodes</h3>
+                            <div id="episodesParent" v-if="video.episodes.length">
+                                <h3 class="font-bold mb-4">Episodesssssss</h3>
                                 <div v-for="(episode, index) in video.episodes" :key="index" class="pl-8 " :class="video.episodes[index+1] ? 'border-b-2 pb-3 mb-3' : ''">
                                     <div class="relative w-full mb-3">
                                         <label
@@ -307,6 +322,16 @@ const page = computed({
                             <div class="p-5 bg-slate-400 rounded-2xl cursor-pointer">
                                 <div class="flex items-center justify-between" @click="addEpisode">
                                     Add episode
+                                    <span class="mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                        </svg>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="p-5 mt-[5px] bg-slate-400 rounded-2xl cursor-pointer">
+                                <div class="flex items-center justify-between" @click="deleteEpisode(video.episodes.length - 1)">
+                                    close episode
                                     <span class="mr-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                                           <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
