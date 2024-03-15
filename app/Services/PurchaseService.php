@@ -35,6 +35,7 @@ class PurchaseService
             DB::beginTransaction();
             $episode = $this->episodeService->getById($episodeId);
             $userBalance = $this->userBalanceService->getByUserId($userId);
+
             if ($userBalance->amount < $episode->price) {
                 DB::rollBack();
                 return [

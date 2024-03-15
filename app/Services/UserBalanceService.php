@@ -41,7 +41,7 @@ class UserBalanceService
      * @param int $userId
      * @return mixed
      */
-    public function getByUserId(int $userId): UserBalance
+    public function getByUserId(int $userId): mixed
     {
         return UserBalance::query()->where('user_id', $userId)->first();
     }
