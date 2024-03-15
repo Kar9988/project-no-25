@@ -13,7 +13,9 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+Route::get('privacy-policy', function () {
+    return view('policy');
+});
 Route::get('/{any}', function () {
     return view('welcome'); // assuming you have an app.blade.php file in your resources/views directory
 })->where('any', '.*');
