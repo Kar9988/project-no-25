@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use App\Policies\UserPolicy;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class EpisodeResource extends JsonResource
 {
@@ -19,7 +20,7 @@ class EpisodeResource extends JsonResource
             'id'          => $this->id,
             'title'       => $this->title,
             'thumb'       => $this->thumb_path,
-            'source'      => route('episode.video', $this->id),
+            'source'      => $this->source_path,
             'position'    => $this->position,
             'duration'    => $this->duration,
             'can_see'     => UserPolicy::canViewEpisode(auth()->user(), $this->id),

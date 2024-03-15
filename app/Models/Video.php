@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 use Staudenmeir\EloquentEagerLimit\HasEagerLimit;
 
 class Video extends Model
@@ -45,6 +46,6 @@ class Video extends Model
      */
     public function getCoverImgPathAttribute(): string
     {
-        return asset("storage/$this->cover_img");
+        return Storage::disk('spaces')->url($this->cover_img);
     }
 }
