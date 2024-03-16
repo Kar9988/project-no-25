@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Episode;
 use App\Models\Video;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -38,6 +39,25 @@ class EpisodeService
             ->take($take)
             ->get();
 
+    }
+
+    /**
+     * @param int $userId
+     * @param int $page
+     * @return Collection|array
+     */
+    public function getLibrary(int $userId, int $page = 1): Collection
+    {
+        return Episode::query()
+            ->join('payments', function ($join) use ($userId) {
+                $join->on('payments.paymentable_id', 'episodes.id')
+                    ->where('payments.paymentable_type', Episode::class)
+                    ->where('user_id', $userId);
+            })
+            ->skip($page * 10 - 10)
+            ->take(10)
+            ->orderByDesc('payments.id')
+            ->get();
     }
 
     /**

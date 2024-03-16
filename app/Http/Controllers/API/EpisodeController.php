@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\EpisodeResource;
+use App\Http\Resources\LibraryResource;
 use App\Http\Resources\ViewResource;
 use App\Policies\UserPolicy;
 use App\Services\EpisodeService;
@@ -41,7 +42,7 @@ class EpisodeController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'This is user video history',
-            'video history' => ViewResource::collection($videoHistory),
+            'history' => ViewResource::collection($history),
             'type'    => 'success'
 
         ], 200);
@@ -64,12 +65,12 @@ class EpisodeController extends Controller
             $response = Response::stream(function () use ($stream) {
                 $stream->start();
             }, 200, [
-                'Content-Type' => 'video/mp4',
-                'Cache-Control' => 'no-cache, no-store, must-revalidate',
-                'Pragma' => 'no-cache',
-                'Expires' => '0',
-                'Content-Range' => 1000,
-                'Content-Disposition' => 'inline',
+                'Content-Type'           => 'video/mp4',
+                'Cache-Control'          => 'no-cache, no-store, must-revalidate',
+                'Pragma'                 => 'no-cache',
+                'Expires'                => '0',
+                'Content-Range'          => 1000,
+                'Content-Disposition'    => 'inline',
                 'X-Content-Type-Options' => 'nosniff',
             ]);
             $response->send();
@@ -81,6 +82,23 @@ class EpisodeController extends Controller
             ], 403);
         }
 
+    }
+
+    /**
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function library(): JsonResponse
+    {
+        $userId = auth()->id();
+        $episodes = $this->episodeService->getLibrary($userId, request()->get('page', 1));
+
+        return response()->json([
+            'success' => true,
+            'library' => LibraryResource::collection($episodes),
+            'type'    => 'success'
+        ]);
     }
 
 }

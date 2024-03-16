@@ -77,4 +77,5 @@ Route::middleware('auth:api')->group(function () {
     Route::get('video/{id}', [UserVideoController::class, 'show']);
     Route::get('discover', [UserVideoController::class, 'discover']);
     Route::get('category/{categoryId}', [UserVideoController::class, 'filter']);
+    Route::get('library', [EpisodeController::class, 'library']);
 });
