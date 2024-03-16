@@ -49,6 +49,7 @@ class EpisodeService
     public function getLibrary(int $userId, int $page = 1): Collection
     {
         return Episode::query()
+            ->select('episodes.*')
             ->join('payments', function ($join) use ($userId) {
                 $join->on('payments.paymentable_id', 'episodes.id')
                     ->where('payments.paymentable_type', Episode::class)
