@@ -145,7 +145,7 @@ class VideoService
             ->when($id && $page != 1 && $page != 0, function ($query) use ($id, $page) {
                 $query->where("videos.id", '!=', $id);
             })
-            ->when($id && $page === 1 && $page === 0, function ($query) use ($id) {
+            ->when($id && ($page === 1 || $page === 0), function ($query) use ($id) {
                 $query->orderByRaw("CASE WHEN videos.id = $id THEN 1 ELSE 0 END DESC");
             })
             ->groupBy('videos.id')
