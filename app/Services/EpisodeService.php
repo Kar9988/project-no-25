@@ -69,7 +69,7 @@ class EpisodeService
     public function randomEpisodes(): Collection|Episode|array
     {
         return Episode::query()
-            ->withCount(['likes', 'views'])
+            ->withCount(['likes', 'views', 'episodes'])
             ->orderBy(DB::raw('RAND()'))
             ->take(6)
             ->get();
