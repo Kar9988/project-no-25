@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Episode;
 use App\Models\Video;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -59,6 +60,18 @@ class EpisodeService
             ->skip($page * 10 - 10)
             ->take(10)
             ->orderByDesc('payments.id')
+            ->get();
+    }
+
+    /**
+     * @return Episode|Builder[]|Collection
+     */
+    public function randomEpisodes(): Collection|Episode|array
+    {
+        return Episode::query()
+            ->withCount(['likes', 'views'])
+            ->orderBy(DB::raw('RAND()'))
+            ->take(6)
             ->get();
     }
 

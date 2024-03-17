@@ -48,6 +48,23 @@ class EpisodeController extends Controller
         ], 200);
     }
 
+    /**
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function randomEpisodes(): JsonResponse
+    {
+        $episodes = $this->episodeService->randomEpisodes();
+
+        return response()->json([
+            'success'  => true,
+            'episodes' => LibraryResource::collection($episodes),
+            'type'     => 'success'
+
+        ]);
+    }
+
 
     /**
      * @param $episodeId
