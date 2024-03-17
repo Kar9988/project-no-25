@@ -31,6 +31,14 @@ class Episode extends Model
     /**
      * @return HasMany
      */
+    public function episodes(): HasMany
+    {
+        return $this->hasMany(self::class, 'video_id', 'video_id');
+    }
+
+    /**
+     * @return HasMany
+     */
     public function views(): HasMany
     {
         return $this->hasMany(View::class);

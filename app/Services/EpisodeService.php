@@ -55,6 +55,7 @@ class EpisodeService
                     ->where('payments.paymentable_type', Episode::class)
                     ->where('user_id', $userId);
             })
+            ->withCount(['episodes', 'likes'])
             ->skip($page * 10 - 10)
             ->take(10)
             ->orderByDesc('payments.id')
