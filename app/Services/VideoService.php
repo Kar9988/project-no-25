@@ -113,7 +113,7 @@ class VideoService
         $videos = Video::select('videos.*')
             ->join('episodes', 'episodes.video_id', 'videos.id')
             ->with(['episodes' => function ($query) {
-                $query->withCount('views');
+                $query->withCount(['views', 'likes']);
             }])
             ->paginate();
 
@@ -140,7 +140,7 @@ class VideoService
         $videos = Video::select('videos.*')
             ->join('episodes', 'episodes.video_id', 'videos.id')
             ->with(['episodes' => function ($query) {
-                $query->withCount('views');
+                $query->withCount(['views', 'likes']);
             }])
             ->when($id && $page != 1 && $page != 0, function ($query) use ($id, $page) {
                 $query->where("videos.id", '!=', $id);
@@ -169,7 +169,7 @@ class VideoService
             })
             ->with(['videos' => function ($query) {
                 $query->with(['episodes' => function ($q) {
-                    $q->withCount('views');
+                    $q->withCount(['views', 'likes']);
                 }]);
             }])
             ->groupBy('categories.id')
@@ -192,7 +192,7 @@ class VideoService
             ->where('category_id', $categoryId)
             ->join('episodes', 'episodes.video_id', 'videos.id')
             ->with(['episodes' => function ($q) {
-                $q->withCount('views');
+                $q->withCount(['views', 'likes']);
             }])
             ->groupBy('videos.id')
             ->skip($page * $take - $take)
