@@ -46,7 +46,7 @@ class ContactUsController extends Controller
         }
         Mail::to($user['email'])->queue(new SendEmail($user));
         return response()->json([
-            'message' => 'Email sent successfully',
+            'message' => 'Thank you for contacting us. Please wait for an email from our team.',
             'success' => true,
             'type' => 'success'
         ]);
