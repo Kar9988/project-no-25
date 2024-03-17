@@ -142,6 +142,9 @@ class VideoService
             ->with(['episodes' => function ($query) {
                 $query->withCount('views');
             }])
+            ->when($id && $page != 1 && $page != 0, function ($query) use ($id, $page) {
+                $query->where("videos.id", '!=', $id);
+            })
             ->when($id, function ($query) use ($id) {
                 $query->orderByRaw("CASE WHEN videos.id = $id THEN 1 ELSE 0 END DESC");
             })
