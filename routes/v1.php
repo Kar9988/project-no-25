@@ -62,7 +62,7 @@ Route::middleware('auth:api')->group(function () {
         ]);
         Route::get('categories', [CategoryController::class, 'index']);
     });
-    Route::post('/send-email', [ContactUsController::class, 'sendMail']);
+    Route::post('/contact-us', [ContactUsController::class, 'sendMail']);
 
     Route::post('purchase/video', [PurchaseController::class, 'store']);
     Route::get('episode/source/{episodeId}', [EpisodeController::class, 'getVideoStream'])->name('episode.video');

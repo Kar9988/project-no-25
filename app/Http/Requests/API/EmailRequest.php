@@ -22,11 +22,9 @@ class EmailRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => 'required',
-            'last_name'  => 'required',
-            'email'      => 'required',
-            'message'    => 'required',
-            'file'       => 'sometimes'
+            'email'   => 'required',
+            'message' => 'required',
+            'files'   => 'sometimes'
         ];
     }
 }
