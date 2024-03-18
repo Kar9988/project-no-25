@@ -52,6 +52,12 @@ class Episode extends Model
         return $this->morphMany(Like::class, 'likeable');
     }
 
+    public function isLikedByUser($userId): bool
+    {
+        return $this->likes()->where('user_id', $userId)->exists();
+    }
+
+
     /**
      * @return string
      */

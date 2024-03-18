@@ -11,21 +11,31 @@ class LIkeService
 {
     /**
      * @param $data
-     * @return Like
+     * @return void
      */
-    public function store($data): Like
+    public function userLikeToggle($data)
     {
         if ($data['episode_id']) {
             $video = Episode::find($data['episode_id']);
-            return $video->likes()->create([
-                'user_id' => auth()->user()->id,
-            ]);
+            $existUserLike = $video->likes()->where('user_id', auth()->user()->id);
+            if ($existUserLike->exists()) {
+                return $existUserLike->delete();
+            } else {
+                return $video->likes()->create([
+                    'user_id' => auth()->user()->id,
+                ]);
+            }
         }
         if ($data['video_id']) {
-            $video = Video::find($data['video_id']);
-            return $video->likes()->create([
-                'user_id' => auth()->user()->id,
-            ]);
+            $video = Episode::find($data['video_id']);
+            $existUserLike = $video->likes()->where('user_id', auth()->user()->id);
+            if ($existUserLike->exists()) {
+                return $existUserLike->delete();
+            } else {
+                return $video->likes()->create([
+                    'user_id' => auth()->user()->id,
+                ]);
+            }
         }
     }
 

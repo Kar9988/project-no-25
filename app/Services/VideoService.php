@@ -151,7 +151,6 @@ class VideoService
             ->skip($page * $take - $take)
             ->take($take)
             ->get();
-
         return VideoResource::collection($videos);
     }
 
