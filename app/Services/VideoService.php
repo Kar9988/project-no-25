@@ -141,9 +141,12 @@ class VideoService
         $videos = Video::select('videos.*')
             ->join('episodes', 'episodes.video_id', 'videos.id')
             ->with(['episodes' => function ($query) {
-                $query->withCount('views');
+                $query->withCount(['views', 'likes']);
             }])
-            ->when($id, function ($query) use ($id) {
+            ->when($id && $page != 1 && $page != 0, function ($query) use ($id, $page) {
+                $query->where("videos.id", '!=', $id);
+            })
+            ->when($id && ($page === 1 || $page === 0), function ($query) use ($id) {
                 $query->orderByRaw("CASE WHEN videos.id = $id THEN 1 ELSE 0 END DESC");
             })
             ->groupBy('videos.id')
@@ -151,6 +154,7 @@ class VideoService
             ->skip($page * $take - $take)
             ->take($take)
             ->get();
+
         return VideoResource::collection($videos);
     }
 
@@ -166,7 +170,7 @@ class VideoService
             })
             ->with(['videos' => function ($query) {
                 $query->with(['episodes' => function ($q) {
-                    $q->withCount('views');
+                    $q->withCount(['views', 'likes']);
                 }]);
             }])
             ->groupBy('categories.id')
@@ -189,7 +193,7 @@ class VideoService
             ->where('category_id', $categoryId)
             ->join('episodes', 'episodes.video_id', 'videos.id')
             ->with(['episodes' => function ($q) {
-                $q->withCount('views');
+                $q->withCount(['views', 'likes']);
             }])
             ->groupBy('videos.id')
             ->skip($page * $take - $take)
