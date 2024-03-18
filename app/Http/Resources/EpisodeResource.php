@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * @method isLikedByUser($id)
+ */
 class EpisodeResource extends JsonResource
 {
     /**
@@ -27,6 +30,7 @@ class EpisodeResource extends JsonResource
             'views_count' => $this->views_count,
             'likes_count' => $this->likes_count,
             'price'       => $this->price ?? 0,
+            'liked' => $this->isLikedByUser(auth()->user()->id),
         ];
     }
 }

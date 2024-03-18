@@ -5,6 +5,7 @@ namespace App\Traits;
 use App\Http\Resources\LikeResource;
 use App\Models\Episode;
 use App\Models\Like;
+use App\Models\Role;
 use App\Models\Video;
 use App\Services\LIkeService;
 use Dflydev\DotAccessData\Data;
@@ -51,16 +52,24 @@ trait LikesTrait
             return response()->json([
                 'success' => true,
                 'message' => 'Likes created successfully',
-                'type'   =>  'success'
+                'type' => 'success'
             ], 201);
         } else {
-            $create = $this->service->store($datum->all());
-            return response()->json([
-                'success' => true,
-                'message' => 'Likes created successfully',
-                'likes' => new LikeResource($create),
-                'type' => 'success',
-            ], 201);
+            $create = $this->service->userLikeToggle($datum);
+            if ($create === 1) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Episode successfully unliked',
+                    'type' => 'success'
+                ]);
+            } else {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Likes created successfully',
+                    'likes' => new LikeResource($create),
+                    'type' => 'success',
+                ], 201);
+            }
         }
     }
 
@@ -81,14 +90,14 @@ trait LikesTrait
                 return response()->json([
                     'message' => $deletedRows . ' records deleted successfully',
                     'success' => true,
-                    'type'    => 'success',
-                    ]);
+                    'type' => 'success',
+                ]);
             }
             return response()->json([
                 'message' => 'There is no line to delete',
-                'type'    => 'error',
+                'type' => 'error',
                 'success' => false,
-                ]);
+            ]);
         }
         if (isset($data['video_id'])) {
             if (isset($data['count']) && $data['count'] != null) {
@@ -100,14 +109,14 @@ trait LikesTrait
                 return response()->json([
                     'message' => $deletedRows . ' records deleted successfully',
                     'success' => true,
-                    'type'    => 'success'
+                    'type' => 'success'
                 ]);
             }
             return response()->json([
                 'message' => 'There is no line to delete',
-                'type'    => 'error',
+                'type' => 'error',
                 'success' => false,
-                ]);
+            ]);
         }
     }
 }
