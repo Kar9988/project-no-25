@@ -28,7 +28,7 @@ class VideoUpdateRequest extends FormRequest
             'title'                 => 'required|string',
             'cover_img'             => 'sometimes|image',
             'description'           => 'required|string',
-            'category_id'           => 'required',
+            'category_id'           => 'sometimes|required',
             'is_new_arrival'        => 'boolean',
             'is_top_rated'          => 'boolean',
             'episodes.*.title'      => 'sometimes|required|string',

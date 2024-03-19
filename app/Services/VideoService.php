@@ -71,7 +71,7 @@ class VideoService
     {
         try {
             DB::beginTransaction();
-            $videoData = Arr::except($data, ['episodes', 'cover_img', 'category']);
+            $videoData = Arr::except($data, ['episodes', 'cover_img', 'likes_count','category']);
 
             if (isset($data['cover_img'])) {
                 $coverPath = $this->fileManagerService->storeCover("videos/$id/cover", $data['cover_img']);
@@ -111,7 +111,7 @@ class VideoService
     {
 
         $videos = Video::select('videos.*')
-            ->join('episodes', 'episodes.video_id', 'videos.id')
+//            ->join('episodes', 'episodes.video_id', 'videos.id')
             ->with(['episodes' => function ($query) {
                 $query->withCount(['views', 'likes']);
             }])
@@ -211,7 +211,7 @@ class VideoService
     {
         return Video::select('videos.*')
             ->withCount('likes')
-            ->join('episodes', 'episodes.video_id', 'videos.id')
+//            ->join('episodes', 'episodes.video_id', 'videos.id')
             ->where('videos.id', $id)
             ->with(['episodes' => function ($query) {
                 $query->withCount('views');
@@ -227,7 +227,6 @@ class VideoService
     public function getVideo(int $id): VideoResource
     {
         $video = $this->getById($id);
-
         return new VideoResource($video);
     }
 
