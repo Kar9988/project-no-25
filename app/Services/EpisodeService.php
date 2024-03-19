@@ -3,11 +3,14 @@
 namespace App\Services;
 
 use App\Models\Episode;
+use App\Models\user_episodes_history;
 use App\Models\Video;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class EpisodeService
 {
@@ -216,5 +219,39 @@ class EpisodeService
 
             throw new \Exception($exception);
         }
+    }
+
+    /**
+     * @param array $data
+     * @return mixed
+     */
+    public function storeHistory(array $data): mixed
+    {
+       return user_episodes_history::create($data);
+    }
+
+    /**
+     * @param array $data
+     * @return mixed
+     */
+    public function destroyHistory(array $data): mixed
+    {
+        return user_episodes_history::select()->whereIn('episode_id', $data)->delete();
+    }
+
+    /**
+     * @return mixed
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function showAllHistory(): mixed
+    {
+        $history = user_episodes_history::where('user_id', auth()->id())->get();
+        if ($history->isNotEmpty()) {
+            $episode_ids = $history->pluck('episode_id')->toArray();
+            return Episode::whereIn('id', $episode_ids)->skip(request()->get('page', 1) * request()->get('take', 10) - request()->get('take', 10))
+                ->take(request()->get('take', 10))->get();
+        }
+        return null;
     }
 }
