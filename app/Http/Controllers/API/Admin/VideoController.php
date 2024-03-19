@@ -99,4 +99,20 @@ class VideoController extends Controller
             'message' => 'Something went wrong'
         ]);
     }
+    public function destroy($id)
+    {
+        $destroy = $this->videoService->destroy($id);
+        if ($destroy){
+            return response()->json([
+                'success' => true,
+                'type' => 'success',
+                'message' => 'video deleted successful'
+            ]);
+        }
+        return response()->json([
+            'success' => false,
+            'type' => 'error',
+            'message' => 'Something went wrong'
+        ]);
+    }
 }

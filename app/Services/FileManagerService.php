@@ -32,7 +32,7 @@ class FileManagerService
         $image->setImageCompressionQuality(80);
         $image->setOption('webp:progressive', 'true');
         $image->writeImage(storage_path("app/public/$file"));
-        $fileName = time().'.webp';
+        $fileName = time() . '.webp';
         $this->storage->put("$filePath/$fileName", file_get_contents(new File(storage_path("app/public/$file"))), 'public');
         Storage::disk('public')->delete($file);
 
@@ -47,37 +47,45 @@ class FileManagerService
      */
     public function storeThumb(string $filePath, $file): string
     {
-        $image = new Imagick(storage_path("app/public/$file"));
+        $filepath = $file->store('public/tmp');
+        $image = new Imagick(storage_path('app/' . $filepath));
         $image->setImageFormat('webp');
         $image->setImageCompressionQuality(80);
         $image->setOption('webp:progressive', 'true');
-        $image->writeImage(storage_path("app/public/$file"));
-        $fileName = time().'.webp';
-        $this->storage->put("$filePath/$fileName", file_get_contents(new File(storage_path("app/public/$file"))), 'public');
-        Storage::disk('public')->delete($file);
+        $image->writeImage(storage_path('app/' . $filepath));
 
+        $fileName = time() . '.webp';
+        $this->storage->put("$filePath/$fileName", file_get_contents(new File(storage_path('app/' . $filepath))), 'public');
+        Storage::disk('public')->delete('app/' . $filepath);
         return "$filePath/$fileName";
     }
 
     /**
      * @param string $fileName
-     * @param UploadedFile $file
+     * @param $filePath
      * @return bool|string
      */
-    public function storeVideo(string $fileName,  $filePath): bool|string
+    public function storeVideo(string $fileName, $filePath): bool|string
     {
-        $file = new File(storage_path("app/public/$filePath"));
-        $fileName = $this->storage->putFile($fileName, $file, 'public');
-        Storage::disk('public')->delete($filePath);
+        $storedFilePath = "videos/$fileName";
+        try {
+            Storage::disk('public')->put($storedFilePath, file_get_contents($filePath));
+        } catch (\Exception $e) {
+            return $e;
+        }
 
-        return $fileName;
+        if (Storage::disk('public')->exists($filePath)) {
+            Storage::disk('public')->delete($filePath);
+        }
+
+        return $storedFilePath;
     }
 
     /**
      * @param array $paths
      * @return bool
      */
-    public function deleteFiles(array $paths):bool
+    public function deleteFiles(array $paths): bool
     {
         return $this->storage->delete($paths);
     }
