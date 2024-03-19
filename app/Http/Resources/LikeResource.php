@@ -19,7 +19,7 @@ class LikeResource extends JsonResource
             'user_id'       => $this->user_id,
             'likeable_id'   => $this->likeable_id,
             'likeable_type' => $this->likeable_type,
-            'like_count'   => $this->likes,
+            'like_count'   => $this->likes ?? 0,
         ];
     }
 }
