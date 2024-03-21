@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\Episode;
 use App\Models\User;
-use App\Models\User_episodesHistory;
+use App\Models\UserEpisodesHistory;
 use App\Models\Video;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -229,13 +229,13 @@ class EpisodeService
      */
     public function storeHistory(int $id,array $data): mixed
     {
-        $history = User_episodesHistory::find($id);
+        $history = UserEpisodesHistory::find($id);
 
         if ($history) {
             $history->update(['updated_at' => now()]);
             return true;
         } else {
-            return User_episodesHistory::create($data) ? true : false;
+            return UserEpisodesHistory::create($data) ? true : false;
         }
     }
 
@@ -245,7 +245,7 @@ class EpisodeService
      */
     public function destroyHistory(array $data): mixed
     {
-        return User_episodesHistory::select()->whereIn('episode_id', $data)->delete();
+        return UserEpisodesHistory::select()->whereIn('episode_id', $data)->delete();
     }
 
     /**
@@ -255,7 +255,7 @@ class EpisodeService
      */
     public function showAllHistory(): mixed
     {
-        return User_episodesHistory::where('user_id', auth()->id())->with('episode')->get();
+        return UserEpisodesHistory::where('user_id', auth()->id())->with('episode')->get();
 
     }
 }
