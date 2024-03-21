@@ -40,7 +40,7 @@ Route::middleware('auth:api')->group(function () {
     ]);
     Route::get('history', [EpisodeController::class, 'index']);
     Route::post('history', [EpisodeController::class, 'storeHistory']);
-    Route::get('del-history', [EpisodeController::class, 'destroyHistory']);
+    Route::delete('history', [EpisodeController::class, 'destroyHistory']);
     Route::get('all-history', [EpisodeController::class, 'showAllHistory']);
 
 
