@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Facades\Storage;
@@ -35,7 +35,10 @@ class Episode extends Model
     {
         return $this->hasMany(self::class, 'video_id', 'video_id');
     }
-
+    public function history(): BelongsToMany
+    {
+        return $this->belongsToMany(User_episodes_history::class);
+    }
     /**
      * @return HasMany
      */

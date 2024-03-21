@@ -4,7 +4,9 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\EpisodeResource;
+use App\Http\Resources\HistoryResource;
 use App\Http\Resources\LibraryResource;
+use App\Http\Resources\PlanResource;
 use App\Http\Resources\ViewResource;
 use App\Policies\UserPolicy;
 use App\Services\EpisodeService;
@@ -123,9 +125,9 @@ class EpisodeController extends Controller
      * @param int $id
      * @return JsonResponse
      */
-    public function storeHistory(int $id): JsonResponse
+    public function storeHistory(int $id,Request $request,): JsonResponse
     {
-        $episodes = $this->episodeService->storeHistory(['episode_id' => $id, 'user_id' => auth()->id()]);
+        $episodes = $this->episodeService->storeHistory($id,$request->all());
         if ($episodes) {
             return response()->json([
                 'success' => true,
@@ -161,19 +163,17 @@ class EpisodeController extends Controller
         ]);
     }
 
-    /**
-     * @return JsonResponse
-     */
-    public function showAllHistory(): JsonResponse
+
+    public function showAllHistory()
     {
-        $episodes = $this->episodeService->showAllHistory();
-        if ($episodes){
-            return response()->json([
-                'success' => true,
-                'type' => 'success',
-                'data' => $episodes,
-            ]);
-        }
+       $userHistory = $this->episodeService->showAllHistory();
+       if ($userHistory){
+           return response()->json([
+               'success' => true,
+               'type' => 'success',
+               'data' => HistoryResource::collection($userHistory),
+           ]);
+       }
         return response()->json([
             'success' => false,
             'type' => 'error',

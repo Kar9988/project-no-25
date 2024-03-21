@@ -57,6 +57,9 @@ export const useUserStore = defineStore('userStore', {
                 await axios.put(`/admin/users/${id}`, {
                         name: form.name,
                         email: form.email,
+                        amount:form.amount,
+                        bonus:form.bonus,
+                        balanceId:form.balanceId
                     },)
                     .then(() => {
                         Swal.fire({

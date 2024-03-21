@@ -9,6 +9,7 @@ use App\Http\Resources\UserResource;
 use App\Models\Role;
 use App\Models\User;
 use App\Services\AdminService;
+use App\Services\UserBalanceService;
 use http\Env\Request;
 use Illuminate\Http\JsonResponse;
 
@@ -16,12 +17,13 @@ use Illuminate\Http\JsonResponse;
 class UserController extends Controller
 {
     protected $service;
-
+    protected $balanceService;
     /**
      * @param AdminService $service
      */
-    public function __construct(AdminService $service)
+    public function __construct(AdminService $service, UserBalanceService $balanceService)
     {
+        $this->balanceService = $balanceService;
         $this->service = $service;
     }
 
@@ -43,6 +45,7 @@ class UserController extends Controller
      */
     public function show(User $user): JsonResponse
     {
+        $user->load('userBalance');
         return response()->json([
             'success' => true,
             'user' => $user,
@@ -51,17 +54,32 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @param UserUpdateRequest $request
+     * @param User $user
+     * @return JsonResponse
      */
     public function update(UserUpdateRequest $request, User $user): JsonResponse
     {
-        $updateData = $this->service->update($request->all(), $user->id);
-        if ($updateData === 1) {
-            return response()->json([
-                'success' => true,
-                'type' => 'success'
-            ]);
+        $userData= [
+            'name'=>$request->name,
+            'email'=>$request->email,
+        ];
+
+        $updateData = $this->service->update($userData, $user->id);
+        if ($updateData){
+            $balanceValue =[
+                'amount' => $request->amount,
+                'bonus'  => $request->bonus,
+            ];
+            $updateBalance = $this->balanceService->update($balanceValue, $request->balanceId);
+            if ($updateBalance === 1) {
+                return response()->json([
+                    'success' => true,
+                    'type' => 'success'
+                ]);
+            }
         }
+
         return response()->json([
             'success' => false,
             'type' => 'error'
