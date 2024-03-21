@@ -49,7 +49,11 @@ class CreateService extends Command
         // Build the basic class structure
         $content = "<?php\n";
         $content .= "namespace App\Services;\n";
-        $content .= "class $name {}\n";
+        $content .= "class $name
+        {
+
+
+        }\n";
 
         return $content;
     }

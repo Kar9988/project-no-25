@@ -8,8 +8,10 @@ use App\Http\Controllers\API\Admin\VideoController;
 use App\Http\Controllers\API\ContactUsController;
 use App\Http\Controllers\API\EpisodeController;
 use App\Http\Controllers\API\PurchaseController;
+use App\Http\Controllers\API\RewardController;
 use App\Http\Controllers\API\SocialiteController;
 use App\Http\Controllers\API\UserBalanceController;
+use App\Http\Controllers\API\UserRewardController;
 use App\Http\Controllers\API\VideoController as UserVideoController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\LoginController;
@@ -85,4 +87,10 @@ Route::middleware('auth:api')->group(function () {
     Route::get('discover', [UserVideoController::class, 'discover']);
     Route::get('category/{categoryId}', [UserVideoController::class, 'filter']);
     Route::get('library', [EpisodeController::class, 'library']);
+
+    Route::group(['prefix' => 'rewards'], function () {
+        Route::get('/', [RewardController::class, 'index']);
+        Route::get('/user', [UserRewardController::class, 'index']);
+        Route::post('/user', [UserRewardController::class, 'store']);
+    });
 });

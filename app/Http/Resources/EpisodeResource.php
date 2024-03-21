@@ -19,6 +19,8 @@ class EpisodeResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $user = auth()->user();
+
         return [
             'id'          => $this->id,
             'title'       => $this->title,
@@ -26,11 +28,11 @@ class EpisodeResource extends JsonResource
             'source'      => $this->source_path,
             'position'    => $this->position,
             'duration'    => $this->duration,
-            'can_see'     => UserPolicy::canViewEpisode(auth()->user(), $this->id),
+            'can_see'     => UserPolicy::canViewEpisode($user, $this->id),
             'views_count' => $this->views_count,
             'likes_count' => $this->likes_count,
             'price'       => $this->price ?? 0,
-            'liked' => $this->isLikedByUser(auth()->user()->id),
+            'liked'       => $this->isLikedByUser($user->id),
         ];
     }
 }
