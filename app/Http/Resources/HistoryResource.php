@@ -19,8 +19,7 @@ class HistoryResource extends JsonResource
             'id'   =>  $this->id,
             'episode_id' => $this->episode_id,
             'user_id'    =>$this->user_id,
-            'episode'   =>$this->episode,
-
+            'episode'   => new EpisodeResource($this->episode),
         ];
     }
 }
