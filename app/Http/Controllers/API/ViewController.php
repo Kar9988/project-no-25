@@ -33,7 +33,8 @@ class ViewController extends Controller
             for ($i = 0; $i < $count; $i++) {
                 $data[] = [
                     'user_id' => auth()->id(),
-                    'episode_id' => $request->episode_id
+                    'episode_id' => $request->episode_id,
+                    'duration'   => $request->duration
                 ];
             }
             $this->service->insert($data);

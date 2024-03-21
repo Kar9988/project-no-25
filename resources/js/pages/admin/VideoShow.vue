@@ -75,6 +75,7 @@ const changeViewsCount = (id, data) => {
     const form = {
         episode_id: id,
         views_count: data,
+        duration: 1,
     }
     videoStore.changeViews(form)
 }
@@ -82,6 +83,7 @@ const deleteViewsCount = (id, data) => {
     const form = {
         episode_id: id,
         views_count: data,
+        duration: 1
     }
     videoStore.deleteViews(form)
 }

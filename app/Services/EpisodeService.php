@@ -239,13 +239,22 @@ class EpisodeService
         }
     }
 
+
     /**
-     * @param array $data
+     * @param array|int $ids
      * @return mixed
      */
-    public function destroyHistory(array $data): mixed
+    public function destroyHistory(array | int $ids): mixed
     {
-        return UserEpisodesHistory::select()->whereIn('episode_id', $data)->delete();
+        return UserEpisodesHistory::query()
+            ->when(is_array($ids), function ($query) use ($ids) {
+                return $query->whereIn('id', $ids);
+            })
+            ->when(is_int($ids), function ($query) use ($ids) {
+                return $query->where('id', $ids);
+            })
+            ->delete();
+
     }
 
     /**
