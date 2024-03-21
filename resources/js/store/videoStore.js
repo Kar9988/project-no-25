@@ -98,7 +98,7 @@ export const useVideoStore = defineStore('videoStore', {
         async changeViews(data) {
             console.log(data)
             try {
-                await axios.post(`/admin/views/`, data)
+                await axios.post(`/admin/views`, data)
                     .then(() => {
                         Swal.fire({
                             position: "top",
