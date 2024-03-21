@@ -46,12 +46,12 @@ return [
 
         'spaces' => [
             'driver'     => 's3',
-            'key'        => env('DO_SPACES_KEY'),
-            'secret'     => env('DO_SPACES_SECRET'),
-            'endpoint'   => env('DO_SPACES_ENDPOINT'),
-            'region'     => env('DO_SPACES_REGION'),
-            'bucket'     => env('DO_SPACES_BUCKET'),
-            'url'        => env('DO_CDN_ENDPOINT'),
+            'key'        => env('VITE_DO_SPACES_KEY'),
+            'secret'     => env('VITE_DO_SPACES_SECRET'),
+            'endpoint'   => env('VITE_DO_SPACES_ENDPOINT'),
+            'region'     => env('VITE_DO_SPACES_REGION'),
+            'bucket'     => env('VITE_DO_SPACES_BUCKET'),
+            'url'        => env('VITE_DO_CDN_ENDPOINT'),
             'visibility' => 'public',
         ],
 

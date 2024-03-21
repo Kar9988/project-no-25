@@ -33,13 +33,6 @@
                     class="md:min-w-full md:hidden block pb-4 mb-4 border-b border-solid border-blueGray-200"
                 >
                     <div class="flex flex-wrap">
-                        <div class="w-6/12">
-                            <router-link
-                                class="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
-                                to="/admin/dashboard"
-                            >
-                            </router-link>
-                        </div>
                         <div class="w-6/12 flex justify-end">
                             <button
                                 type="button"
@@ -74,27 +67,7 @@
 
                 <ul class="md:flex-col md:min-w-full flex flex-col list-none">
                     <li class="items-center">
-                        <router-link
-                            to="/admin/dashboard"
-                            v-slot="{ href, navigate, isActive }"
-                        >
-                            <a
-                                :href="href"
-                                @click="navigate"
-                                class="text-xs uppercase py-3 font-bold block"
-                                :class="[
-                                  isActive
-                                    ? 'text-emerald-500 hover:text-emerald-600'
-                                    : 'text-blueGray-700 hover:text-blueGray-500',
-                                ]"
-                            >
-                                <i
-                                    class="fas fa-tv mr-2 text-sm"
-                                    :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
-                                ></i>
-                                Dashboard
-                            </a>
-                        </router-link>
+
                     </li>
                     <li class="items-center">
                         <router-link
@@ -146,27 +119,7 @@
 
 
                     <li class="items-center">
-                        <router-link
-                            to="/admin/privacy-policy"
-                            v-slot="{ href, navigate, isActive }"
-                        >
-                            <a
-                                :href="href"
-                                @click="navigate"
-                                class="text-xs uppercase py-3 font-bold block"
-                                :class="[
-                  isActive
-                    ? 'text-emerald-500 hover:text-emerald-600'
-                    : 'text-blueGray-700 hover:text-blueGray-500',
-                ]"
-                            >
-                                <i
-                                    class="fas fa-tools mr-2 text-sm"
-                                    :class="[isActive ? 'opacity-75' : 'text-blueGray-300']"
-                                ></i>
-                                Privacy Policy
-                            </a>
-                        </router-link>
+
                     </li>
                     <li class="items-center">
                         <router-link

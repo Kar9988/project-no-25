@@ -15,6 +15,9 @@ const form = ref({
     id: '',
     name: '',
     email: '',
+    amount: '',
+    bonus: '',
+    balanceId:'',
 })
 
 onMounted(() => {
@@ -26,18 +29,24 @@ onMounted(() => {
 const getUser = async (userId) => {
     try {
         user.value = await useUserStore().getUser(userId);
+        console.log('useruser', user.value)
         form.value.id = user.value?.id
         form.value.name = user.value?.name
         form.value.email = user.value?.email
+        form.value.amount = user.value?.user_balance.amount
+        form.value.bonus = user.value?.user_balance.bonus
+        form.value.balanceId = user.value?.user_balance.id
+
     } catch (error) {
         console.error("Error deleting user:", error.message);
     }
 };
 const UpdateUserData = async (userId, form) => {
-    try {
-        console.log(userId)
 
-        await useCategoryStore().updateForm(userId, form);
+    try {
+        console.log(userId,form)
+
+        await useUserStore().updateForm(userId, form);
     } catch (error) {
         console.error("Error deleting user:", error.message);
     }
@@ -58,6 +67,12 @@ const UpdateUserData = async (userId, form) => {
                 <input name="email" v-model="form.email"
                        class="title bg-gray-100 border border-gray-300 p-2 mb-4 outline-none"
                        spellcheck="false" placeholder="Email" type="text">
+                <input name="bonus" v-model="form.bonus"
+                       class="title bg-gray-100 border border-gray-300 p-2 mb-4 outline-none"
+                       spellcheck="false" placeholder="Bonus" type="number">
+                <input name="amount" v-model="form.amount"
+                       class="title bg-gray-100 border border-gray-300 p-2 mb-4 outline-none"
+                       spellcheck="false" placeholder="Amount" type="number">
                 <!--            <p style="color: red" v-if="err.name">{{ err.name }}</p>-->
                 <div style="margin-top: 10px" class="buttons flex">
                     <button @click="UpdateUserData(user.id,form)" type="button"

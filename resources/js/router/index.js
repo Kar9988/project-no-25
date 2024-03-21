@@ -25,14 +25,10 @@ import plans from "../pages/Plans.vue";
 const routes = [
     {
         path: "/admin",
-        redirect: "/admin/dashboard",
+        redirect: "/admin/videos",
         component: Admin,
         children: [
-            {
-                path: "/admin/dashboard",
-                component: Dashboard,
 
-            },
             {
                 path: "/admin/videos",
                 component: VideosList,
@@ -109,7 +105,7 @@ router.beforeEach((to, from, next) => {
     let token = localStorage.getItem('token');
     if (token) {
         if (to.path === '/auth/register' || to.path === '/auth/login') {
-            next('/admin/dashboard');
+            next('/admin/videos');
         } else {
             next();
         }

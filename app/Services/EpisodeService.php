@@ -3,7 +3,8 @@
 namespace App\Services;
 
 use App\Models\Episode;
-use App\Models\user_episodes_history;
+use App\Models\User;
+use App\Models\UserEpisodesHistory;
 use App\Models\Video;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -101,10 +102,10 @@ class EpisodeService
             $filePaths = [];
             foreach ($data as $datum) {
                 $episodeUpdateData = [
-                    'title'    => $datum['title'],
+                    'title' => $datum['title'],
                     'duration' => $datum['duration'] ?? 0,
                     'position' => $datum['position'] ?? 1,
-                    'price'    => $datum['price'] ?? 1,
+                    'price' => $datum['price'] ?? 1,
                 ];
 
                 if ($datum['thumb'] ?? false) {
@@ -147,9 +148,9 @@ class EpisodeService
             $episodesData = [];
             $filePaths = [];
             $episodeCreateData = [
-                'title'    => $data['title'],
+                'title' => $data['title'],
                 'duration' => $data['duration'] ?? 0,
-                'price'    => $data['price'] ?? 0
+                'price' => $data['price'] ?? 0
             ];
 
             if ($data['thumb'] ?? null) {
@@ -189,9 +190,9 @@ class EpisodeService
             $filePaths = [];
             foreach ($data as $datum) {
                 $episodeCreateData = [
-                    'title'    => $datum['title'],
+                    'title' => $datum['title'],
                     'duration' => $datum['duration'] ?? 0,
-                    'price'    => $datum['price'] ?? 0
+                    'price' => $datum['price'] ?? 0
                 ];
 
                 if ($datum['thumb'] ?? null) {
@@ -222,12 +223,20 @@ class EpisodeService
     }
 
     /**
+     * @param int $id
      * @param array $data
      * @return mixed
      */
-    public function storeHistory(array $data): mixed
+    public function storeHistory(int $id,array $data): mixed
     {
-       return user_episodes_history::create($data);
+        $history = UserEpisodesHistory::find($id);
+
+        if ($history) {
+            $history->update(['updated_at' => now()]);
+            return true;
+        } else {
+            return UserEpisodesHistory::create($data) ? true : false;
+        }
     }
 
     /**
@@ -236,7 +245,7 @@ class EpisodeService
      */
     public function destroyHistory(array $data): mixed
     {
-        return user_episodes_history::select()->whereIn('episode_id', $data)->delete();
+        return UserEpisodesHistory::select()->whereIn('episode_id', $data)->delete();
     }
 
     /**
@@ -246,12 +255,7 @@ class EpisodeService
      */
     public function showAllHistory(): mixed
     {
-        $history = user_episodes_history::where('user_id', auth()->id())->get();
-        if ($history->isNotEmpty()) {
-            $episode_ids = $history->pluck('episode_id')->toArray();
-            return Episode::whereIn('id', $episode_ids)->skip(request()->get('page', 1) * request()->get('take', 10) - request()->get('take', 10))
-                ->take(request()->get('take', 10))->get();
-        }
-        return null;
+        return UserEpisodesHistory::where('user_id', auth()->id())->with('episode')->get();
+
     }
 }
