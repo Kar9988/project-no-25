@@ -130,13 +130,13 @@ class EpisodeController extends Controller
         $episodes = $this->episodeService->storeHistory($id,$request->all());
         if ($episodes) {
             return response()->json([
-                'success' => true,
+                'success' => $episodes,
                 'type' => 'success',
-                'data' => $episodes,
+                'message' => 'History saved successful'
             ]);
         }
         return response()->json([
-            'success' => false,
+            'success' => $episodes,
             'type' => 'error',
             'message' => 'Failed to save history',
         ]);

@@ -30,7 +30,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function historys()
     {
-        return $this->hasMany(User_episodes_history::class);
+        return $this->hasMany(User_episodesHistory::class);
     }
 
     public function user_plans(): HasMany

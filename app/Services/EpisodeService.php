@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\Episode;
 use App\Models\User;
-use App\Models\User_episodes_history;
+use App\Models\User_episodesHistory;
 use App\Models\Video;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -229,11 +229,13 @@ class EpisodeService
      */
     public function storeHistory(int $id,array $data): mixed
     {
-        $history = User_episodes_history::query()->where('id', $id)->first();
+        $history = User_episodesHistory::find($id);
+
         if ($history) {
-            return User_episodes_history::query()->where('id',$history['id'])->update(['updated_at'=>now()]);
+            $history->update(['updated_at' => now()]);
+            return true;
         } else {
-           return User_episodes_history::create($data);
+            return User_episodesHistory::create($data) ? true : false;
         }
     }
 
@@ -243,7 +245,7 @@ class EpisodeService
      */
     public function destroyHistory(array $data): mixed
     {
-        return User_episodes_history::select()->whereIn('episode_id', $data)->delete();
+        return User_episodesHistory::select()->whereIn('episode_id', $data)->delete();
     }
 
     /**
@@ -253,7 +255,7 @@ class EpisodeService
      */
     public function showAllHistory(): mixed
     {
-        return User_episodes_history::where('user_id', auth()->id())->with('episode')->get();
+        return User_episodesHistory::where('user_id', auth()->id())->with('episode')->get();
 
     }
 }

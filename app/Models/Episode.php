@@ -37,7 +37,7 @@ class Episode extends Model
     }
     public function history(): BelongsToMany
     {
-        return $this->belongsToMany(User_episodes_history::class);
+        return $this->belongsToMany(User_episodesHistory::class);
     }
     /**
      * @return HasMany
