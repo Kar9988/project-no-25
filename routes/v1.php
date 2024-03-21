@@ -39,7 +39,7 @@ Route::middleware('auth:api')->group(function () {
         'destroy' => 'userLikes.destroy',
     ]);
     Route::get('history', [EpisodeController::class, 'index']);
-    Route::post('history/{id}', [EpisodeController::class, 'storeHistory']);
+    Route::post('history', [EpisodeController::class, 'storeHistory']);
     Route::get('del-history', [EpisodeController::class, 'destroyHistory']);
     Route::get('all-history', [EpisodeController::class, 'showAllHistory']);
 

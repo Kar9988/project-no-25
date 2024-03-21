@@ -125,9 +125,9 @@ class EpisodeController extends Controller
      * @param int $id
      * @return JsonResponse
      */
-    public function storeHistory(int $id,Request $request,): JsonResponse
+    public function storeHistory(Request $request,): JsonResponse
     {
-        $episodes = $this->episodeService->storeHistory($id,$request->all());
+        $episodes = $this->episodeService->storeHistory($request->all());
         if ($episodes) {
             return response()->json([
                 'success' => $episodes,

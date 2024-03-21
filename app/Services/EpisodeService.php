@@ -223,14 +223,12 @@ class EpisodeService
     }
 
     /**
-     * @param int $id
      * @param array $data
-     * @return mixed
+     * @return bool
      */
-    public function storeHistory(int $id,array $data): mixed
+    public function storeHistory(array $data): bool
     {
-        $history = UserEpisodesHistory::find($id);
-
+        $history = UserEpisodesHistory::query()->where('user_id', $data['user_id'])->where('episode_id', $data['episode_id'])->first();
         if ($history) {
             $history->update(['updated_at' => now()]);
             return true;
@@ -245,7 +243,7 @@ class EpisodeService
      */
     public function destroyHistory(array $data): mixed
     {
-        return UserEpisodesHistory::select()->whereIn('episode_id', $data)->delete();
+        return UserEpisodesHistory::select()->whereIn('id', $data)->delete();
     }
 
     /**
