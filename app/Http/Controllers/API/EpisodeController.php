@@ -46,7 +46,7 @@ class EpisodeController extends Controller
             'success' => true,
             'message' => 'This is user video history',
             'history' => ViewResource::collection($history),
-            'type' => 'success'
+            'type'    => 'success'
 
         ], 200);
     }
@@ -61,9 +61,9 @@ class EpisodeController extends Controller
         $episodes = $this->episodeService->randomEpisodes();
 
         return response()->json([
-            'success' => true,
+            'success'  => true,
             'episodes' => LibraryResource::collection($episodes),
-            'type' => 'success'
+            'type'     => 'success'
 
         ]);
     }
@@ -85,19 +85,19 @@ class EpisodeController extends Controller
             $response = Response::stream(function () use ($stream) {
                 $stream->start();
             }, 200, [
-                'Content-Type' => 'video/mp4',
-                'Cache-Control' => 'no-cache, no-store, must-revalidate',
-                'Pragma' => 'no-cache',
-                'Expires' => '0',
-                'Content-Range' => 1000,
-                'Content-Disposition' => 'inline',
+                'Content-Type'           => 'video/mp4',
+                'Cache-Control'          => 'no-cache, no-store, must-revalidate',
+                'Pragma'                 => 'no-cache',
+                'Expires'                => '0',
+                'Content-Range'          => 1000,
+                'Content-Disposition'    => 'inline',
                 'X-Content-Type-Options' => 'nosniff',
             ]);
             $response->send();
         } else {
             return response()->json([
                 'success' => false,
-                'type' => 'error',
+                'type'    => 'error',
                 'message' => 'Please buy episode',
             ], 403);
         }
@@ -117,7 +117,7 @@ class EpisodeController extends Controller
         return response()->json([
             'success' => true,
             'library' => LibraryResource::collection($episodes),
-            'type' => 'success'
+            'type'    => 'success'
         ]);
     }
 
@@ -127,17 +127,21 @@ class EpisodeController extends Controller
      */
     public function storeHistory(Request $request,): JsonResponse
     {
-        $episodes = $this->episodeService->storeHistory($request->all());
+        $data = [
+            'user_id'    => auth()->id(),
+            'episode_id' => $request->episode_id
+        ];
+        $episodes = $this->episodeService->storeHistory($data);
         if ($episodes) {
             return response()->json([
                 'success' => $episodes,
-                'type' => 'success',
+                'type'    => 'success',
                 'message' => 'History saved successful'
             ]);
         }
         return response()->json([
             'success' => $episodes,
-            'type' => 'error',
+            'type'    => 'error',
             'message' => 'Failed to save history',
         ]);
     }
@@ -149,16 +153,16 @@ class EpisodeController extends Controller
     public function destroyHistory(Request $request): JsonResponse
     {
         $destroy = $this->episodeService->destroyHistory($request->ids);
-        if ($destroy){
+        if ($destroy) {
             return response()->json([
                 'success' => true,
-                'type' => 'success',
+                'type'    => 'success',
                 'message' => 'History deleted successful',
             ]);
         }
         return response()->json([
             'success' => false,
-            'type' => 'error',
+            'type'    => 'error',
             'message' => 'Failed to delete history',
         ]);
     }
@@ -166,17 +170,17 @@ class EpisodeController extends Controller
 
     public function showAllHistory()
     {
-       $userHistory = $this->episodeService->showAllHistory();
-       if ($userHistory){
-           return response()->json([
-               'success' => true,
-               'type' => 'success',
-               'data' => HistoryResource::collection($userHistory),
-           ]);
-       }
+        $userHistory = $this->episodeService->showAllHistory();
+        if ($userHistory) {
+            return response()->json([
+                'success' => true,
+                'type'    => 'success',
+                'data'    => HistoryResource::collection($userHistory),
+            ]);
+        }
         return response()->json([
             'success' => false,
-            'type' => 'error',
+            'type'    => 'error',
             'message' => 'We currently have no history',
         ]);
 

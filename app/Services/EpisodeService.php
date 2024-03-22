@@ -223,18 +223,19 @@ class EpisodeService
     }
 
     /**
-     * @param int $id
      * @param array $data
-     * @return mixed
+     * @return bool
      */
-    public function storeHistory(int $id,array $data): mixed
+    public function storeHistory(array $data): bool
     {
-        $history = UserEpisodesHistory::find($id);
-
+        $history = UserEpisodesHistory::where('user_id', $data['user_id'])
+            ->where('episode_id', $data['episode_id']);
         if ($history) {
             $history->update(['updated_at' => now()]);
             return true;
+
         } else {
+
             return UserEpisodesHistory::create($data) ? true : false;
         }
     }
