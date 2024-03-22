@@ -35,4 +35,18 @@ class LoginController extends Controller
             ], 401);
         }
     }
+
+    /**
+     * @return JsonResponse
+     */
+    public function logout(): JsonResponse
+    {
+        $user = Auth::user()->token();
+        $user->revoke();
+
+        return response()->json([
+            'success' => true,
+            'type'    =>'success'
+        ]);
+    }
 }

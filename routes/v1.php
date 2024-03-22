@@ -29,6 +29,7 @@ Route::get('auth/google', [SocialiteController::class, 'redirectToGoogle']);
 Route::get('auth/google/callback', [SocialiteController::class, 'handleGoogleCallback']);
 
 Route::middleware('auth:api')->group(function () {
+    Route::post('/logout', [LoginController::class, 'logout']);
     Route::get('plans', [PlanController::class,'index']);
     Route::delete('/account/delete', [UserController::class, 'delete']);
     Route::get('/auth/user', [AuthController::class, 'getAuthUser']);
