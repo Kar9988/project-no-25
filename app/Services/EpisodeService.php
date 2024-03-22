@@ -263,11 +263,14 @@ class EpisodeService
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
-    public function showAllHistory(): mixed
+    public function showAllHistory(int $page = 1, int $take = 10): mixed
     {
         return UserEpisodesHistory::where('user_id', auth()->id())
             ->with('episode')
-            ->orderByDesc('updated_at')->get();
+            ->orderByDesc('updated_at')
+            ->skip($page*$take-$take)
+            ->take($take)
+            ->get();
 
     }
 }

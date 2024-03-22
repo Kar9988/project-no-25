@@ -170,7 +170,7 @@ class EpisodeController extends Controller
 
     public function showAllHistory()
     {
-        $userHistory = $this->episodeService->showAllHistory();
+        $userHistory = $this->episodeService->showAllHistory(\request()->get('page', 1));
         if ($userHistory) {
             return response()->json([
                 'success' => true,
