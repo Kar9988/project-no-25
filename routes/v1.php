@@ -82,7 +82,8 @@ Route::middleware('auth:api')->group(function () {
         'destroy' => 'userViews.destroy',
     ]);
     Route::get('videos', [UserVideoController::class, 'index']);
-    Route::get('random/episodes', [EpisodeController::class, 'randomEpisodes']);
+    Route::get('random/videos', [UserVideoController::class, 'randomVideos']);
+//    Route::get('random/episodes', [EpisodeController::class, 'randomEpisodes']);
     Route::get('video/{id}', [UserVideoController::class, 'show']);
     Route::get('discover', [UserVideoController::class, 'discover']);
     Route::get('category/{categoryId}', [UserVideoController::class, 'filter']);

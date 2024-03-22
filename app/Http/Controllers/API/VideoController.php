@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\LibraryResource;
+use App\Http\Resources\VideoResource;
 use App\Models\Category;
 use App\Services\VideoService;
 use Illuminate\Http\JsonResponse;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class VideoController extends Controller
 {
@@ -36,6 +40,22 @@ class VideoController extends Controller
             'success' => true,
             'type'    => 'success',
             'videos'  => $result
+        ]);
+    }
+
+    /**
+     * @return JsonResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function randomVideos(): JsonResponse
+    {
+        $videos = $this->videoService->random();
+
+        return response()->json([
+            'success'  => true,
+            'episodes' => VideoResource::collection($videos),
+            'type'     => 'success'
         ]);
     }
 

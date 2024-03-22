@@ -75,37 +75,39 @@ class UserBalanceService
     {
         try {
             DB::beginTransaction();
-             $userBalance = UserBalance::query()->where('user_id',$userId)->first();
-             $userBalanceamount = (int)$userBalance['amount'] + (int)$data['amount'];
-             $updateData = [
-                 'amount' => $userBalanceamount
-             ];
-             $update = UserBalance::query()->where('id',  $userBalance['id'])->update($updateData);
-             if ($update){
-                 $paymentable = [
-                     'from_id' => auth()->id(),
-                     'user_id' =>$userId,
-                     'amount' => $data['amount'],
-                     'paymentable_type' => UserBalance::class,
-                     'Paymentable_id'   => $userBalance['id']
-                 ];
-                 $created = $this->paymentService->create($paymentable);
-             }
+            $userBalance = UserBalance::query()->where('user_id', $userId)->first();
+            $userBalanceamount = (int)$userBalance['amount'] + (int)$data['amount'];
+            $updateData = [
+                'amount' => $userBalanceamount
+            ];
+            $update = UserBalance::query()->where('id', $userBalance['id'])->update($updateData);
+            if ($update) {
+                $paymentable = [
+                    'from_id'          => auth()->id(),
+                    'user_id'          => $userId,
+                    'amount'           => $data['amount'],
+                    'paymentable_type' => UserBalance::class,
+                    'Paymentable_id'   => $userBalance['id']
+                ];
+                $created = $this->paymentService->create($paymentable);
+            }
             if ($created) {
                 DB::commit();
+
                 return [
                     'success' => true,
                     'type'    => 'success',
                 ];
-            }else{
+            } else {
+
                 return [
                     'success' => false,
                     'type'    => 'error',
                 ];
             }
-        }
-        catch (\Exception $exception){
+        } catch (\Exception $exception) {
             DB::rollBack();
+
             return [
                 'success' => false,
                 'type'    => 'error',

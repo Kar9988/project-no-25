@@ -7,6 +7,7 @@ use App\Http\Resources\VideoResource;
 use App\Jobs\CreateEpisodeJob;
 use App\Models\Category;
 use App\Models\Video;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Arr;
@@ -156,6 +157,22 @@ class VideoService
             ->get();
 
         return VideoResource::collection($videos);
+    }
+
+    /**
+     * @return Collection|array
+     */
+    public function random(): Collection|array
+    {
+
+        return Video::query()
+            ->with(['episodes'])
+            ->with(['episodes' => function ($query) {
+                $query->withCount(['views', 'likes']);
+            }])
+            ->orderBy(DB::raw('RAND()'))
+            ->take(6)
+            ->get();
     }
 
     /**

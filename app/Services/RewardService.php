@@ -27,6 +27,15 @@ class RewardService
     }
 
     /**
+     * @return Collection
+     */
+    public function getById($id): Reward
+    {
+        return $this->reward->where('id', $id)
+             ->first();
+    }
+
+    /**
      * @param array $data
      * @return Reward
      */
