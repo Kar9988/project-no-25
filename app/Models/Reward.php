@@ -14,9 +14,18 @@ class Reward extends Model
     protected $guarded = [''];
 
     const DEFAULT_REWARDS = [
-        'DAILY_REWARD' => 20,
-        'DAILY_ADS_REWARD' => 50,
-        'FB_REWARD' => 50
+        'DAILY_REWARD' => [
+            'type' => 'daily',
+            'bonus' => 20,
+        ],
+        'DAILY_ADS_REWARD' => [
+            'type' => 'daily_ad',
+            'bonus' => 50
+        ],
+        'FB_REWARD' => [
+            'type' => 'fb_social',
+            'bonus' => 50
+        ]
     ];
 
     /**

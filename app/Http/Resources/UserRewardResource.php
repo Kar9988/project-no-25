@@ -19,6 +19,7 @@ class UserRewardResource extends JsonResource
             'id'        => $this->id,
             'name'      => $this->reward->name,
             'reward_id' => $this->reward->id,
+            'user_id'   => $this->user_id,
             'bonus'     => $this->reward->bonus,
             'date'      => $this->created_at->toDateString()
         ];
