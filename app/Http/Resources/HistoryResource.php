@@ -16,10 +16,11 @@ class HistoryResource extends JsonResource
     {
 
         return [
-            'id'   =>  $this->id,
+            'id'         => $this->id,
             'episode_id' => $this->episode_id,
-            'user_id'    =>$this->user_id,
-            'episode'   => new EpisodeResource($this->episode),
+            'user_id'    => $this->user_id,
+            'updated'    => $this->updated_at->toDateTimeString(),
+            'episode'    => new EpisodeResource($this->episode),
         ];
     }
 }

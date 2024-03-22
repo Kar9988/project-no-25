@@ -35,8 +35,8 @@ class EpisodeService
      */
     public function index(int $page = 1, int $take = 10): mixed
     {
-        return Episode::where('user_id', auth()->user()->id)
-            ->join('views', 'views.episode_id', '=', 'episodes.id')
+        return Episode::join('views', 'views.episode_id', '=', 'episodes.id')
+            ->where('views.user_id', auth()->user()->id)
             ->select('episodes.title', 'episodes.thumb', 'episodes.id', 'episodes.created_at')
             ->orderByDesc('episodes.created_at')
             ->groupBy('episodes.id')
@@ -229,7 +229,7 @@ class EpisodeService
     public function storeHistory(array $data): bool
     {
         $history = UserEpisodesHistory::where('user_id', $data['user_id'])
-            ->where('episode_id', $data['episode_id']);
+            ->where('episode_id', $data['episode_id'])->first();
         if ($history) {
             $history->update(['updated_at' => now()]);
             return true;
@@ -265,7 +265,9 @@ class EpisodeService
      */
     public function showAllHistory(): mixed
     {
-        return UserEpisodesHistory::where('user_id', auth()->id())->with('episode')->get();
+        return UserEpisodesHistory::where('user_id', auth()->id())
+            ->with('episode')
+            ->orderByDesc('updated_at')->get();
 
     }
 }

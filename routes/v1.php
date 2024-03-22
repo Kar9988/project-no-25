@@ -40,10 +40,10 @@ Route::middleware('auth:api')->group(function () {
         'update' => 'userLikes.update',
         'destroy' => 'userLikes.destroy',
     ]);
-    Route::get('history', [EpisodeController::class, 'index']);
+    Route::get('history', [EpisodeController::class, 'showAllHistory']);
     Route::post('history', [EpisodeController::class, 'storeHistory']);
     Route::delete('history', [EpisodeController::class, 'destroyHistory']);
-    Route::get('all-history', [EpisodeController::class, 'showAllHistory']);
+//    Route::get('all-history', [EpisodeController::class, 'showAllHistory']);
 
 
 

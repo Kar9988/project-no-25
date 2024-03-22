@@ -181,7 +181,7 @@ class EpisodeController extends Controller
         return response()->json([
             'success' => false,
             'type'    => 'error',
-            'message' => 'We currently have no history',
+            'message' => 'You dont have any history yet',
         ]);
 
     }
