@@ -22,7 +22,6 @@ class UserRewardStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id'   => 'required|numeric|exists:users,id',
             'reward_id' => 'required|numeric|exists:rewards,id'
         ];
     }

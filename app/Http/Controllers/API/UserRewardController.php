@@ -49,6 +49,7 @@ class UserRewardController extends Controller
     public function store(UserRewardStoreRequest $request): JsonResponse
     {
         $result = $this->userRewardService->addUserReward((int)$request->get('user_id'), (int)$request->get('reward_id'));
+        dd($result);
         if (!$result['success']) {
 
             return response()->json($result);
