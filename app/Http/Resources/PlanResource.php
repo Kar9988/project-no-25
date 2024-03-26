@@ -22,6 +22,7 @@ class PlanResource extends JsonResource
             'description' => $this->description,
             'sub_description' => $this->sub_description,
             'discount' => $this->discount,
+            'type'    => $this->type
         ];
     }
 }
