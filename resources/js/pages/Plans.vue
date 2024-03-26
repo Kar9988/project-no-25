@@ -7,7 +7,7 @@ export default {
             createData: {
                 name: 'asdasd'
             },
-            plans: []
+            plans: [],
         }
     },
     methods: {
@@ -73,6 +73,7 @@ export default {
                 <th class="border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-slate-400 light:text-slate-200 text-left">Description</th>
                 <th class="border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-slate-400 light:text-slate-200 text-left">Discount</th>
                 <th class="border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-slate-400 light:text-slate-200 text-left">Sub Description</th>
+                <th class="border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-slate-400 light:text-slate-200 text-left">Types</th>
             </tr>
             </thead>
             <tbody class="bg-white light:bg-slate-800">
@@ -94,6 +95,14 @@ export default {
                 </td>
                 <td class="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 light:text-slate-400">
                     <input v-model="plan.sub_description" type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Sub Description">
+                </td>
+                <td class="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 light:text-slate-400">
+                    <select class=" rounded border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 light:text-slate-400"  v-model="plan.type">
+                        <option value="One Time">One Time</option>
+                        <option value="Weekly">Weekly</option>
+                        <option  value="Yearly">Yearly</option>
+                    </select>
+<!--                    <input v-model="plan.type" type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="type">-->
                 </td>
                 <td class="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 light:text-slate-400">
                     <button
