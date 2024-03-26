@@ -37,9 +37,15 @@ class UserRewardService
     public function showUserRewards(int $userId, null|string $date = null, int $page = 1, int $take = 10): Collection
     {
 
-        return $this->userRewardModel->where('user_id', $userId)
+        return $this->userRewardModel
+            ->select('user_reward.*')
+            ->join('rewards', 'rewards.id', 'user_reward.reward_id')
+            ->where('user_id', $userId)
             ->when($date, function ($query) use ($date) {
-                $query->whereDate('created_at', $date);
+                $query->where(function ($q) use ($date) {
+                    $q->whereDate('user_reward.created_at', $date)
+                        ->orWhere('rewards.type', 'fb_social');
+                });
             })
             ->with('reward')
             ->skip($page * $take - $take)
