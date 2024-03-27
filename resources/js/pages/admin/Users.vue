@@ -175,6 +175,15 @@ const deleteUser = async (userId) => {
                     </th>
                     <th
                         class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+                    > Balance
+
+                    </th>
+                    <th
+                        class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+                    > Bonus
+                    </th>
+                    <th
+                        class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
                     > settings
 
                     </th>
@@ -188,13 +197,20 @@ const deleteUser = async (userId) => {
                     >
                         {{ user.name }}
                     </td>
+
                     <th
                         class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center"
                     >
                         <span
                             class="ml-3 font-bold"
                         >{{ user.email }}</span>
-                    </th>
+                    </th >
+                    <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs items-center">
+                        {{ user.balance }}
+                    </td>
+                    <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs items-center">
+                        {{ user.bonus }}
+                    </td>
                     <td>
                         <th class="flex p-[10px]">
                             <div class="pr-[8px]">
