@@ -54,7 +54,7 @@ class UserBalanceService
      */
     public function update(array $data, int $id): int
     {
-        return UserBalance::query()->where('id', $id)->update($data);
+        return UserBalance::query()->where('user_id', $id)->update($data);
     }
 
     /**
