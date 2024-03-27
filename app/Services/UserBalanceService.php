@@ -71,17 +71,17 @@ class UserBalanceService
      * @param int $userId
      * @return array
      */
-    public function addBalance(array $data, int $userId): array
+    public function addBalance(array $data, int $userId, bool $invoicePay = false): array
     {
         try {
             DB::beginTransaction();
             $userBalance = UserBalance::query()->where('user_id', $userId)->first();
-            $userBalanceamount = (int)$userBalance['amount'] + (int)$data['amount'];
+            $userBalanceAmount = (int)$userBalance['amount'] + (int)$data['amount'];
             $updateData = [
-                'amount' => $userBalanceamount
+                'amount' => $userBalanceAmount
             ];
             $update = UserBalance::query()->where('id', $userBalance['id'])->update($updateData);
-            if ($update) {
+            if ($update && !$invoicePay) {
                 $paymentable = [
                     'from_id'          => auth()->id(),
                     'user_id'          => $userId,

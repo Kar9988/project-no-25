@@ -4,12 +4,24 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Admin Panel</title>
+    <style>
+        .title{
+            text-align:center;
+            margin-top:20px;
+            font-size:80px
+        }
+        .container{
+            margin-top: 30px;
+            margin: 0 auto;
+            padding: 70px;
+        }
+    </style>
     @vite('resources/css/app.css')
 </head>
 <body>
 <div class="">
-    <p class="text-[80px] text-center">Privacy Policy</p>
-    <div class="m-auto w-1/2 mt-[30px]">
+    <p class="title">Privacy Policy</p>
+    <div class="m-auto container w-1/2 mt-[30px]">
         <p>
             Amazing Things Media LLC. and its affiliates (“Amazing Things Media”, “us”, “our” or “we”) are dedicated to
             protecting the privacy rights of our users (“users” or “you”). This Privacy Policy (the “Policy”) describes
