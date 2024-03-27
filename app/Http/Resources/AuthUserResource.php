@@ -19,6 +19,7 @@ class AuthUserResource extends JsonResource
             'first_name' => $this->name,
             'email'      => $this->email,
             'balance'    => $this->userBalance->amount ?? 0,
+            'bonus'      =>$this->userBalance->bonus?? 0,
             'role'       => $this->whenLoaded('role', function () {
                 return $this->role->name;
             }),
