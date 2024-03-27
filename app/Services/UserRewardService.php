@@ -84,11 +84,11 @@ class UserRewardService
         if (!$userBalance) {
             $userBalance = $this->userBalanceService->store([
                 'user_id' => $userId,
-                'amount'  => $reward->bonus
+                'bonus'  => $reward->bonus
             ]);
         } else {
             $this->userBalanceService->update([
-                'amount' => $reward->bonus + $userBalance->amount
+                'bonus' => $reward->bonus + $userBalance->bonus
             ], $userId);
         }
         $userReward = $this->userRewardModel->create([
