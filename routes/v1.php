@@ -7,6 +7,7 @@ use App\Http\Controllers\API\Admin\UserController as AdminUserController;
 use App\Http\Controllers\API\Admin\VideoController;
 use App\Http\Controllers\API\ContactUsController;
 use App\Http\Controllers\API\EpisodeController;
+use App\Http\Controllers\API\OAuthController;
 use App\Http\Controllers\API\PurchaseController;
 use App\Http\Controllers\API\RewardController;
 use App\Http\Controllers\API\SocialiteController;
@@ -25,6 +26,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [RegisterController::class, 'store']);
 Route::post('/login', [LoginController::class, 'store']);
+
+Route::post('/oauth/login', OAuthController::class);
 Route::get('auth/google', [SocialiteController::class, 'redirectToGoogle']);
 Route::get('auth/google/callback', [SocialiteController::class, 'handleGoogleCallback']);
 
