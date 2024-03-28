@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use phpseclib3\Crypt\EC\Formats\Keys\Common;
 
@@ -47,14 +48,16 @@ class OAuthController extends Controller
             OauthAccount::updateOrCreate(['user_id' => $user->id], $oauthData);
         }
 
-        $token = OauthAccount::where('user_id', $user->id)->value('idToken');
+       if (auth::loginUsingId($user->id)){
+           $token = auth()->user()->createToken('API Token')->accessToken;
+           return response()->json([
+               'success' => true,
+               'user' => new AuthUserResource($user),
+               'token' => $token,
+               'type' => 'success'
+           ]);
+       }
 
-        return response()->json([
-            'success' => true,
-            'user' => new AuthUserResource($user),
-            'token' => $token,
-            'type' => 'success'
-        ]);
     }
 
 
