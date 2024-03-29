@@ -20,43 +20,54 @@ class OAuthController extends Controller
 
     public function __invoke(Request $request)
     {
-        $user = User::firstOrCreate(
-            ['email' => $request->user['email']],
-            ['name' => $request->user['name'], 'role_id' => Role::USER_ID]
-        );
+        try {
+            DB::beginTransaction();
+            $user = User::firstOrCreate(
+                ['email' => $request->user['email']],
+                ['name' => $request->user['name'], 'role_id' => Role::USER_ID]
+            );
 
-        if ($user) {
-            $oauthData = [
-                'user_id' => $user->id,
-                'idToken' => $request->idToken,
-            ];
+            if ($user) {
+                $oauthData = [
+                    'user_id' => $user->id,
+                    'idToken' => $request->idToken,
+                ];
 
-            switch ($request->type) {
-                case 'google':
-                    $oauthData['google_id'] = $request->user['id'];
-                    break;
-                case 'facebook':
-                    $oauthData['facebook_id'] = $request->user['id'];
-                    break;
-                case 'apple':
-                    $oauthData['apple_id'] = $request->user['id'];
-                    break;
-                default:
-                    break;
+                switch ($request->type) {
+                    case 'google':
+                        $oauthData['google_id'] = $request->user['id'];
+                        break;
+                    case 'facebook':
+                        $oauthData['facebook_id'] = $request->user['id'];
+                        break;
+                    case 'apple':
+                        $oauthData['apple_id'] = $request->user['id'];
+                        break;
+                    default:
+                        break;
+                }
+
+                OauthAccount::updateOrCreate(['user_id' => $user->id], $oauthData);
             }
 
-            OauthAccount::updateOrCreate(['user_id' => $user->id], $oauthData);
+            if (auth::loginUsingId($user->id)){
+                $token = auth()->user()->createToken('API Token')->accessToken;
+                return response()->json([
+                    'success' => true,
+                    'user' => new AuthUserResource($user),
+                    'token' => $token,
+                    'type' => 'success'
+                ]);
+            }
+            DB::commit();
+        }catch (\Exception $exception){
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'type' => 'error',
+                'message' => $exception->getMessage()
+            ]);
         }
-
-       if (auth::loginUsingId($user->id)){
-           $token = auth()->user()->createToken('API Token')->accessToken;
-           return response()->json([
-               'success' => true,
-               'user' => new AuthUserResource($user),
-               'token' => $token,
-               'type' => 'success'
-           ]);
-       }
 
     }
 
