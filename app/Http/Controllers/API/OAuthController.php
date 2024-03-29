@@ -7,12 +7,9 @@ use App\Http\Resources\AuthUserResource;
 use App\Models\OauthAccount;
 use App\Models\Role;
 use App\Models\User;
-use App\Services\UserService;
-use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use phpseclib3\Crypt\EC\Formats\Keys\Common;
 
 
 class OAuthController extends Controller
@@ -52,6 +49,7 @@ class OAuthController extends Controller
 
             if (auth::loginUsingId($user->id)){
                 $token = auth()->user()->createToken('API Token')->accessToken;
+                DB::commit();
                 return response()->json([
                     'success' => true,
                     'user' => new AuthUserResource($user),
@@ -59,7 +57,6 @@ class OAuthController extends Controller
                     'type' => 'success'
                 ]);
             }
-            DB::commit();
         }catch (\Exception $exception){
             DB::rollBack();
             return response()->json([
