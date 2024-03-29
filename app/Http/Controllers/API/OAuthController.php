@@ -56,6 +56,13 @@ class OAuthController extends Controller
                     'token' => $token,
                     'type' => 'success'
                 ]);
+            }else{
+                DB::rollBack();
+                return response()->json([
+                    'success' => false,
+                    'type' => 'error',
+                    'message' => 'Something went wrong'
+                ]);
             }
         }catch (\Exception $exception){
             DB::rollBack();
