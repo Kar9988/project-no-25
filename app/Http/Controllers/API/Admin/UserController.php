@@ -45,6 +45,7 @@ class UserController extends Controller
      */
     public function show(User $user): JsonResponse
     {
+
         $user->load('userBalance');
         return response()->json([
             'success' => true,
@@ -65,18 +66,31 @@ class UserController extends Controller
             'email'=>$request->email,
         ];
 
-        $updateData = $this->service->update($userData, $user->id);
+        $updateData = $this->service->update($userData, $user['id']);
         if ($updateData){
             $balanceValue =[
                 'amount' => $request->amount,
                 'bonus'  => $request->bonus,
             ];
-            $updateBalance = $this->balanceService->update($balanceValue, $request->balanceId);
-            if ($updateBalance === 1) {
+            $getBalance = $this->balanceService->getByUserId($user['id']);
+            if (!$getBalance){
+                $this->balanceService->store([
+                    'amount' => $request->amount,
+                    'bonus'  => $request->bonus,
+                    'user_id' => $user->id,
+                ]);
                 return response()->json([
                     'success' => true,
                     'type' => 'success'
                 ]);
+            }else{
+                $updateBalance = $this->balanceService->update($balanceValue, $request->balanceId);
+                if ($updateBalance === 1) {
+                    return response()->json([
+                        'success' => true,
+                        'type' => 'success'
+                    ]);
+                }
             }
         }
 

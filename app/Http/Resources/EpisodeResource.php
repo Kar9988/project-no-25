@@ -32,6 +32,7 @@ class EpisodeResource extends JsonResource
             'views_count' => $this->views_count,
             'likes_count' => $this->likes_count,
             'price'       => $this->price ?? 0,
+            'video_id'    => $this->video_id,
             'liked'       => $this->isLikedByUser($user->id),
         ];
     }
