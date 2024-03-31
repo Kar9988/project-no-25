@@ -19,26 +19,27 @@ class OAuthController extends Controller
     {
         try {
             DB::beginTransaction();
+            $data = $request->user??$request->all();
             $user = User::firstOrCreate(
-                ['email' => $request->user['email']],
-                ['name' => $request->user['name'], 'role_id' => Role::USER_ID]
+                ['email' => $data['email']],
+                ['name' => $data['name']??$data['first_name'], 'role_id' => Role::USER_ID]
             );
 
             if ($user) {
                 $oauthData = [
                     'user_id' => $user->id,
-                    'idToken' => $request->idToken,
+                    'idToken' => $data['idToken']??$data['id'],
                 ];
 
-                switch ($request->type) {
+                switch ($data['type']) {
                     case 'google':
-                        $oauthData['google_id'] = $request->user['id'];
+                        $oauthData['google_id'] = $data['id'];
                         break;
                     case 'facebook':
-                        $oauthData['facebook_id'] = $request->user['id'];
+                        $oauthData['facebook_id'] = $data['id'];
                         break;
                     case 'apple':
-                        $oauthData['apple_id'] = $request->user['id'];
+                        $oauthData['apple_id'] = $data['id'];
                         break;
                     default:
                         break;
