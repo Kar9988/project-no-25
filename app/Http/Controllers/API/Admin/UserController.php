@@ -8,6 +8,7 @@ use App\Http\Requests\CreateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\UserTransaction;
 use App\Services\AdminService;
 use App\Services\UserBalanceService;
 use http\Env\Request;
@@ -69,23 +70,58 @@ class UserController extends Controller
         $updateData = $this->service->update($userData, $user['id']);
         if ($updateData){
             $balanceValue =[
-                'amount' => $request->amount,
-                'bonus'  => $request->bonus,
+                'amount' => $request->amount??0,
+                'bonus'  => $request->bonus??0,
             ];
             $getBalance = $this->balanceService->getByUserId($user['id']);
             if (!$getBalance){
+                if ($balanceValue['amount']) {
+                    UserTransaction::query()->create([
+                        'user_id' => $user['id'],
+                        'type'    => 'increase',
+                        'amount'  => $balanceValue['amount'],
+                        'note'    => 'Admin add balance'
+                    ]);
+                }
+                if ($balanceValue['bonus']) {
+                    UserTransaction::query()->create([
+                        'user_id' => $user['id'],
+                        'type'    => 'increase',
+                        'amount'  => $balanceValue['bonus'],
+                        'note'    => 'Admin add bonus'
+                    ]);
+                }
                 $this->balanceService->store([
-                    'amount' => $request->amount,
-                    'bonus'  => $request->bonus,
+                    'amount' => $balanceValue['amount'],
+                    'bonus'  => $balanceValue['bonus'],
                     'user_id' => $user->id,
                 ]);
+
                 return response()->json([
                     'success' => true,
                     'type' => 'success'
                 ]);
-            }else{
-                $updateBalance = $this->balanceService->update($balanceValue, $request->balanceId);
+            } else {
+                $updateBalance = $this->balanceService->update($balanceValue, $user['id']);
                 if ($updateBalance === 1) {
+                    if ($getBalance->bonus != $balanceValue['bonus']) {
+                        $type = $balanceValue['bonus'] > $getBalance->bonus ? 'increase' : 'decrease';
+                        UserTransaction::query()->create([
+                            'user_id' => $user['id'],
+                            'type'    => $type,
+                            'amount'  => abs($getBalance->bonus - $balanceValue['bonus']),
+                            'note'    => "Admin $type bonus"
+                        ]);
+                    }
+                    if ($getBalance->amount != $balanceValue['amount']) {
+                        $type = $balanceValue['amount'] > $getBalance->amount ? 'increase' : 'decrease';
+                        UserTransaction::query()->create([
+                            'user_id' => $user['id'],
+                            'type'    => $type,
+                            'amount'  => abs($getBalance->amount - $balanceValue['amount']),
+                            'note'    => "Admin $type amount"
+                        ]);
+                    }
                     return response()->json([
                         'success' => true,
                         'type' => 'success'

@@ -19,57 +19,76 @@ class OAuthController extends Controller
     {
         try {
             DB::beginTransaction();
-            $data = $request->user??$request->all();
-            $user = User::firstOrCreate(
-                ['email' => $data['email']],
-                ['name' => $data['name']??$data['first_name'], 'role_id' => Role::USER_ID]
-            );
+            $data = $request->user ?? $request->all();
+            if ($data['type'] !== 'apple') {
+                $user = User::firstOrCreate(
+                    ['email' => $data['email']],
+                    ['name' => $data['name'] ?? $data['first_name'], 'role_id' => Role::USER_ID]
+                );
+                if ($user) {
+                    $oauthData = [
+                        'user_id' => $user->id,
+                        'idToken' => $data['idToken'] ?? $data['id'],
+                    ];
 
-            if ($user) {
-                $oauthData = [
-                    'user_id' => $user->id,
-                    'idToken' => $data['idToken']??$data['id'],
-                ];
+                    switch ($data['type']) {
+                        case 'google':
+                            $oauthData['google_id'] = $data['id'];
+                            break;
+                        case 'facebook':
+                            $oauthData['facebook_id'] = $data['id'];
+                            break;
+                        case 'apple':
+                            $oauthData['apple_id'] = $data['id'];
+                            break;
+                        default:
+                            break;
+                    }
 
-                switch ($data['type']) {
-                    case 'google':
-                        $oauthData['google_id'] = $data['id'];
-                        break;
-                    case 'facebook':
-                        $oauthData['facebook_id'] = $data['id'];
-                        break;
-                    case 'apple':
-                        $oauthData['apple_id'] = $data['id'];
-                        break;
-                    default:
-                        break;
+                    OauthAccount::updateOrCreate(['user_id' => $user->id], $oauthData);
                 }
-
-                OauthAccount::updateOrCreate(['user_id' => $user->id], $oauthData);
+            } else {
+                $user = User::query()
+                    ->select('users.*')
+                    ->join('oauth_accounts', 'oauth_accounts.user_id', 'users.id')
+                    ->where('oauth_accounts.apple_id', $data['id'])
+                    ->first();
+                if (!$user) {
+                    $user = User::create([
+                        'name'    => $data['name'] ?? $data['first_name'],
+                        'email'   => $data['email'],
+                        'role_id' => Role::USER_ID
+                    ]);
+                    OauthAccount::create([
+                        'user_id'  => $user->id,
+                        'apple_id' => $data['id'],
+                        'idToken'  => $data['id']
+                    ]);
+                }
             }
 
-            if (auth::loginUsingId($user->id)){
+            if (auth::loginUsingId($user->id)) {
                 $token = auth()->user()->createToken('API Token')->accessToken;
                 DB::commit();
                 return response()->json([
                     'success' => true,
-                    'user' => new AuthUserResource($user),
-                    'token' => $token,
-                    'type' => 'success'
+                    'user'    => new AuthUserResource($user),
+                    'token'   => $token,
+                    'type'    => 'success'
                 ]);
-            }else{
+            } else {
                 DB::rollBack();
                 return response()->json([
                     'success' => false,
-                    'type' => 'error',
+                    'type'    => 'error',
                     'message' => 'Something went wrong'
                 ]);
             }
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             DB::rollBack();
             return response()->json([
                 'success' => false,
-                'type' => 'error',
+                'type'    => 'error',
                 'message' => $exception->getMessage()
             ]);
         }

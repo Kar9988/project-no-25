@@ -61,11 +61,11 @@ export const useUserStore = defineStore('userStore', {
                         bonus:form.bonus,
                         balanceId:form.balanceId
                     },)
-                    .then(() => {
+                    .then(({data}) => {
                         Swal.fire({
                             position: "top",
-                            icon: "success",
-                            title: "Post updated successfully",
+                            icon: data.type,
+                            title: data.message??'Something went wrong',
                             showConfirmButton: false,
                             timer: 1500
                         });
