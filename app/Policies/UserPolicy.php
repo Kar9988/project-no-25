@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Episode;
 use App\Models\User;
 
 class UserPolicy
@@ -14,7 +15,8 @@ class UserPolicy
      */
     public static function canViewEpisode(User $user, int $episodeId): bool
     {
-        $payment = $user->payments()->where('paymentable_id', $episodeId)->first();
+        $payment = $user->payments()->where('paymentable_id', $episodeId)
+            ->where('paymentable_type', Episode::class)->first();
         if ($payment !== null) {
             return true;
         }

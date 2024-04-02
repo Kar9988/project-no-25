@@ -42,8 +42,8 @@ class PurchaseService
         $plan = $this->planService->getById($planId);
         $stripe = new \Stripe\StripeClient(config('stripe.secret_key'));
         $intent = $stripe->paymentIntents->create([
-            'amount' => $plan->price*100,
-            'currency' => 'usd',
+            'amount'                    => $plan->price * 100,
+            'currency'                  => 'usd',
             'automatic_payment_methods' => ['enabled' => true],
         ]);
 
@@ -56,7 +56,7 @@ class PurchaseService
      * @param int $userId
      * @return void
      */
-    public function purchasePlan(string $paymentMethod, string $paymentId, int $userId, int $planId): array
+    public function purchasePlan(string $paymentMethod, string $paymentId, int $userId, int $planId, string $type): array
     {
         try {
             DB::beginTransaction();
@@ -72,7 +72,7 @@ class PurchaseService
             $balance = $this->userBalanceService->getByUserId($userId);
             if ($balance) {
                 $balance->update([
-                    'amount' => $balance->amount + $plan->point
+                    'amount' => $balance->amount + $plan->points
                 ]);
             } else {
                 $this->userBalanceService->store([
@@ -80,16 +80,18 @@ class PurchaseService
                     'amount'  => $plan->points
                 ]);
             }
+            $card = UserCard::query()->create([
+                'user_id'        => $userId,
+                'payment_method' => $paymentMethod,
+                'type'           => $type
+            ]);
             $this->paymentService->create([
                 'user_id'             => auth()->id(),
                 'amount'              => $plan->price,
                 'external_payment_id' => $paymentId,
                 'paymentable_type'    => Plan::class,
-                'paymentable_id'      => $planId
-            ]);
-            UserCard::query()->create([
-                'user_id' => $userId,
-                'payment_method' => $paymentMethod
+                'paymentable_id'      => $planId,
+                'payment_method'      => $card
             ]);
             DB::commit();
 
