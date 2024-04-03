@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\UserBalance;
+use App\Models\UserTransaction;
 use Illuminate\Support\Facades\DB;
 
 class UserBalanceService
@@ -49,12 +50,12 @@ class UserBalanceService
 
     /**
      * @param array $data
-     * @param int $id
+     * @param int $userId
      * @return int
      */
-    public function update(array $data, int $id): int
+    public function update(array $data, int $userId): int
     {
-        return UserBalance::query()->where('user_id', $id)->update($data);
+        return UserBalance::query()->where('user_id', $userId)->update($data);
     }
 
     /**
@@ -80,6 +81,12 @@ class UserBalanceService
             $updateData = [
                 'amount' => $userBalanceAmount
             ];
+            UserTransaction::query()->create([
+                'user_id' => $userId,
+                'type'    => 'increase',
+                'amount'  => $data['amount'],
+                'note'    => 'User add balance'
+            ]);
             $update = UserBalance::query()->where('id', $userBalance['id'])->update($updateData);
             if ($update && !$invoicePay) {
                 $paymentable = [

@@ -29,7 +29,6 @@ onMounted(() => {
 const getUser = async (userId) => {
     try {
         user.value = await useUserStore().getUser(userId);
-        console.log('useruser', user.value)
         form.value.id = user.value?.id
         form.value.name = user.value?.name
         form.value.email = user.value?.email

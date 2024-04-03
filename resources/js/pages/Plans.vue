@@ -5,7 +5,7 @@ export default {
     data() {
         return {
             createData: {
-                name: 'asdasd'
+                name: ''
             },
             plans: [],
         }
@@ -30,7 +30,7 @@ export default {
                     throw new Error(data.message)
                 }
 
-                this.plans.push(data.plan)
+                this.addPlan()
             } catch (e) {
                 console.log(e)
             }
@@ -42,7 +42,7 @@ export default {
                     throw new Error(data.message)
                 }
 
-                this.plans.push(data.plan)
+                this.addPlan()
             } catch (e) {
                 console.log(e)
             }

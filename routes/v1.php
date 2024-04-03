@@ -100,6 +100,8 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/contact-us', [ContactUsController::class, 'sendMail']);
 
     Route::post('purchase/video', [PurchaseController::class, 'store']);
+    Route::post('purchase/plan', [PurchaseController::class, 'storePlan']);
+    Route::post('apple/create-payment-intent', [PurchaseController::class, 'applePaymentIntent']);
     Route::get('episode/source/{episodeId}', [EpisodeController::class, 'getVideoStream'])->name('episode.video');
     Route::apiResource('views', ViewController::class)->names([
         'index' => 'userViews.index',
