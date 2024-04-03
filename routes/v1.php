@@ -22,7 +22,30 @@ use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\ViewController;
 use App\Http\Controllers\API\ViewController as AdminViewController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
+Route::post('/test', function (Request $request) {
+    $file = $request->file('file');
+    $chunkIndex = $request->input('chunkIndex');
+    $totalChunks = $request->input('totalChunks');
+    $fileName = 'test.mp4'; // You can adjust the file naming as per your requirement
+    $storagePath = 'upload/tmp' . $fileName . '_chunks';
+    $chunkPath = $file->storeAs($storagePath, "chunk_$chunkIndex");
+    // Check if all chunks are uploaded
+    if ($chunkIndex + 1 == $totalChunks) {
+        // If all chunks are uploaded, merge them into one file
+        $chunks = collect(Storage::disk('local')->files($storagePath));
+        $chunks->each(function ($chunk, $index) use ($fileName) {
+            Storage::disk('public')->put("$fileName", Storage::disk('local')->get($chunk));
+        });
+    }
+
+    return response()->json([
+        'success' => true,
+        'fileName' => $fileName
+        ]);
+})->excludedMiddleware('throttle:api');
 
 Route::post('/register', [RegisterController::class, 'store']);
 Route::post('/login', [LoginController::class, 'store']);
