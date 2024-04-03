@@ -81,8 +81,8 @@ class PayInvoice extends Command
                     if ($updateSubscription) {
                         $invoiceData = [
                             'user_id' => $invoice->subscription->user['id'],
-                            'subscription_id' => $invoice->subscription['user_id'],
-                            'next_attempt' => $invoice->subscription['end_date'],
+                            'subscription_id' => $invoice->subscription['id'],
+                            'next_attempt' => $updateSub['end_date'],
                             'amount' => $invoice->subscription->plan['price'],
                         ];
                         $this->invoiceService->addInvoice($invoiceData);

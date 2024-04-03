@@ -15,6 +15,15 @@ class SubscriptionService
     }
 
     /**
+     * @param array $data
+     * @return Subscription
+     */
+    public function store(array $data): Subscription
+    {
+        return Subscription::create($data);
+    }
+
+    /**
      * @param int $id
      * @param array $data
      * @return int

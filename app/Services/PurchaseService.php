@@ -7,6 +7,7 @@ use App\Models\Plan;
 use App\Models\User;
 use App\Models\UserCard;
 use App\Models\UserTransaction;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Stripe\Exception\ApiErrorException;
 
@@ -17,20 +18,24 @@ class PurchaseService
     private UserBalanceService $userBalanceService;
     private PaymentService $paymentService;
     private PlanService $planService;
+    private SubscriptionService $subscriptionService;
 
     /**
      * @param EpisodeService $episodeService
      * @param UserBalanceService $userBalanceService
      * @param PaymentService $paymentService
      * @param PlanService $planService
+     * @param SubscriptionService $subscriptionService
      */
-    public function __construct(EpisodeService $episodeService, UserBalanceService $userBalanceService,
-                                PaymentService $paymentService, PlanService $planService)
+    public function __construct(EpisodeService      $episodeService, UserBalanceService $userBalanceService,
+                                PaymentService      $paymentService, PlanService $planService,
+                                SubscriptionService $subscriptionService)
     {
         $this->episodeService = $episodeService;
         $this->userBalanceService = $userBalanceService;
         $this->paymentService = $paymentService;
         $this->planService = $planService;
+        $this->subscriptionService = $subscriptionService;
     }
 
     /**
@@ -51,6 +56,32 @@ class PurchaseService
         return $intent->client_secret;
     }
 
+    public function createSubscription(int $userId, Plan $plan)
+    {
+        $nextAttempt = null;
+        switch ($plan->type) {
+            case('weekly'):
+                $nextAttempt = Carbon::now()->addWeek();
+                break;
+            case('yearly'):
+                $nextAttempt = Carbon::now()->addYear();
+                break;
+            default:
+        }
+        $data = [
+            'user_id'    => $userId,
+            'plan_id'    => $plan->id,
+            'start_date' => Carbon::now(),
+            'end_date'   => $nextAttempt
+        ];
+        $subscription = $this->subscriptionService->store($data);
+        $subscription->invoice()->create([
+            'user_id'      => $userId,
+            'next_attempt' => $nextAttempt,
+            'amount'       => $plan->price,
+        ]);
+    }
+
     /**
      * @param string $paymentMethod
      * @param string $paymentId
@@ -63,6 +94,10 @@ class PurchaseService
             DB::beginTransaction();
 
             $plan = $this->planService->getById($planId);
+
+            if ($plan->type !== 'one_time') {
+                $this->createSubscription($userId, $plan);
+            }
 
             UserTransaction::query()->create([
                 'user_id' => $userId,
