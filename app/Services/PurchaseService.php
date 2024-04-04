@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Episode;
 use App\Models\Plan;
+use App\Models\User;
 use App\Models\UserCard;
 use App\Models\UserTransaction;
 use Illuminate\Support\Facades\DB;
@@ -91,7 +92,7 @@ class PurchaseService
                 'external_payment_id' => $paymentId,
                 'paymentable_type'    => Plan::class,
                 'paymentable_id'      => $planId,
-                'payment_method'      => $card
+                'payment_method'      => $card->id
             ]);
             DB::commit();
 
@@ -163,6 +164,19 @@ class PurchaseService
             ];
         }
 
+    }
+
+    /**
+     * @param int $userId
+     * @return mixed
+     */
+    public function getHistory(int $userId):mixed
+    {
+        return User::query()->select('payments.created_at', 'plans.type', 'plans.points', 'user_cards.type')
+            ->join('payments', 'payments.user_id', '=', 'users.id')
+            ->join('plans', 'paymentable_id', '=', 'plans.id')
+            ->join('user_cards', 'payments.payment_method', '=', 'user_cards.id')
+            ->where('users.id', $userId)->get();
     }
 
 }

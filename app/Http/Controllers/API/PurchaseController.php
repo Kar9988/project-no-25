@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\PaymentIntentRequest;
 use App\Http\Requests\API\PlanPurchaseRequest;
+use App\Http\Resources\PurchaseHistoryResource;
 use App\Services\PurchaseService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -31,6 +32,26 @@ class PurchaseController extends Controller
         $result = $this->purchaseService->purchaseEpisode($request->video_id, auth()->id());
 
         return response()->json($result);
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function index(): JsonResponse
+    {
+        $result = $this->purchaseService->getHistory(auth()->id());
+        if ($result){
+            return response()->json([
+                'success' => true,
+                'data'    => PurchaseHistoryResource::collection($result),
+                'type'    => 'success'
+            ]);
+        }
+        return response()->json([
+            'success' => false,
+            'type'    => 'error',
+            'message' => 'Something is wrong'
+        ]);
     }
 
     /**
