@@ -19,6 +19,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
     protected $guarded = [];
 
+    const CARD_TYPES = [
+        'master_card' => 'Master Card',
+        'visa_card' => 'Visa Card',
+        'apple_pay' => 'Apple Pay',
+    ];
+
     public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);
