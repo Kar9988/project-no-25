@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Policies\SubscriptionPolicy;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -23,6 +24,8 @@ class AuthUserResource extends JsonResource
             'role'       => $this->whenLoaded('role', function () {
                 return $this->role->name;
             }),
+            'activeSubscription' => SubscriptionPolicy::subscrition($this->id)
+
         ];
     }
 }
