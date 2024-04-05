@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Http\Resources;
-
-use App\Policies\SubscriptionPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
