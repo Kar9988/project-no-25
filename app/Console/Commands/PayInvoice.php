@@ -46,7 +46,7 @@ class PayInvoice extends Command
         try {
             DB::beginTransaction();
             $invoices = $this->invoiceService->getByDate(Carbon::today()->toDateString());
-            $data = [];
+
             foreach ($invoices as $invoice) {
                 $data = [
                     'amount' => $invoice->subscription->plan->price,
@@ -60,6 +60,22 @@ class PayInvoice extends Command
                 ];
                 $this->paymentService->create($paymentable);
                 $updateBalance = $this->userBalanceService->addBalance($data, $invoice->subscription->user_id, false);
+                $stripe = new \Stripe\StripeClient('sk_test_51OwqCo019fpCUyvNLVXr1WuoFeYxXOF6yGT31ZzRn4h05ExWNz0J8334YEqHYcgRFZiYQJ8xP8P7VPpwPdAdzwgy00erY3cq8s');
+
+                $paymentIntent = $stripe->paymentIntents->create([
+                    'amount' => $invoice->subscription->plan->price*100,
+                    'currency' => 'usd',
+                    'automatic_payment_methods' => ['enabled' => true],
+                ]);
+                $stripe->paymentIntents->confirm(
+                    $paymentIntent->id,
+                    [
+                        'payment_method' => $invoice,
+                        'return_url' => 'https://www.example.com',
+                    ]
+                );
+                dd($paymentIntent);
+
                 if ($updateBalance['success']) {
                     $type = $invoice->subscription->plan['type'];
                     $updateSub = [
@@ -81,8 +97,8 @@ class PayInvoice extends Command
                     if ($updateSubscription) {
                         $invoiceData = [
                             'user_id' => $invoice->subscription->user['id'],
-                            'subscription_id' => $invoice->subscription['user_id'],
-                            'next_attempt' => $invoice->subscription['end_date'],
+                            'subscription_id' => $invoice->subscription['id'],
+                            'next_attempt' => $updateSub['end_date'],
                             'amount' => $invoice->subscription->plan['price'],
                         ];
                         $this->invoiceService->addInvoice($invoiceData);
