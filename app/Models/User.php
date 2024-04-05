@@ -77,6 +77,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(UserBalance::class);
     }
 
+    public function card()
+    {
+        return $this->hasOne(UserCard::class);
+    }
+
 
     protected $hidden = [
         'password',
