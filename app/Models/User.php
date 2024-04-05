@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -46,8 +47,6 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Subscription::class);
     }
-<<<<<<< Updated upstream
-=======
 
     /**
      * @return HasOne
@@ -56,7 +55,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(Subscription::class)->where('end_date', '>=', Carbon::now())->whereNull('cancelled_at');
     }
->>>>>>> Stashed changes
+
     /**
      * @return BelongsToMany
      */
