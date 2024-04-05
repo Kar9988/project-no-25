@@ -46,6 +46,17 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Subscription::class);
     }
+<<<<<<< Updated upstream
+=======
+
+    /**
+     * @return HasOne
+     */
+    public function getActiveSubscription(): HasOne
+    {
+        return $this->hasOne(Subscription::class)->where('end_date', '>=', Carbon::now())->whereNull('cancelled_at');
+    }
+>>>>>>> Stashed changes
     /**
      * @return BelongsToMany
      */

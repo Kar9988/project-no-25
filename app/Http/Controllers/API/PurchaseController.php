@@ -7,19 +7,23 @@ use App\Http\Requests\API\PaymentIntentRequest;
 use App\Http\Requests\API\PlanPurchaseRequest;
 use App\Http\Resources\PurchaseHistoryResource;
 use App\Services\PurchaseService;
+use App\Services\SubscriptionService;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class PurchaseController extends Controller
 {
     private PurchaseService $purchaseService;
+    private SubscriptionService  $subscriptionService;
 
     /**
      * @param PurchaseService $purchaseService
+     * @param SubscriptionService $subscriptionService
      */
-    public function __construct(PurchaseService $purchaseService)
+    public function __construct(PurchaseService $purchaseService, SubscriptionService $subscriptionService)
     {
-
+        $this->subscriptionService = $subscriptionService;
         $this->purchaseService = $purchaseService;
     }
 
@@ -79,5 +83,26 @@ class PurchaseController extends Controller
             $request->user_id, $request->plan_id, $request->type);
 
         return response()->json($response);
+    }
+
+    /**
+     * @param $id
+     * @return JsonResponse
+     */
+    public function cancelSubscription($id): JsonResponse
+    {
+        $cancel = $this->subscriptionService->update($id, ['cancelled_at' => Carbon::now()]);
+        if ($cancel) {
+            return response()->json([
+                'success' => true,
+                'type' => 'success',
+                'message' => 'Subscription cancelled successfully'
+            ]);
+        }
+        return response()->json([
+            'success' => false,
+            'type' => 'error',
+            'message' => 'Something is wrong'
+        ]);
     }
 }

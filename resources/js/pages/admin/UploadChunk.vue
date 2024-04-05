@@ -13,8 +13,11 @@
     <radial-progress-bar v-if="progress !== null" class="text-[18px] m-auto p-[0px]" :diameter="200"
                          :completed-steps="completedSteps"
                          :total-steps="totalSteps">
-        <p>Uploading: {{ progress }} %</p>
+        <p>Uploaded: {{ progress }} %</p>
     </radial-progress-bar>
+    <button v-if="progress !== null" class="bg-transparent hover:bg-red-500 text-black-700 rounded shadow font-semibold hover:text-white py-2 px-4 border border-black-500 hover:border-transparent rounded">
+        Remove
+    </button>
 </template>
 
 <script setup>
