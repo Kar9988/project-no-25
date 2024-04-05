@@ -18,10 +18,7 @@ class UserPolicy
     {
         if ($episodeId != null) {
             $payment = $user->payments()->where('paymentable_id', $episodeId)
-                ->where('paymentable_type', Episode::class) ->whereHas('user.getActiveSubscription', function ($query) {
-                    $query->whereNull('cancelled_at');
-                })->first();
-
+                ->where('paymentable_type', Episode::class)->first();
             if ($payment) {
                 return true;
             }
