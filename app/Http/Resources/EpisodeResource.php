@@ -5,7 +5,6 @@ namespace App\Http\Resources;
 use App\Policies\UserPolicy;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Storage;
 
 /**
  * @method isLikedByUser($id)
@@ -29,8 +28,6 @@ class EpisodeResource extends JsonResource
             'position'    => $this->position,
             'duration'    => $this->duration,
             'can_see'     => UserPolicy::canViewEpisode($user, $this->id),
-            'active_sub'  => $user->getActiveSubscription->id,
-            'plan_id'     => $user->getActiveSubscription->plan_id,
             'views_count' => $this->views_count,
             'likes_count' => $this->likes_count,
             'price'       => $this->price ?? 0,

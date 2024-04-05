@@ -16,7 +16,7 @@ class AuthController extends Controller
     {
 
         return response()->json([
-            'data' => new AuthUserResource(auth()->user()->load('role','getActiveSubscription')),
+            'data' => new AuthUserResource(auth()->user()->load('role')),
             'status' => true,
             'type'=>'success'
         ]);

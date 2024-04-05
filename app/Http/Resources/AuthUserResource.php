@@ -23,13 +23,6 @@ class AuthUserResource extends JsonResource
             'role'       => $this->whenLoaded('role', function () {
                 return $this->role->name;
             }),
-            'sub_id'       => $this->whenLoaded('getActiveSubscription', function () {
-               return $this->getActiveSubscription->id;
-            }),
-            'plan_id'       => $this->whenLoaded('getActiveSubscription', function () {
-                return $this->getActiveSubscription->plan_id;
-            }),
-            'active_sub' => UserPolicy::canViewEpisode($this),
         ];
     }
 }
