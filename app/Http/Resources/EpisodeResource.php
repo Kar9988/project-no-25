@@ -30,6 +30,7 @@ class EpisodeResource extends JsonResource
             'duration'    => $this->duration,
             'can_see'     => UserPolicy::canViewEpisode($user, $this->id),
             'views_count' => $this->views_count,
+            'activeSub'   => UserPolicy::isActiveSubscription($user->id),
             'likes_count' => $this->likes_count,
             'price'       => $this->price ?? 0,
             'video_id'    => $this->video_id,

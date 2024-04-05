@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\Episode;
 use App\Models\User;
+use Carbon\Carbon;
 
 class UserPolicy
 {
@@ -25,5 +26,21 @@ class UserPolicy
             return true;
         }
         return false;
+    }
+    public static function isActiveSubscription($user_id): array
+    {
+        $user = User::query()->where('id', $user_id)->firstOrFail();
+        $data = [
+            'active' => false,
+        ];
+        $activeSubscriptions = $user->subscriptions()->where('end_date', '>=', Carbon::now())->first();
+        if ($activeSubscriptions){
+            return $data = [
+                'active' => true,
+                'subscription_id' => $activeSubscriptions->id,
+                'plan_id' => $activeSubscriptions->plan_id,
+            ];
+        }
+        return $data;
     }
 }
