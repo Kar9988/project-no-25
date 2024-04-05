@@ -27,7 +27,12 @@ class UserPolicy
         }
         return false;
     }
-    public static function isActiveSubscription($user_id): array
+
+    /**
+     * @param $user_id
+     * @return array|false[]
+     */
+    public static function isActiveSubscription(int $user_id): array
     {
         $user = User::query()->where('id', $user_id)->firstOrFail();
         $data = [
