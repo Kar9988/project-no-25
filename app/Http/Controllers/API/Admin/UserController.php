@@ -10,7 +10,10 @@ use App\Models\Role;
 use App\Models\User;
 use App\Models\UserTransaction;
 use App\Services\AdminService;
+use App\Services\PlanService;
+use App\Services\SubscriptionService;
 use App\Services\UserBalanceService;
+use Carbon\Carbon;
 use http\Env\Request;
 use Illuminate\Http\JsonResponse;
 
@@ -19,13 +22,16 @@ class UserController extends Controller
 {
     protected $service;
     protected $balanceService;
+    protected $planService;
+    protected $subscriptionService;
     /**
      * @param AdminService $service
      */
-    public function __construct(AdminService $service, UserBalanceService $balanceService)
-    {
+    public function __construct(AdminService $service, UserBalanceService $balanceService,SubscriptionService $subscriptionService,PlanService $planService)
+    {   $this->subscriptionService = $subscriptionService;
         $this->balanceService = $balanceService;
         $this->service = $service;
+        $this->planService = $planService;
     }
 
     /**
@@ -35,7 +41,9 @@ class UserController extends Controller
     {
         return response()->json([
             'success' => true,
-            'users'   => UserResource::collection(User::where('role_id', '!=', Role::ADMIN_ID)->get()),
+            'users' => UserResource::collection(User::with('getActiveSubscription')
+                ->where('role_id', '!=', Role::ADMIN_ID)
+                ->get()),
             'type'    => 'success'
         ]);
     }
@@ -47,7 +55,8 @@ class UserController extends Controller
     public function show(User $user): JsonResponse
     {
 
-        $user->load('userBalance');
+        $user->load('userBalance','getActiveSubscription.plan');
+
         return response()->json([
             'success' => true,
             'user' => $user,
@@ -62,11 +71,43 @@ class UserController extends Controller
      */
     public function update(UserUpdateRequest $request, User $user): JsonResponse
     {
-        $userData= [
-            'name'=>$request->name,
-            'email'=>$request->email,
+
+        $userData = [
+            'name' => $request->name,
+            'email' => $request->email,
         ];
 
+        if ($request->subId) {
+            $deleteSub = $this->subscriptionService->delete($request->subId);
+        }
+            $plan = $this->planService->getById($request->planId);
+            if ($plan) {
+                $nextAttempt = '';
+                switch ($plan->type) {
+                    case('one_time'):
+                        $nextAttempt = Carbon::now()->now();
+                        break;
+                    case('weekly'):
+                        $nextAttempt = Carbon::now()->addWeek();
+                        break;
+                    case('yearly'):
+                        $nextAttempt = Carbon::now()->addYear();
+                        break;
+                    default:
+                }
+                $data = [
+                    'user_id' => $user->id,
+                    'plan_id' => $plan->id,
+                    'start_date' => Carbon::now(),
+                    'end_date' => $nextAttempt
+                ];
+                $subscription = $this->subscriptionService->store($data);
+                $subscription->invoice()->create([
+                    'user_id' => $user->id,
+                    'next_attempt' => $nextAttempt,
+                    'amount' => $plan->price,
+                ]);
+            }
         $updateData = $this->service->update($userData, $user['id']);
         if ($updateData){
             $balanceValue =[

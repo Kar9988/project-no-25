@@ -43,6 +43,7 @@ export const useUserStore = defineStore('userStore', {
             return new Promise((resolve, reject) => {
                 axios.get(`/admin/users/${userId}`,)
                     .then(response => {
+                        console.log(response.data.user)
                         this.user = response.data.user;
                         resolve(response.data);
                         return response.data.use
@@ -52,14 +53,15 @@ export const useUserStore = defineStore('userStore', {
             })
         },
         async updateForm(id, form) {
-
             try {
                 await axios.put(`/admin/users/${id}`, {
                         name: form.name,
                         email: form.email,
                         amount:form.amount,
                         bonus:form.bonus,
-                        balanceId:form.balanceId
+                        balanceId:form.balanceId,
+                        planId:form.planId,
+                        subId:form.subId,
                     },)
                     .then(({data}) => {
                         Swal.fire({
