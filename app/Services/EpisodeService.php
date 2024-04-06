@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Jobs\UploadVideos;
 use App\Models\Episode;
 use App\Models\User;
 use App\Models\UserEpisodesHistory;
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -159,12 +161,16 @@ class EpisodeService
                 $filePaths[] = $coverPath;
             }
             if ($data['source'] ?? null) {
-                $videoPath = $this->fileManagerService->storeVideo("videos/$video->id/episodes", $data['source']);
-                $episodeCreateData['source'] = $videoPath;
-                $filePaths[] = $videoPath;
+//                dd(Storage::disk('spaces')->put('uploads', file_get_contents(storage_path('app/public/uploads/'.$data['source']))));
+//                Storage::disk('public')->put('public/uploads/'.$data['source'], storage_path('app/public/uploads/'.$data['source']));
+//                $videoPath = $this->fileManagerService
+//                    ->storeVideo("videos/$video->id/episodes", storage_path('app/public/uploads/'.$data['source']));
+//                dd($videoPath);
+                $episodeCreateData['source'] = $data['source'];
+                $filePaths[] = 'public/uploads/'.$data['source'];
+                $episode = $video->episodes()->create($episodeCreateData);
+                UploadVideos::dispatch($data['source'], "videos/$video->id/episodes", $episode->id);
             }
-            $episodesData[] = $episodeCreateData;
-            $video->episodes()->createMany($episodesData);
             DB::commit();
 
             return true;

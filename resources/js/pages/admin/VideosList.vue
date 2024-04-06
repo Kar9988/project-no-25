@@ -48,7 +48,7 @@ const episodeSkilleton = ref({
     category_id: null,
 })
 const errors = ref({})
-const changeVideoName = (filename,index) => {
+const changeVideoName = (filename, index) => {
     video.value.episodes[index].source = filename
 }
 const submitHandler = () => {
@@ -300,7 +300,7 @@ const page = computed({
 
                                     <div class="relative w-full mb-3">
                                         <div :id="`episode-source-${index}`">
-                                            <UploadChunk  @filename="changeVideoName($event,index)"  :episode="episode"/>
+                                            <UploadChunk  @filename="changeVideoName($event, index)"  :episode="episode"/>
                                         </div>
                                     </div>
                                 </div>

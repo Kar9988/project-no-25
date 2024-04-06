@@ -69,7 +69,7 @@ export const useVideoStore = defineStore('videoStore', {
                         Swal.fire({
                             position: "top",
                             icon: "success",
-                            title: "Video created successfully",
+                            title: "Video created successfully and episodes in progress",
                             showConfirmButton: false,
                             timer: 1500
                         });
