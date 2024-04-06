@@ -13,11 +13,12 @@ export const useAdminStore = defineStore('adminStore', {
             return new Promise((resolve, reject) => {
                 axios.post(`/login`, data)
                     .then(response => {
+                        console.log(response.status === 200);
                         if (response.status === 200){
                             this.admin = response.data.user
                             localStorage.setItem('token', response.data.token)
                             axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`
-                            router.push({path:'/admin/dashboard'})
+                            router.push({path: '/admin/videos'});
                         }
                     }).catch((e) => {
                     reject(e);
