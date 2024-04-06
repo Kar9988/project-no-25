@@ -35,7 +35,7 @@ class VideoStoreRequest extends FormRequest
             'episodes.*.duration'   => 'sometimes',
             'episodes.*.position'   => 'sometimes|integer',
             'episodes.*.thumb'      => 'sometimes|image|required',
-            'episodes.*.source'     => 'sometimes|required|mimes:mp4,mov,ogg,qt',
+            'episodes.*.source'     => 'sometimes|required',
             'episodes.*.price'      =>'required',
         ];
     }

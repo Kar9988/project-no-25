@@ -45,18 +45,17 @@ class FileManagerService
      * @return string
      * @throws \ImagickException
      */
-    public function storeThumb(string $filePath, $file): string
+    public function storeThumb(string $filePath, $filepath): string
     {
-        $filepath = $file->store('public/tmp');
-        $image = new Imagick(storage_path('app/' . $filepath));
+        $image = new Imagick(storage_path('app/public/' . $filepath));
         $image->setImageFormat('webp');
         $image->setImageCompressionQuality(80);
         $image->setOption('webp:progressive', 'true');
-        $image->writeImage(storage_path('app/' . $filepath));
+        $image->writeImage(storage_path('app/public/' . $filepath));
 
         $fileName = time() . '.webp';
-        $this->storage->put("$filePath/$fileName", file_get_contents(new File(storage_path('app/' . $filepath))), 'public');
-        Storage::disk('public')->delete('app/' . $filepath);
+        $this->storage->put("$filePath/$fileName", file_get_contents(new File(storage_path('app/public/' . $filepath))), 'public');
+        Storage::disk('public')->delete('app/public' . $filepath);
         return "$filePath/$fileName";
     }
 

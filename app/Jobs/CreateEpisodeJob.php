@@ -39,7 +39,6 @@ class CreateEpisodeJob implements ShouldQueue
             $episodeService = App::make(EpisodeService::class);
             $episodeService->store($this->video, $this->data);
         } catch (\Exception $exception) {
-            dd($exception);
         }
     }
 }

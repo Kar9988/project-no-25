@@ -37,21 +37,28 @@ const totalSteps = ref(10);
         const props = defineProps(['episode']);
         const upload = async (e) => {
             e.preventDefault()
-            const chunkSize = 4 * 1024 * 1024; // 40MB
+            const chunkSize = 40 * 1024 * 1024; // 40MB
             const totalChunks = Math.ceil(file.value.size / chunkSize);
             let startByte = 0;
+            let filename = Date.now();
 
             for (let chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++) {
                 const endByte = Math.min(startByte + chunkSize, file.value.size);
                 const chunk = file.value.slice(startByte, endByte);
+                console.log('file.value', file.value);
+                let last_dot = file.value.name.lastIndexOf('.')
+                let ext = file.value.name.slice(last_dot + 1)
 
                 const formData = new FormData();
                 formData.append('file', chunk);
                 formData.append('chunkIndex', chunkIndex);
                 formData.append('totalChunks', totalChunks);
+                formData.append('extension', ext);
+                formData.append('filename', filename);
+
 
                 try {
-                   const res = await axios.post('/test', formData, {
+                   const res = await axios.post('/admin/upload/video', formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data',
                         },

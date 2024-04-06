@@ -50,11 +50,11 @@ class VideoService
             if (isset($data['episodes'])) {
                 foreach ($data['episodes'] as $episode) {
                     $episode['thumb'] = Storage::disk('public')->putFile('tmp', $episode['thumb']);
-                    $episode['source'] = Storage::disk('public')->putFile('tmp', $episode['source']);
-                    CreateEpisodeJob::dispatch($video, $episode);
+                    CreateEpisodeJob::dispatchSync($video, $episode);
                 }
             }
             DB::commit();
+
 
             return $video;
         } catch (\Exception $exception) {
