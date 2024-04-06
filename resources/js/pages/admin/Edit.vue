@@ -81,7 +81,7 @@ const UpdateUserData = async (userId, form) => {
                        class="title bg-gray-100 border border-gray-300 p-2 mb-4 outline-none"
                        spellcheck="false" placeholder="Amount" type="number">
                 <select v-model="form.planId"  name="" id="">
-                    <option  v-for="plan in plans"  :value="plan.id">name {{ plan.name ?? '' }}  type{{ plan.type ?? '' }}</option>
+                    <option  v-for="plan in plans"  :value="plan.id">name: {{ '  ' + plan.name ?? '   ' + '    '}}  type: {{ plan.type ?? '  ' }}</option>
                 </select>
                 <!--            <p style="color: red" v-if="err.name">{{ err.name }}</p>-->
                 <div style="margin-top: 10px" class="buttons flex">
