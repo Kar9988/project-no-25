@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\API\VideoStoreRequest;
 use App\Http\Requests\API\VideoUpdateRequest;
 use App\Http\Resources\VideoResource;
+use App\Jobs\TestJob;
 use App\Services\VideoService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
@@ -58,6 +59,8 @@ class VideoController extends Controller
      */
     public function store(VideoStoreRequest $request): JsonResponse
     {
+
+        TestJob::dispatch();
         $video = $this->videoService->createVideo($request->all());
 
         if ($video) {
