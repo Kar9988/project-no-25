@@ -138,6 +138,24 @@ class EpisodeService
     }
 
     /**
+     * @param int $video_id
+     * @return mixed
+     */
+    public function deleteEpisodes(int $video_id):mixed
+    {
+        $episodeSources = Episode::query()->where('video_id', $video_id)->pluck('source')->toArray();
+        $episodeThumb = Episode::query()->where('video_id', $video_id)->pluck('thumb')->toArray();
+        $episodeIds = Episode::query()->where('video_id', $video_id)->pluck('id')->toArray();
+        $this->fileManagerService->deleteFiles($episodeThumb);
+        $this->fileManagerService->deleteFiles($episodeSources);
+        UserEpisodesHistory::query()
+            ->whereIn('episode_id', $episodeIds)
+            ->delete();
+
+       return Episode::query()->where('video_id', $video_id)->delete();
+    }
+
+    /**
      * @param Video $video
      * @param array $data
      * @return bool

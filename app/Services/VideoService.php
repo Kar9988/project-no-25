@@ -254,6 +254,15 @@ class VideoService
      */
     public function destroy($id): bool
     {
-        return Video::where('id', $id)->delete();
+        $filePath = [];
+        $video = Video::query()->where('id', $id)->first();
+        $filePath[] = $video->cover_img;
+        $deleteFile = $this->fileManagerService->deleteFiles($filePath);
+        if ($deleteFile) {
+            $delEpisode = $this->episodeService->deleteEpisodes($video->id);
+            if ($delEpisode) {
+                return Video::query()->where('id', $id)->delete();
+            }
+        }
     }
 }
