@@ -161,11 +161,6 @@ class EpisodeService
                 $filePaths[] = $coverPath;
             }
             if ($data['source'] ?? null) {
-//                dd(Storage::disk('spaces')->put('uploads', file_get_contents(storage_path('app/public/uploads/'.$data['source']))));
-//                Storage::disk('public')->put('public/uploads/'.$data['source'], storage_path('app/public/uploads/'.$data['source']));
-//                $videoPath = $this->fileManagerService
-//                    ->storeVideo("videos/$video->id/episodes", storage_path('app/public/uploads/'.$data['source']));
-//                dd($videoPath);
                 $episodeCreateData['source'] = $data['source'];
                 $filePaths[] = 'public/uploads/'.$data['source'];
                 $episode = $video->episodes()->create($episodeCreateData);

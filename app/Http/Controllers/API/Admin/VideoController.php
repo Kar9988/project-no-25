@@ -60,7 +60,6 @@ class VideoController extends Controller
     public function store(VideoStoreRequest $request): JsonResponse
     {
 
-        TestJob::dispatch();
         $video = $this->videoService->createVideo($request->all());
 
         if ($video) {

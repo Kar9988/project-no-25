@@ -96,7 +96,7 @@ const page = computed({
                             name="first-modal">
                 <pre>{{ errors }}</pre>
                 <template #header>
-                    <h1 class="p-[20px] text-center">Create Video</h1>
+                    <h1 class="p-[20px] text-center">Create Category</h1>
                 </template>
 
                 <template #content class="">
@@ -133,7 +133,7 @@ const page = computed({
                                 class="w-[200px] text-black bg-blueGray-800 active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                                 type="button"
                         >
-                            Create Video
+                            Create Category
                         </button>
                     </div>
                 </template>

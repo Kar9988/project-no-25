@@ -17,6 +17,7 @@ import ModalComponent from "../../components/Modal/Modal.vue";
 import UploadChunk from "./UploadChunk.vue";
 
 const isModalOpened = ref(false);
+const createVideoLoader = ref(false);
 const video = ref({
     title: '',
     description: '',
@@ -52,6 +53,7 @@ const changeVideoName = (filename, index) => {
     video.value.episodes[index].source = filename
 }
 const submitHandler = () => {
+    createVideoLoader.value = true;
     const form = new FormData;
     Object.keys(video.value).forEach((index) => {
         if (index !== 'cover_img' && index !== 'episodes' && typeof video.value[index] === 'object') {
@@ -64,15 +66,19 @@ const submitHandler = () => {
     })
     video.value.episodes.forEach((episode, episodeKey) => {
         form.append(`episodes[${episodeKey}][thumb]`, episode.thumb)
-        form.append(`episodes[${episodeKey}][source]`, episode.source)
+        if(episode.source) {
+            form.append(`episodes[${episodeKey}][source]`, episode.source)
+        }
         form.append(`episodes[${episodeKey}][title]`, episode.title)
         form.append(`episodes[${episodeKey}][price]`, episode.price)
     })
     videoStore.createVideo(form).then(() => {
         errors.value = {}
         closeModal()
+        createVideoLoader.value = false;
     }).catch(e => {
         errors.value = e.details
+        createVideoLoader.value = false;
     })
 }
 const fileUrl = computed(() => video.value.cover_img ? URL.createObjectURL(video.value.cover_img): '')
@@ -331,6 +337,7 @@ const page = computed({
                 <template #footer>
                     <div class="text-center mt-6">
                         <button @click="submitHandler"
+                                :disabled="createVideoLoader"
                                 class="w-[200px] text-black bg-blueGray-800 active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                                 type="button"
                         >

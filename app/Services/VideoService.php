@@ -52,6 +52,7 @@ class VideoService
                     $episode['thumb'] = Storage::disk('public')->putFile('tmp', $episode['thumb']);
                     $this->episodeService->store($video, $episode);
                 }
+                $video->delete();
             }
             DB::commit();
 
@@ -60,7 +61,6 @@ class VideoService
         } catch (\Exception $exception) {
             Log::error($exception);
             DB::rollBack();
-            dd($exception);
             if (isset($coverPath)) {
                 $this->fileManagerService->deleteFiles([$coverPath]);
             }
@@ -235,7 +235,7 @@ class VideoService
                 $query->withCount('views');
                 $query->withCount('likes');
             }])
-            ->first();
+            ->firstOrFail();
     }
 
     /**

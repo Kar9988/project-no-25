@@ -25,18 +25,19 @@ class VideoStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title'                 => 'required|string',
-            'cover_img'             => 'required',
-            'description'           => 'required|string',
-            'category_id'           => 'required',
-            'is_new_arrival'        => 'boolean',
-            'is_top_rated'          => 'boolean',
-            'episodes.*.title'      => 'sometimes|required|string',
-            'episodes.*.duration'   => 'sometimes',
-            'episodes.*.position'   => 'sometimes|integer',
-            'episodes.*.thumb'      => 'sometimes|image|required',
-            'episodes.*.source'     => 'sometimes|required',
-            'episodes.*.price'      =>'required',
+            'title'               => 'required|string',
+            'cover_img'           => 'required',
+            'description'         => 'required|string',
+            'category_id'         => 'required',
+            'is_new_arrival'      => 'boolean',
+            'is_top_rated'        => 'boolean',
+            'episodes'            => 'required|array',
+            'episodes.*.title'    => 'sometimes|required|string',
+            'episodes.*.duration' => 'sometimes',
+            'episodes.*.position' => 'sometimes|integer',
+            'episodes.*.thumb'    => 'sometimes|image|required',
+            'episodes.*.source'   => 'required|string',
+            'episodes.*.price'    => 'required',
         ];
     }
 

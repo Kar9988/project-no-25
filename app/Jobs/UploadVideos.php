@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Episode;
+use App\Models\Video;
 use FFMpeg\Filters\Video\VideoFilters;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -48,9 +49,9 @@ class UploadVideos implements ShouldQueue
                     ->open("public/uploads/$this->source")
                     ->export()
                     ->addFilter(function (VideoFilters $filters) {
-                        $filters->resize(new \FFMpeg\Coordinate\Dimension(640, 480));
+                        $filters->resize(new \FFMpeg\Coordinate\Dimension(1280, 720));
                     })
-                    ->resize(640, 480)
+                    ->resize(1280, 720)
                     ->inFormat(new \FFMpeg\Format\Video\X264('aac', 'libx264'))
                     ->save("public/uploads/$uniqueName");
                 $source = Storage::disk('spaces')->putFile($this->path, new File($uniqueFileName));
@@ -60,12 +61,20 @@ class UploadVideos implements ShouldQueue
                         'source'     => $source,
                         'deleted_at' => null
                     ]);
+                $video = DB::table('videos')
+                    ->select('videos.*')
+                    ->join('episodes', 'episodes.video_id', '=', 'videos.id')
+                    ->where('episodes.id', $this->episodeId)
+                    ->whereNotNull('videos.deleted_at')
+                    ->first();
+                if ($video) {
+                    Video::query()->where('id', $video->id)->restore();
+                }
                 Storage::disk('public')->delete("uploads/$uniqueName");
                 Storage::disk('public')->delete("uploads/$this->source");
             }
         } catch (\Exception $exception) {
             Log::error($exception);
-            dd($exception);
         }
     }
 }
