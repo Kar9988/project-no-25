@@ -40,6 +40,7 @@ class UploadVideos implements ShouldQueue
     public function handle(): void
     {
         try {
+            set_time_limit(0);
             if (Storage::disk('public')->exists("uploads/$this->source")) {
                 $uniqueName = uniqid().'.mp4';
                 $uniqueFileName = storage_path("app/public/uploads/$uniqueName");
@@ -50,7 +51,7 @@ class UploadVideos implements ShouldQueue
                         $filters->resize(new \FFMpeg\Coordinate\Dimension(640, 480));
                     })
                     ->resize(640, 480)
-                    ->inFormat(new \FFMpeg\Format\Video\X264('libmp3lame', 'libx264'))
+                    ->inFormat(new \FFMpeg\Format\Video\X264('aac', 'libx264'))
                     ->save("public/uploads/$uniqueName");
                 $source = Storage::disk('spaces')->putFile($this->path, new File($uniqueFileName));
                 DB::table('episodes')
