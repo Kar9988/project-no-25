@@ -24,11 +24,12 @@ class PlanUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
-            'price' => 'required',
-            'points' => 'required',
-            'description' => 'required',
-            'discount' => 'required',
+            'name' => 'sometimes|string',
+            'price' => 'sometimes|integer',
+            'points' => 'sometimes|integer',
+            'description' => 'sometimes|string',
+            'discount' => 'sometimes|integer',
+            'sub_description' => 'sometimes|string',
         ];
     }
 

@@ -63,11 +63,11 @@ class PlanController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param PlanUpdateRequest $request
      * @param string $id
      * @return JsonResponse
      */
-    public function update(Request $request, string $id): JsonResponse
+    public function update(PlanUpdateRequest $request, string $id): JsonResponse
     {
         $updateData = $this->service->update($request->all(), $id);
         if ($updateData === 1) {
