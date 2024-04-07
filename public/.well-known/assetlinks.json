@@ -1,0 +1,14 @@
+[
+    {
+        "relation": [
+            "delegate_permission/common.handle_all_urls"
+        ],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "com.passionpulse",
+            "sha256_cert_fingerprints": [
+                "6A:86:5C:42:02:0F:F8:8C:5A:71:9D:97:2E:8B:79:DC:A9:D3:DA:48"
+            ]
+        }
+    }
+]
