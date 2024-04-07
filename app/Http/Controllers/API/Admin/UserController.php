@@ -56,15 +56,14 @@ class UserController extends Controller
     }
 
     /**
-     * @param UserUpdateRequest $request
      * @param User $user
      * @return JsonResponse
      */
-    public function update(UserUpdateRequest $request, User $user): JsonResponse
+    public function update(\Illuminate\Http\Request $request, User $user): JsonResponse
     {
         $userData= [
-            'name'=>$request->name,
-            'email'=>$request->email,
+            'name' => $request->name,
+            'email' => $request->email,
         ];
 
         $updateData = $this->service->update($userData, $user['id']);

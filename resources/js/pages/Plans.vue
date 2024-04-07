@@ -1,5 +1,6 @@
 <script>
 import axios from "../axios-configured.js";
+import Swal from "sweetalert2";
 
 export default {
     data() {
@@ -46,6 +47,37 @@ export default {
             } catch (e) {
                 console.log(e)
             }
+        },
+        async confirmDeletePlan(planId) {
+            try {
+                const {data} = await axios.delete(`/admin/plans/${planId}`)
+                if(!data.success) {
+                    throw new Error(data.message)
+                }
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "Plan successfully has been deleted.",
+                    icon: "success"
+                });
+                this.addPlan()
+            } catch (e) {
+                console.log(e)
+            }
+        },
+        async deletePlan(planId) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Are you sure you want to delete plan?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.confirmDeletePlan(planId)
+                }
+            });
         }
     },
     created() {
@@ -73,6 +105,7 @@ export default {
                 <th class="border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-slate-400 light:text-slate-200 text-left">Discount</th>
                 <th class="border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-slate-400 light:text-slate-200 text-left">Sub Description</th>
                 <th class="border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-slate-400 light:text-slate-200 text-left">Types</th>
+                <th colspan="2" class="border-b dark:border-slate-600 font-medium p-4 pr-8 pt-0 pb-3 text-slate-400 light:text-slate-200 text-left">Actions</th>
             </tr>
             </thead>
             <tbody class="bg-white light:bg-slate-800">
@@ -110,6 +143,15 @@ export default {
                             uppercase px-6 py-3 rounded shadow hover:shadow-lg
                             outline-none focus:outline-none mr-1 mb-1
                             ease-linear transition-all duration-150" type="button">Update</button>
+                </td>
+                <td v-if="plan.id" class="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 light:text-slate-400">
+                    <button
+                        @click="deletePlan(plan.id)"
+                        class="text-white bg-red-700
+                            active:bg-blueGray-600 text-sm font-bold
+                            uppercase px-6 py-3 rounded shadow hover:shadow-lg
+                            outline-none focus:outline-none mr-1 mb-1
+                            ease-linear transition-all duration-150" type="button">Delete</button>
                 </td>
             </tr>
             </tbody>

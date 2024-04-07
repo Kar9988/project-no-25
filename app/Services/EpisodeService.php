@@ -170,6 +170,7 @@ class EpisodeService
                 $filePaths[] = 'public/uploads/'.$data['source'];
                 $episode = $video->episodes()->create($episodeCreateData);
                 UploadVideos::dispatch($data['source'], "videos/$video->id/episodes", $episode->id);
+                $episode->delete();
             }
             DB::commit();
 

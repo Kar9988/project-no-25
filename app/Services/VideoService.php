@@ -50,7 +50,7 @@ class VideoService
             if (isset($data['episodes'])) {
                 foreach ($data['episodes'] as $episode) {
                     $episode['thumb'] = Storage::disk('public')->putFile('tmp', $episode['thumb']);
-                    CreateEpisodeJob::dispatchSync($video, $episode);
+                    $this->episodeService->store($video, $episode);
                 }
             }
             DB::commit();
