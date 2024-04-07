@@ -98,6 +98,7 @@ class VideoService
         } catch (\Exception $exception) {
             Log::error($exception);
             DB::rollBack();
+            dd($exception);
             if (isset($coverPath)) {
                 $this->fileManagerService->deleteFiles([$coverPath]);
             }

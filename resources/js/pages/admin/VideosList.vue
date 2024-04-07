@@ -70,6 +70,7 @@ const submitHandler = () => {
             form.append(`episodes[${episodeKey}][source]`, episode.source)
         }
         form.append(`episodes[${episodeKey}][title]`, episode.title)
+        form.append(`episodes[${episodeKey}][position]`, episodeKey)
         form.append(`episodes[${episodeKey}][price]`, episode.price)
     })
     videoStore.createVideo(form).then(() => {

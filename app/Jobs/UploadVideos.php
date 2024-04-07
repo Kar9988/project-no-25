@@ -24,15 +24,17 @@ class UploadVideos implements ShouldQueue
     private string $path;
     private int $episodeId;
     public $timeout = 1800; // Timeout in seconds (30 minutes)
+    private ?string $oldSource;
 
     /**
      * Create a new job instance.
      */
-    public function __construct(string $source, string $path, int $episodeId)
+    public function __construct(string $source, string $path, int $episodeId, string $oldSource = null)
     {
         $this->source = $source;
         $this->path = $path;
         $this->episodeId = $episodeId;
+        $this->oldSource = $oldSource;
     }
 
     /**
@@ -69,6 +71,9 @@ class UploadVideos implements ShouldQueue
                     ->first();
                 if ($video) {
                     Video::query()->where('id', $video->id)->restore();
+                }
+                if ($this->oldSource) {
+                    Storage::disk('spaces')->delete($this->oldSource);
                 }
                 Storage::disk('public')->delete("uploads/$uniqueName");
                 Storage::disk('public')->delete("uploads/$this->source");

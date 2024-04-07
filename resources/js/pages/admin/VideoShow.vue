@@ -9,7 +9,7 @@ import router from "../../router/index.js";
 const videoStore = useVideoStore()
 const route = useRoute()
 import {useCategoryStore} from "../../store/categoryStore.js";
-
+import UploadChunk from "./UploadChunk.vue";
 const categoryStore = useCategoryStore();
 const categories = computed(() => categoryStore?.categories);
 
@@ -35,8 +35,8 @@ onMounted(() => {
         video.value = videoStore.video
         fileUrl.value = computed(() => video.value.cover_img ? URL.createObjectURL(video.value.cover_img) : '')
         video.value.episodes.forEach((episode) => {
-            urlByFile(episode, episode.source, 'source_src')
-            urlByFile(episode, episode.thumb, 'thumb_src')
+            // urlByFile(episode, episode.source, 'source_src')
+            // urlByFile(episode, episode.thumb, 'thumb_src')
         })
     })
 })
@@ -61,7 +61,12 @@ const onReplaceEmisodeSource = (e, index) => {
     video.value.episodes[index].source = null;
     setTimeout(() => document.querySelector(`#episode-source-input-${index}`).click())
 }
-
+const changeVideoName = (filename, index) => {
+    video.value.episodes[index].source_src = filename
+}
+const removeVideo = (filename, index) => {
+    video.value.episodes[index].source_src = null
+}
 const onEpisodeSourceChoosed = (e, index) => {
     video.value.episodes[index].source_src = URL.createObjectURL(e.target.files[0])
     video.value.episodes[index].source = e.target.files[0]
@@ -139,8 +144,8 @@ const submitHandler = () => {
         if (typeof episode.thumb !== 'string') {
             form.append(`episodes[${episodeKey}][thumb]`, episode.thumb)
         }
-        if (typeof episode.source !== 'string') {
-            form.append(`episodes[${episodeKey}][source]`, episode.source)
+        if (episode.source_src) {
+            form.append(`episodes[${episodeKey}][source]`, episode.source_src)
         }
         if (episode.id) {
             form.append(`episodes[${episodeKey}][id]`, episode.id)
@@ -159,7 +164,6 @@ const submitHandler = () => {
 </script>
 
 <template>
-    <!--    <pre>{{video}}</pre>-->
     <div>
         <div v-if="video.id" class="mt-[15px] p-[20px] gap-[10px]">
             <form class="p-[24px]" @submit.prevent>
@@ -363,9 +367,9 @@ const submitHandler = () => {
                                                               d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/>
                                                     </svg>
                                                 </span>
-                                    <img v-if="episode.thumb && episode.thumb_src"
+                                    <img v-if="episode.thumb || episode.thumb_src"
                                          class="max-w-[200px] group-hover:opacity-50 bg-black mb-2"
-                                         :src="episode.thumb_src" alt="">
+                                         :src="episode.thumb_src??episode.thumb" alt="">
                                 </div>
                                 <label v-show="!episode.thumb"
                                        class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer ">
@@ -400,25 +404,13 @@ const submitHandler = () => {
                                                               d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/>
                                                     </svg>
                                                 </span>
-                                    <video autoplay v-if="episode.source && episode.source_src"
+                                    <video autoplay v-if="episode.source || episode.source_src"
                                            class="max-w-[200px] group-hover:opacity-50 bg-black mb-2"
-                                           :src="episode.source_src" alt=""/>
+                                           :src="episode.source_src??episode.source" alt=""/>
                                 </div>
-                                <label v-show="!episode.source"
-                                       class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer ">
-                                    <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                        <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                                  stroke-width="2"
-                                                  d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-                                        </svg>
-                                        <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span
-                                            class="font-semibold">Click to upload</span> or drag and drop </p>
-                                    </div>
-                                    <input type="file" class="hidden" :id="`episode-source-input-${index}`"
-                                           @change="onEpisodeSourceChoosed($event, index)"/>
-                                </label>
+                                <UploadChunk v-if="!episode.source" @removeVideo="removeVideo($event, index)"
+                                             @filename="changeVideoName($event, index)"  :episode="episode"/>
+
                             </div>
                         </div>
                     </div>

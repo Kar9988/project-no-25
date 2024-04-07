@@ -25,11 +25,11 @@ class PlanUpdateRequest extends FormRequest
     {
         return [
             'name' => 'sometimes|string',
-            'price' => 'sometimes|integer',
+            'price' => 'sometimes|numeric',
             'points' => 'sometimes|integer',
-            'description' => 'sometimes|string',
-            'discount' => 'sometimes|integer',
-            'sub_description' => 'sometimes|string',
+            'description' => '',
+            'discount' => '',
+            'sub_description' => '',
         ];
     }
 

@@ -1,5 +1,5 @@
 <template>
-    <div class="uploadFile" ref="uploadFile" :class="{'hidden': uploaded}">
+    <div v-if="!completedSteps" class="uploadFile" ref="uploadFile" :class="{'hidden': uploaded}">
         <label v-show="!props.episode.source" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer ">
             <div class="flex flex-col items-center justify-center pt-5 pb-6">
                 <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
@@ -10,12 +10,12 @@
             <input class="max-w-[200px] group-hover:opacity-50 mb-2"  type="file" @change="handleFileChange" />
         </label>
     </div>
-    <radial-progress-bar v-if="progress !== null" class="text-[18px] m-auto p-[0px]" :diameter="200"
+    <radial-progress-bar v-if="progress !== null && !hideProgress" class="text-[18px] m-auto p-[0px]" :diameter="200"
                          :completed-steps="completedSteps"
                          :total-steps="totalSteps">
         <p>Uploaded: {{ progress }} %</p>
     </radial-progress-bar>
-    <button v-if="progress !== null" class="bg-transparent hover:bg-red-500 text-black-700 rounded shadow font-semibold hover:text-white py-2 px-4 border border-black-500 hover:border-transparent rounded">
+    <button @click="remove()" v-if="progress !== null" class="bg-transparent hover:bg-red-500 text-black-700 rounded shadow font-semibold hover:text-white py-2 px-4 border border-black-500 hover:border-transparent rounded">
         Remove
     </button>
 </template>
@@ -24,14 +24,21 @@
 import { ref } from 'vue';
 import axios from 'axios';
 import RadialProgressBar from "vue3-radial-progress"
-const emit = defineEmits(['filename'])
+const emit = defineEmits(['filename', 'removeVideo'])
 
 
 const completedSteps = ref(0);
+const remove = () => {
+    emit('removeVideo');
+    progress.value = null
+    uploaded.value = false
+    hideProgress.value = false
+}
 const totalSteps = ref(10);
         const file = ref(null);
         const progress = ref(null);
         const uploaded = ref(false);
+        const hideProgress = ref(false);
 
         const handleFileChange = event => {
             file.value = event.target.files[0];
@@ -74,6 +81,9 @@ const totalSteps = ref(10);
                     });
                     startByte += chunkSize;
                     emit('filename', res.data.fileName);
+                    setTimeout(() => {
+                        hideProgress.value = true;
+                    }, 500)
                 } catch (error) {
                     console.error('Error uploading file chunk', error);
                     return;

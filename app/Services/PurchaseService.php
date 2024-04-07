@@ -99,23 +99,6 @@ class PurchaseService
                 $this->createSubscription($userId, $plan);
             }
 
-            UserTransaction::query()->create([
-                'user_id' => $userId,
-                'type'    => 'increase',
-                'amount'  => $plan->price,
-                'note'    => 'Plan purchase'
-            ]);
-            $balance = $this->userBalanceService->getByUserId($userId);
-            if ($balance) {
-                $balance->update([
-                    'amount' => $balance->amount + $plan->points
-                ]);
-            } else {
-                $this->userBalanceService->store([
-                    'user_id' => $userId,
-                    'amount'  => $plan->points
-                ]);
-            }
             $card = UserCard::query()->create([
                 'user_id'        => $userId,
                 'payment_method' => $paymentMethod,
@@ -151,14 +134,15 @@ class PurchaseService
      * @param int $userId
      * @return array
      */
-    public function purchaseEpisode(int $episodeId, int $userId): array
+    public function purchaseEpisode(int $episodeId, int $userId, string $type): array
     {
         try {
             DB::beginTransaction();
             $episode = $this->episodeService->getById($episodeId);
             $userBalance = $this->userBalanceService->getByUserId($userId);
 
-            if ($userBalance->amount < $episode->price) {
+            if (($type == 'bonus' && $userBalance->bonus < $episode->price)
+                || $type == 'coin' && $userBalance->amount < $episode->price) {
                 DB::rollBack();
                 return [
                     'success' => false,
@@ -166,9 +150,16 @@ class PurchaseService
                     'message' => 'You dont have enough coins'
                 ];
             }
-            $userBalance->update([
-                'amount' => $userBalance->amount - $episode->price
-            ]);
+            if ($type == 'bonus') {
+                $userBalance->update([
+                    'amount' => $userBalance->amount - $episode->price
+                ]);
+            } else {
+                $userBalance->update([
+                    'bonus' => $userBalance->bonus - $episode->price
+                ]);
+            }
+
             // todo:: for now it's only payment with coin, but in future will be with payment provider
             $paymentableData = [
                 'type' => Episode::class,

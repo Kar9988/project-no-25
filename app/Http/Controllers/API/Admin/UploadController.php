@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\DeleteVideo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -23,6 +24,7 @@ class UploadController extends Controller
         if (!$file->isValid() || !is_numeric($chunkIndex) || !is_numeric($totalChunks)) {
             return response()->json(['error' => 'Invalid file or chunk data'], 422);
         }
+        DeleteVideo::dispatch($fileName)->delay(now()->addHours(12));
         $fileName = $fileName.".".$extension;
         $temporaryFilePath = $file->path();
         Storage::disk('public')->put('chunks/' . $fileName . '-' . $chunkIndex, file_get_contents($temporaryFilePath));
