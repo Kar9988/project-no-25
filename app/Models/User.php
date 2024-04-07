@@ -53,8 +53,9 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getActiveSubscription(): HasOne
     {
-        return $this->hasOne(Subscription::class)->where('end_date', '>=', Carbon::now());
+        return $this->hasOne(Subscription::class)->where('end_date', '>=', Carbon::now())->whereNull('cancelled_at');
     }
+
     /**
      * @return BelongsToMany
      */
