@@ -1,0 +1,13 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "Y72T4VZVKV.com.passionPulse.app",
+                "paths": [
+                    "/video/*/episode/*"
+                ]
+            }
+        ]
+    }
+}

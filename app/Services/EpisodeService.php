@@ -103,6 +103,7 @@ class EpisodeService
             DB::beginTransaction();
             $filePaths = [];
             foreach ($data as $datum) {
+                $episode = Episode::where('id', $datum['id'])->first();
                 $episodeUpdateData = [
                     'title' => $datum['title'],
                     'duration' => $datum['duration'] ?? 0,
@@ -111,16 +112,15 @@ class EpisodeService
                 ];
 
                 if ($datum['thumb'] ?? false) {
-                    $coverPath = $this->fileManagerService->storeThumb("videos/$videoId/episodes/cover", $datum['thumb']);
+                    $fileName = Storage::disk('public')->putFile('tmp', $datum['thumb']);
+                    $coverPath = $this->fileManagerService->storeThumb("videos/$videoId/episodes/cover", $fileName);
                     $episodeUpdateData['thumb'] = $coverPath;
                     $filePaths[] = $coverPath;
                 }
                 if ($datum['source'] ?? false) {
-                    $videoPath = $this->fileManagerService->storeVideo("videos/$videoId/episodes", $datum['source']);
-                    $episodeUpdateData['source'] = $videoPath;
-                    $filePaths[] = $videoPath;
+                    UploadVideos::dispatch($datum['source'], "videos/$videoId/episodes", $datum['id'], $episode->source);
                 }
-                Episode::where('id', $datum['id'])->update($episodeUpdateData);
+                $episode->update($episodeUpdateData);
             }
             DB::commit();
 
@@ -212,22 +212,22 @@ class EpisodeService
                 $episodeCreateData = [
                     'title' => $datum['title'],
                     'duration' => $datum['duration'] ?? 0,
+                    'position' => $datum['position'] ?? 1,
                     'price' => $datum['price'] ?? 0
                 ];
 
                 if ($datum['thumb'] ?? null) {
-                    $coverPath = $this->fileManagerService->storeThumb("videos/$video->id/episodes/cover", $datum['thumb']);
+                    $fileName = Storage::disk('public')->putFile('tmp', $datum['thumb']);
+                    $coverPath = $this->fileManagerService->storeThumb("videos/$video->id/episodes/cover", $fileName);
                     $episodeCreateData['thumb'] = $coverPath;
                     $filePaths[] = $coverPath;
                 }
                 if ($datum['source'] ?? null) {
-                    $videoPath = $this->fileManagerService->storeVideo("videos/$video->id/episodes", $datum['source']);
-                    $episodeCreateData['source'] = $videoPath;
-                    $filePaths[] = $videoPath;
+                    $episode = $video->episodes()->create($episodeCreateData);
+                    UploadVideos::dispatch($datum['source'], "videos/$video->id/episodes", $episode->id);
+                    $episode->delete();
                 }
-                $episodesData[] = $episodeCreateData;
             }
-            $video->episodes()->createMany($episodesData);
             DB::commit();
 
             return true;

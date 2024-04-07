@@ -33,7 +33,7 @@ class PurchaseController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $result = $this->purchaseService->purchaseEpisode($request->video_id, auth()->id());
+        $result = $this->purchaseService->purchaseEpisode($request->video_id, auth()->id(), $request->type);
 
         return response()->json($result);
     }
