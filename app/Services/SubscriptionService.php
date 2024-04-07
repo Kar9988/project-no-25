@@ -32,5 +32,12 @@ class SubscriptionService
     {
         return $this->model->query()->where('id', $id)->update($data);
     }
-
+    public function delete(int $id): bool
+    {
+        return $this->model->query()->where('id', $id)->delete();
+    }
+    public function getById(int $id): Subscription
+    {
+        return $this->model->query()->where('id', $id);
+    }
 }

@@ -4,6 +4,7 @@ import {useUserStore} from "../../store/userStore.js";
 import {computed, onMounted, ref} from "vue";
 import {useRoute} from 'vue-router';
 import {useCategoryStore} from "../../store/categoryStore.js";
+import axios from "../../axios-configured.js";
 
 
 const adminStore = useAdminStore()
@@ -11,6 +12,7 @@ const userStore = useUserStore();
 const user = computed(() => userStore?.user);
 const route = useRoute();
 const userId = ref(null);
+const plans = ref(null)
 const form = ref({
     id: '',
     name: '',
@@ -18,13 +20,21 @@ const form = ref({
     amount: '',
     bonus: '',
     balanceId:'',
+    planName:'',
+    subId:'',
 })
 
+const  addPlan = () => {
+ axios.get('/admin/plans').then((res)=>{
+     plans.value = res.data.data
+ })
+};
 onMounted(() => {
+    addPlan();
     userId.value = route.params.id;
     getUser(userId.value)
-})
 
+})
 
 const getUser = async (userId) => {
     try {
@@ -35,16 +45,14 @@ const getUser = async (userId) => {
         form.value.amount = user.value?.user_balance.amount
         form.value.bonus = user.value?.user_balance.bonus
         form.value.balanceId = user.value?.user_balance.id
-
+        form.value.planId = user.value?.get_active_subscription.plan.id
+        form.value.subId  = user.value?.get_active_subscription.id
     } catch (error) {
         console.error("Error deleting user:", error.message);
     }
 };
 const UpdateUserData = async (userId, form) => {
-
     try {
-        console.log(userId,form)
-
         await useUserStore().updateForm(userId, form);
     } catch (error) {
         console.error("Error deleting user:", error.message);
@@ -72,6 +80,9 @@ const UpdateUserData = async (userId, form) => {
                 <input name="amount" v-model="form.amount"
                        class="title bg-gray-100 border border-gray-300 p-2 mb-4 outline-none"
                        spellcheck="false" placeholder="Amount" type="number">
+                <select v-model="form.planId"  name="" id="">
+                    <option  v-for="plan in plans"  :value="plan.id">name: {{ '  ' + plan.name ?? '   ' + '    '}}  type: {{ plan.type ?? '  ' }}</option>
+                </select>
                 <!--            <p style="color: red" v-if="err.name">{{ err.name }}</p>-->
                 <div style="margin-top: 10px" class="buttons flex">
                     <button @click="UpdateUserData(user.id,form)" type="button"

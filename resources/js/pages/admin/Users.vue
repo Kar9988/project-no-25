@@ -184,11 +184,16 @@ const deleteUser = async (userId) => {
                     </th>
                     <th
                         class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+                    > Plan
+                    </th>
+                    <th
+                        class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
                     > settings
 
                     </th>
                 </tr>
                 </thead>
+
                 <tbody v-for="user in users.users" :key="user.id">
 
                 <tr>
@@ -210,6 +215,12 @@ const deleteUser = async (userId) => {
                     </td>
                     <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs items-center">
                         {{ user.bonus }}
+                    </td>
+                    <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs items-center">
+                        <span
+                            class="ml-3 font-bold"
+                        >{{ user.plan ? user.plan.name : '' }}</span>
+
                     </td>
                     <td>
                         <th class="flex p-[10px]">
