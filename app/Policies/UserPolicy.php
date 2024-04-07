@@ -16,6 +16,12 @@ class UserPolicy
      */
     public static function canViewEpisode($user, int $episodeId = null): bool
     {
+        if ($episodeId) {
+            $episode = Episode::where('id', $episodeId)->first();
+            if ($episode && $episode->price == 0) {
+                return true;
+            }
+        }
         if ($episodeId != null) {
             $payment = $user->payments()->where('paymentable_id', $episodeId)
                 ->where('paymentable_type', Episode::class)

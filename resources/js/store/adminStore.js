@@ -17,7 +17,7 @@ export const useAdminStore = defineStore('adminStore', {
                             this.admin = response.data.user
                             localStorage.setItem('token', response.data.token)
                             axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`
-                            router.push({path:'/admin/dashboard'})
+                            router.push({path: '/admin/videos'});
                         }
                     }).catch((e) => {
                     reject(e);

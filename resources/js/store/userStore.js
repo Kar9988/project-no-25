@@ -67,7 +67,7 @@ export const useUserStore = defineStore('userStore', {
                         Swal.fire({
                             position: "top",
                             icon: data.type,
-                            title: data.message??'Something went wrong',
+                            title: data.message,
                             showConfirmButton: false,
                             timer: 1500
                         });

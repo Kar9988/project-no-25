@@ -9,6 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Http\File;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -39,9 +40,12 @@ class UploadVideos implements ShouldQueue
         try {
             if (Storage::disk('public')->exists("uploads/$this->source")) {
                 $source = Storage::disk('spaces')->putFile($this->path, new File(storage_path("app/public/uploads/$this->source")));
-                Episode::query()->where('id', $this->episodeId)->update([
-                    'source' => $source
-                ]);
+                DB::table('episodes')
+                    ->where('id', $this->episodeId)
+                    ->update([
+                        'source'     => $source,
+                        'deleted_at' => null
+                    ]);
                 Storage::disk('public')->delete("uploads/$this->source");
             }
         } catch (\Exception $exception) {
