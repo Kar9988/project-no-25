@@ -108,7 +108,7 @@ class EpisodeService
                     'title' => $datum['title'],
                     'duration' => $datum['duration'] ?? 0,
                     'position' => $datum['position'] ?? 1,
-                    'price' => $datum['price'] ?? 1,
+                    'price' => $datum['price'] ?? 0,
                 ];
 
                 if ($datum['thumb'] ?? false) {

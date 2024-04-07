@@ -151,7 +151,11 @@ const submitHandler = () => {
             form.append(`episodes[${episodeKey}][id]`, episode.id)
         }
         form.append(`episodes[${episodeKey}][title]`, episode.title)
-        form.append(`episodes[${episodeKey}][price]`, episode.price)
+        if (episode.price) {
+            form.append(`episodes[${episodeKey}][price]`, episode.price)
+        } else {
+            form.append(`episodes[${episodeKey}][price]`, 0)
+        }
         form.append(`episodes[${episodeKey}][position]`, episode.position)
     })
     videoStore.updateVideo(video.value.id, form).then(() => {
