@@ -17,9 +17,8 @@
         "laravel/socialite": "^5.12",
         "laravel/tinker": "^2.8",
         "league/flysystem-aws-s3-v3": "^3.24",
-        "pbmedia/laravel-ffmpeg": "^8.4",
+        "pbmedia/laravel-ffmpeg": "^8.5",
         "staudenmeir/eloquent-eager-limit": "^1.8",
-
         "stripe/stripe-php": "^13.16",
         "wapmorgan/mp3info": "^0.1.0"
     },

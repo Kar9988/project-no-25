@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Episode;
+use FFMpeg\Filters\Video\VideoFilters;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -12,6 +13,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
 class UploadVideos implements ShouldQueue
 {
@@ -39,17 +41,30 @@ class UploadVideos implements ShouldQueue
     {
         try {
             if (Storage::disk('public')->exists("uploads/$this->source")) {
-                $source = Storage::disk('spaces')->putFile($this->path, new File(storage_path("app/public/uploads/$this->source")));
+                $uniqueName = uniqid().'.mp4';
+                $uniqueFileName = storage_path("app/public/uploads/$uniqueName");
+                $fmpegFile = FFmpeg::fromDisk('local')
+                    ->open("public/uploads/$this->source")
+                    ->export()
+                    ->addFilter(function (VideoFilters $filters) {
+                        $filters->resize(new \FFMpeg\Coordinate\Dimension(640, 480));
+                    })
+                    ->resize(640, 480)
+                    ->inFormat(new \FFMpeg\Format\Video\X264('libmp3lame', 'libx264'))
+                    ->save("public/uploads/$uniqueName");
+                $source = Storage::disk('spaces')->putFile($this->path, new File($uniqueFileName));
                 DB::table('episodes')
                     ->where('id', $this->episodeId)
                     ->update([
                         'source'     => $source,
                         'deleted_at' => null
                     ]);
+                Storage::disk('public')->delete("uploads/$uniqueName");
                 Storage::disk('public')->delete("uploads/$this->source");
             }
         } catch (\Exception $exception) {
             Log::error($exception);
+            dd($exception);
         }
     }
 }
