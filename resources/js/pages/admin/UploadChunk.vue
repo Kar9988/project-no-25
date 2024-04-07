@@ -10,7 +10,7 @@
             <input class="max-w-[200px] group-hover:opacity-50 mb-2"  type="file" @change="handleFileChange" />
         </label>
     </div>
-    <radial-progress-bar v-if="progress !== null && !hideProgress" class="text-[18px] m-auto p-[0px]" :diameter="200"
+    <radial-progress-bar v-if="progress !== null" class="text-[18px] m-auto p-[0px]" :diameter="200"
                          :completed-steps="completedSteps"
                          :total-steps="totalSteps">
         <p>Uploaded: {{ progress }} %</p>
