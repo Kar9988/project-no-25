@@ -7,6 +7,7 @@ export const useUserStore = defineStore('userStore', {
     state: () => ({
         users: [],
         user: {},
+        errors:[]
     }),
     actions: {
         getUsers() {
@@ -52,7 +53,7 @@ export const useUserStore = defineStore('userStore', {
             })
         },
         async updateForm(id, form) {
-
+            this.errors = [];
             try {
                 await axios.put(`/admin/users/${id}`, {
                         name: form.name,
@@ -62,6 +63,7 @@ export const useUserStore = defineStore('userStore', {
                         balanceId:form.balanceId
                     },)
                     .then(({data}) => {
+                        console.log(data,'tessssssssssss')
                         Swal.fire({
                             position: "top",
                             icon: data.type,
@@ -70,8 +72,8 @@ export const useUserStore = defineStore('userStore', {
                             timer: 1500
                         });
                     })
-            } catch (error) {
-                console.error('Error posting data:', error);
+            } catch (e) {
+                this.errors = e.response.data.details
             }
         },
     }

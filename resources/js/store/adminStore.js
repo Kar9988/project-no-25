@@ -57,7 +57,7 @@ export const useAdminStore = defineStore('adminStore', {
         createUser(data) {
             return axios.post('/admin/users', data).then(() => {
             }).catch((e) => {
-                this.errors = e.response.data.errors
+               return e.response.data
             })
         }
     }

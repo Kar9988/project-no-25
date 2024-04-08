@@ -26,6 +26,8 @@ class UserUpdateRequest extends FormRequest
         return [
             'name' => 'required|min:2|max:15',
             'email' => 'required|email|min:5|max:30',
+            'bonus' => 'integer|min:0',
+            'amount' => 'integer|min:0',
         ];
     }
 

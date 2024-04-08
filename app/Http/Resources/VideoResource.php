@@ -19,6 +19,7 @@ class VideoResource extends JsonResource
             'description'         => $this->description,
             'title'               => $this->title,
             'cover_img'           => $this->cover_img_path,
+            'category'            =>$this->category->name,
             'episodes'            => EpisodeResource::collection($this->episodes),
             'likes_count'         => $this->likes_count,
         ];

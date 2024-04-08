@@ -28,7 +28,8 @@ class PlanController extends Controller
         return response()->json([
             'data' => PlanResource::collection($this->service->index()),
             'success' => true,
-            'type' => 'success'
+            'type' => 'success',
+            'message' => 'Plans retrieved successfully.',
         ]);
     }
 
@@ -39,11 +40,17 @@ class PlanController extends Controller
     public function store(Request $request): JsonResponse
     {
         $data = $this->service->store($request->all());
-
+        if ($data) {
+            return response()->json([
+                'success' => true,
+                'type' => 'success',
+                'plan' => new PlanResource($data),
+            ]);
+        }
         return response()->json([
-            'success' => true,
-            'type' => 'success',
-            'plan' => new PlanResource($data),
+            'success' => false,
+            'type' => 'error',
+            'message' => 'Sorry, something went wrong.',
         ]);
     }
 
@@ -54,11 +61,18 @@ class PlanController extends Controller
     public function show(string $id): JsonResponse
     {
         $plan = $this->service->getById($id);
-
+        if ($plan) {
+            return response()->json([
+                'success' => true,
+                'type' => 'success',
+                'plan' => new PlanResource($plan),
+                'message' => 'Plan retrieved successfully.',
+            ]);
+        }
         return response()->json([
-            'success' => true,
-            'type' => 'success',
-            'plan' => new PlanResource($plan)
+            'success' => false,
+            'type' => 'error',
+            'message' => 'Plan not found.',
         ]);
     }
 
@@ -73,13 +87,15 @@ class PlanController extends Controller
         if ($updateData === 1) {
             return response()->json([
                 'success' => true,
-                'type' => 'success'
+                'type' => 'success',
+                'message' => 'Plan successfully updated'
             ]);
         }
 
         return response()->json([
             'success' => false,
-            'type' => 'error'
+            'type' => 'error',
+            'message' => $request->message
         ]);
     }
 
@@ -93,13 +109,15 @@ class PlanController extends Controller
 
             return response()->json([
                 'success' => true,
-                'type' => 'success'
+                'type' => 'success',
+                'message' => 'Plan successfully deleted'
             ]);
         }
 
         return response()->json([
             'success' => false,
-            'type' => 'error'
+            'type' => 'error',
+            'message' => 'Plan could not be deleted'
         ]);
     }
 }

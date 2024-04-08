@@ -5,7 +5,7 @@
         <div
             class="md:flex-col md:items-stretch md:min-h-full md:flex-nowrap px-0 flex flex-wrap items-center justify-between w-full mx-auto"
         >
-            <!-- Toggler -->
+          <h4>ADMIN PAGE</h4>
             <button
                 class="cursor-pointer text-black opacity-50 md:hidden px-3 py-1 text-xl leading-none bg-transparent rounded border border-solid border-transparent"
                 type="button"
@@ -13,17 +13,13 @@
             >
                 <i class="fas fa-bars"></i>
             </button>
-
-            <!-- User -->
             <ul class="md:hidden items-center flex flex-wrap list-none">
                 <li class="inline-block relative">
                     <NotificationDropdown />
                 </li>
                 <li class="inline-block relative">
-                    <!--          <UserDropdown />-->
                 </li>
             </ul>
-            <!-- Collapse -->
             <div
                 class="md:flex md:flex-col md:items-stretch md:opacity-100 md:relative md:mt-4 md:shadow-none shadow absolute top-0 left-0 right-0 z-40 overflow-y-auto overflow-x-hidden h-auto items-center flex-1 rounded"
                 :class="collapseShow"
@@ -54,17 +50,7 @@
                         />
                     </div>
                 </form>
-
-                <!-- Divider -->
                 <hr class="my-4 md:min-w-full" />
-                <!-- Heading -->
-                <h6
-                    class="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline"
-                >
-                    Admin Layout Pages
-                </h6>
-                <!-- Navigation -->
-
                 <ul class="md:flex-col md:min-w-full flex flex-col list-none">
                     <li class="items-center">
 

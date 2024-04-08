@@ -33,9 +33,7 @@ const UpdateCategoryData = async (categoryId, form) => {
     try {
         await useCategoryStore().updateForm(categoryId, form);
     } catch (error) {
-        // console.log(error.errors,'aaddd')
         errors.value = error.errors
-
         console.error("Error deleting user:", error.message);
     }
 };

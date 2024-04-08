@@ -79,7 +79,8 @@ class CategoryController extends Controller
 
         return response()->json([
             'success' => false,
-            'type' => 'error'
+            'type' => 'error',
+            'message' => 'category update failed'
         ]);
     }
 

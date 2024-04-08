@@ -13,6 +13,7 @@ import ModalComponent from "../../components/Modal/Modal.vue";
 import router from "../../router/index.js";
 
 const isModalOpened = ref(false);
+const errors = ref('');
 const user = ref({
     name: '',
     email: '',
@@ -33,9 +34,13 @@ const submitHandler = () => {
         password: user.value.password,
         role_id: user.value.role
     }
-    adminStore.createUser(form).then(() => {
-        isModalOpened.value = false
-        userStore.getUsers()
+    adminStore.createUser(form).then((res) => {
+        if (res){
+            errors.value = res.errors
+        }else{
+            isModalOpened.value = false
+            userStore.getUsers()
+        }
     }).catch(error => {
         console.log(error, 'error')
     })
@@ -105,6 +110,7 @@ const deleteUser = async (userId) => {
                                     class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                     placeholder="Name"
                                 />
+                                <p class="text-red-500" v-if="errors.name">{{errors.name[0]}}</p>
                             </div>
 
                             <div class="relative w-full mb-3">
@@ -120,6 +126,7 @@ const deleteUser = async (userId) => {
                                     class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                     placeholder="Email"
                                 />
+                                <p class="text-red-500" v-if="errors.email">{{errors.email[0]}}</p>
                             </div>
 
                             <div class="relative w-full mb-3">
@@ -135,6 +142,7 @@ const deleteUser = async (userId) => {
                                     class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                                     placeholder="Password"
                                 />
+                                <p class="text-red-500" v-if="errors.password">{{errors.password[0]}}</p>
                             </div>
                             <div>
                                 <div class="text-black">Selected: {{ user.role}}</div>

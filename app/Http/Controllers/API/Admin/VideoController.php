@@ -63,7 +63,6 @@ class VideoController extends Controller
         $video = $this->videoService->createVideo($request->all());
 
         if ($video) {
-
             return response()->json([
                 'success' => true,
                 'type' => 'success',
@@ -74,7 +73,7 @@ class VideoController extends Controller
         return response()->json([
             'success' => false,
             'type' => 'error',
-            'message' => 'Something went wrong'
+            'message' => 'Video has not been uploaded'
         ]);
     }
 
@@ -98,13 +97,18 @@ class VideoController extends Controller
         return response()->json([
             'success' => false,
             'type' => 'error',
-            'message' => 'Something went wrong'
+            'message' => 'Video has not been updated'
         ]);
     }
-    public function destroy($id)
+
+    /**
+     * @param $id
+     * @return JsonResponse
+     */
+    public function destroy($id): JsonResponse
     {
         $destroy = $this->videoService->destroy($id);
-        if ($destroy){
+        if ($destroy) {
             return response()->json([
                 'success' => true,
                 'type' => 'success',
@@ -114,7 +118,7 @@ class VideoController extends Controller
         return response()->json([
             'success' => false,
             'type' => 'error',
-            'message' => 'Something went wrong'
+            'message' => 'Video has not been deleted'
         ]);
     }
 }
