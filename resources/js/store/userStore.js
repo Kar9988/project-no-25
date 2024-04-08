@@ -25,7 +25,6 @@ export const useUserStore = defineStore('userStore', {
             return new Promise((resolve, reject) => {
                 axios.delete(`/admin/users/${userId}`,)
                     .then(response => {
-                        console.log(response)
                         if (Array.isArray(this.users)) {
                             this.users = this.users.filter(user => user.id !== userId)
                         } else {
@@ -63,7 +62,6 @@ export const useUserStore = defineStore('userStore', {
                         balanceId:form.balanceId
                     },)
                     .then(({data}) => {
-                        console.log(data,'tessssssssssss')
                         Swal.fire({
                             position: "top",
                             icon: data.type,

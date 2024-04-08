@@ -11,7 +11,6 @@ use App\Models\User;
 use App\Models\UserTransaction;
 use App\Services\AdminService;
 use App\Services\UserBalanceService;
-use http\Env\Request;
 use Illuminate\Http\JsonResponse;
 
 
@@ -131,7 +130,7 @@ class UserController extends Controller
         return response()->json([
             'success' => false,
             'type' => 'error',
-            'message' => $request->message ?? 'Something went wrong'
+            'message' => 'Something went wrong'
         ]);
     }
 
@@ -143,7 +142,6 @@ class UserController extends Controller
         User::where('id', $id)->delete();
         return response()->json([
             'success' => true,
-            'message' => 'product was successfully deleted',
             'type'    => 'success'
         ], 200);
     }
@@ -158,14 +156,13 @@ class UserController extends Controller
        if ($create){
            return response()->json([
                'success' => true,
-               'message' => 'User successfully created',
                'type'    => 'success'
            ], 201);
        }
         return response()->json([
           'success' => false,
           'type' => 'error',
-          'message' => 'Sorry, user could not be created'
+          'message' => 'Something went wrong'
         ]);
     }
 }

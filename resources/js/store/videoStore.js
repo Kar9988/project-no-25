@@ -33,7 +33,6 @@ export const useVideoStore = defineStore('videoStore', {
             return new Promise((resolve, reject) => {
                 axios.delete(`/admin/videos/${videoId}`,)
                     .then(response => {
-                        console.log(response)
                         if (Array.isArray(this.videos)) {
                             this.videos = this.videos.filter(video => video.id !== videoId)
                         } else {
@@ -52,7 +51,6 @@ export const useVideoStore = defineStore('videoStore', {
             return new Promise((resolve, reject) => {
                 axios.get(`/admin/videos/${videoId}`,)
                     .then(response => {
-                        console.log(response);
                         this.video = response.data.video;
                         resolve(response.data);
                         return response.data.use
@@ -96,7 +94,6 @@ export const useVideoStore = defineStore('videoStore', {
             }
         },
         async changeViews(data) {
-            console.log(data)
             try {
                 await axios.post(`/admin/views`, data)
                     .then(() => {
@@ -113,7 +110,6 @@ export const useVideoStore = defineStore('videoStore', {
             }
         },
         async changeLikes(data) {
-            console.log(data, 'video')
             try {
                 await axios.post(`/admin/likes/`, data)
                     .then(() => {
@@ -167,7 +163,6 @@ export const useVideoStore = defineStore('videoStore', {
             }
         },
         async deleteLikes(data) {
-            console.log(data, 'esa')
             try {
                 await axios.delete(`/admin/likes/${data.video_id}`, {
                     params: {
@@ -189,7 +184,6 @@ export const useVideoStore = defineStore('videoStore', {
             }
         },
         async deleteEpisodesLikesCount(data) {
-            console.log(data, 'esass')
             try {
                 await axios.delete(`/admin/likes/${data.episode_id}`, {
                     params: {

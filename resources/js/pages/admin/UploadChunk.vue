@@ -55,7 +55,6 @@ const totalSteps = ref(10);
             for (let chunkIndex = 0; chunkIndex < totalChunks; chunkIndex++) {
                 const endByte = Math.min(startByte + chunkSize, file.value.size);
                 const chunk = file.value.slice(startByte, endByte);
-                console.log('file.value', file.value);
                 let last_dot = file.value.name.lastIndexOf('.')
                 let ext = file.value.name.slice(last_dot + 1)
 

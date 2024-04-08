@@ -140,7 +140,6 @@ const submitHandler = () => {
         }
     })
     video.value.episodes.forEach((episode, episodeKey) => {
-        console.log(episode, episodeKey)
         if (typeof episode.thumb !== 'string') {
             form.append(`episodes[${episodeKey}][thumb]`, episode.thumb)
         }

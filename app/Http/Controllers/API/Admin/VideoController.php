@@ -73,7 +73,7 @@ class VideoController extends Controller
         return response()->json([
             'success' => false,
             'type' => 'error',
-            'message' => 'Video has not been uploaded'
+            'message'=>'something went wrong'
         ]);
     }
 
@@ -97,7 +97,7 @@ class VideoController extends Controller
         return response()->json([
             'success' => false,
             'type' => 'error',
-            'message' => 'Video has not been updated'
+            'message'=>'something went wrong'
         ]);
     }
 
@@ -112,13 +112,12 @@ class VideoController extends Controller
             return response()->json([
                 'success' => true,
                 'type' => 'success',
-                'message' => 'video deleted successful'
             ]);
         }
         return response()->json([
             'success' => false,
             'type' => 'error',
-            'message' => 'Video has not been deleted'
+            'message'=>'something went wrong'
         ]);
     }
 }

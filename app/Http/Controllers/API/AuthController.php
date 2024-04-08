@@ -31,7 +31,6 @@ class AuthController extends Controller
         if ($request->user()) {
             $request->user()->token()->revoke();
             return response()->json([
-                'message' => 'Successfully logged out',
                 'success' => true,
                 'type' => 'success'
             ]);

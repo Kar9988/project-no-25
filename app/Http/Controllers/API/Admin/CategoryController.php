@@ -43,7 +43,6 @@ class CategoryController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'category created successfully',
             'view' => new CategoryResource($data),
             'type' => 'success'
         ], 201);
@@ -80,7 +79,7 @@ class CategoryController extends Controller
         return response()->json([
             'success' => false,
             'type' => 'error',
-            'message' => 'category update failed'
+            'message' => 'something went wrong'
         ]);
     }
 

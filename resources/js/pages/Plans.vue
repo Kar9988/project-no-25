@@ -29,7 +29,6 @@ export default {
             try {
                 const {data} = await axios.post('/admin/plans')
                 if(!data.success) {
-                    console.log('sdasdadasdasd')
                     throw new Error(data.message)
                 }
 
@@ -48,7 +47,6 @@ export default {
                 this.addPlan()
             } catch (e) {
                 this.errors[plan.id] = e.response.data.details
-                console.log(this.errors);
             }
         },
         async confirmDeletePlan(planId) {

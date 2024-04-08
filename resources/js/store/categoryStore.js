@@ -17,7 +17,6 @@ export const useCategoryStore = defineStore('categoryStore', {
             return new Promise((resolve, reject) => {
                 axios.get(`/admin/categories`)
                     .then(({data}) => {
-                        console.log(data)
                         this.categories = data
                         resolve(data)
                     }).catch(e => {
@@ -29,7 +28,6 @@ export const useCategoryStore = defineStore('categoryStore', {
             return new Promise((resolve, reject) => {
                 axios.delete(`/admin/categories/${categoryId}`,)
                     .then(response => {
-                        console.log(response)
                         if (Array.isArray(this.categories)) {
                             this.categories = this.categories.filter(category => category.id !== categoryId)
                         } else {
@@ -48,7 +46,6 @@ export const useCategoryStore = defineStore('categoryStore', {
             return new Promise((resolve, reject) => {
                 axios.get(`/admin/categories/${categoryId}`,)
                     .then(response => {
-                        console.log(response)
                         this.category = response.data.categories;
                         resolve(response.data);
                         return response.data.use
@@ -58,8 +55,6 @@ export const useCategoryStore = defineStore('categoryStore', {
             })
         },
         createCategory(payload) {
-            console.log(payload);
-
             return new Promise((resolve, reject) => {
                 axios.post(`/admin/categories`, payload)
                     .then(response => {
