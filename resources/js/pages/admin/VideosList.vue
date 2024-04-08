@@ -30,6 +30,7 @@ const openModal = () => {
 };
 
 const addEpisode = () => {
+    errors.value.episodes = []
     episodeSkilleton.value.click = true
     video.value.episodes.push({...episodeSkilleton.value});
 };
@@ -329,6 +330,9 @@ const page = computed({
                             </div>
                         </form>
                     </div>
+                    <p v-if="errors.episodes" class="text-red-500">
+                        {{errors.episodes[0]}}
+                    </p>
                 </template>
                 <template #footer>
                     <div class="text-center mt-6">
