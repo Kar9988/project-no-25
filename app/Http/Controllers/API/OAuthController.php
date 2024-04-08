@@ -81,7 +81,7 @@ class OAuthController extends Controller
                 return response()->json([
                     'success' => false,
                     'type'    => 'error',
-                    'message' => 'Something went wrong'
+                    'message' => 'You cannot log in'
                 ]);
             }
         } catch (\Exception $exception) {

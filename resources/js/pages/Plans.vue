@@ -8,6 +8,7 @@ export default {
             createData: {
                 name: ''
             },
+            errors:[],
             plans: [],
         }
     },
@@ -37,15 +38,15 @@ export default {
             }
         },
         async updatePlan(plan) {
+            this.errors = [];
             try {
                 const {data} = await axios.put(`/admin/plans/${plan.id}`, {...plan})
                 if(!data.success) {
                     throw new Error(data.message)
                 }
-
                 this.addPlan()
             } catch (e) {
-                console.log(e)
+                this.errors[plan.id] = e.response.data.details
             }
         },
         async confirmDeletePlan(planId) {
@@ -112,21 +113,30 @@ export default {
             <tr v-for="plan in plans">
                 <td class="border-b border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 light:text-slate-400">
                     <input v-model="plan.name" type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Name">
+                    <p class="text-red-500" v-if="errors[plan.id]?.name"> {{errors[plan.id]?.name[0]}} </p>
                 </td>
                 <td class="border-b border-slate-100 dark:border-slate-700 p-4 text-slate-500 light:text-slate-400">
                     <input v-model="plan.price" type="number" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Price">
+                    <p class="text-red-500" v-if="errors[plan.id]?.price"> {{errors[plan.id]?.price[0]}} </p>
                 </td>
                 <td class="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 light:text-slate-400">
                     <input v-model="plan.points" type="number" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Coins">
+                    <p class="text-red-500" v-if="errors[plan.id]?.points"> {{errors[plan.id]?.points[0]}} </p>
+
                 </td>
                 <td class="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 light:text-slate-400">
                     <input v-model="plan.description" type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Description">
+                    <p class="text-red-500" v-if="errors[plan.id]?.description"> {{errors[plan.id]?.description[0]}} </p>
                 </td>
                 <td class="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 light:text-slate-400">
                     <input v-model="plan.discount" type="number" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Discount">
+                    <p class="text-red-500" v-if="errors[plan.id]?.discount"> {{errors[plan.id]?.discount[0]}}</p>
+
                 </td>
                 <td class="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 light:text-slate-400">
                     <input v-model="plan.sub_description" type="text" class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Sub Description">
+                    <p class="text-red-500" v-if="errors[plan.id]?.sub_description"> {{errors[plan.id]?.sub_description[0]}}</p>
+
                 </td>
                 <td class="border-b border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 light:text-slate-400">
                     <select class=" rounded border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 light:text-slate-400"  v-model="plan.type">

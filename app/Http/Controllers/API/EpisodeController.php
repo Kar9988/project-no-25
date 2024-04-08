@@ -113,7 +113,6 @@ class EpisodeController extends Controller
     {
         $userId = auth()->id();
         $episodes = $this->episodeService->getLibrary($userId, request()->get('page', 1));
-
         return response()->json([
             'success' => true,
             'library' => LibraryResource::collection($episodes),

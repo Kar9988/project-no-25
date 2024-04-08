@@ -7,6 +7,7 @@ export const useUserStore = defineStore('userStore', {
     state: () => ({
         users: [],
         user: {},
+        errors:[]
     }),
     actions: {
         getUsers() {
@@ -24,7 +25,6 @@ export const useUserStore = defineStore('userStore', {
             return new Promise((resolve, reject) => {
                 axios.delete(`/admin/users/${userId}`,)
                     .then(response => {
-                        console.log(response)
                         if (Array.isArray(this.users)) {
                             this.users = this.users.filter(user => user.id !== userId)
                         } else {
@@ -52,7 +52,7 @@ export const useUserStore = defineStore('userStore', {
             })
         },
         async updateForm(id, form) {
-
+            this.errors = [];
             try {
                 await axios.put(`/admin/users/${id}`, {
                         name: form.name,
@@ -70,8 +70,8 @@ export const useUserStore = defineStore('userStore', {
                             timer: 1500
                         });
                     })
-            } catch (error) {
-                console.error('Error posting data:', error);
+            } catch (e) {
+                this.errors = e.response.data.details
             }
         },
     }

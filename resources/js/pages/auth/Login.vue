@@ -123,7 +123,6 @@ const submitForm = async () => {
     formData.append('email', user.value.email);
     formData.append('password', user.value.password);
     adminStore.adminLogin(formData).then(res => {
-        console.log(res)
         router.push({path: 'admin/dashboard'})
     }).catch(error => {
         console.log(error, 'error')
