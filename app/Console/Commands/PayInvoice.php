@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 
 use App\Models\Invoice;
 use App\Models\Plan;
+use App\Models\UserCard;
 use App\Services\InvoiceService;
 use App\Services\PaymentService;
 use App\Services\SubscriptionService;
@@ -48,9 +49,6 @@ class PayInvoice extends Command
             $invoices = $this->invoiceService->getByDate(Carbon::today()->toDateString());
 
             foreach ($invoices as $invoice) {
-                $data = [
-                    'amount' => $invoice->subscription->plan->price,
-                ];
                 $paymentable = [
                     'from_id' => 0,
                     'user_id' => $invoice->subscription->user->id,
@@ -59,14 +57,17 @@ class PayInvoice extends Command
                     'Paymentable_id' => $invoice->subscription->plan->id
                 ];
                 $this->paymentService->create($paymentable);
-                $updateBalance = $this->userBalanceService->addBalance($data, $invoice->subscription->user_id, false);
-                $stripe = new \Stripe\StripeClient('sk_test_51OwqCo019fpCUyvNLVXr1WuoFeYxXOF6yGT31ZzRn4h05ExWNz0J8334YEqHYcgRFZiYQJ8xP8P7VPpwPdAdzwgy00erY3cq8s');
-
+                $paymentMethod = UserCard::where('user_id', $invoice->subscription->user->id)->first();
+                $stripe = new \Stripe\StripeClient(config('stripe.secret_key'));
                 $paymentIntent = $stripe->paymentIntents->create([
                     'amount' => $invoice->subscription->plan->price*100,
                     'currency' => 'usd',
+                    'payment_method' => $paymentMethod->payment_method,
                     'automatic_payment_methods' => ['enabled' => true],
                 ]);
+                dd($paymentIntent);
+                $stripe = new \Stripe\StripeClient(config('stripe.secret_key'));
+
                 $stripe->paymentIntents->confirm(
                     $paymentIntent->id,
                     [
@@ -109,11 +110,7 @@ class PayInvoice extends Command
             DB::commit();
         }catch (\Exception $exception){
             DB::rollBack();
-            return [
-                'success' => false,
-                'type'    => 'error',
-                'message' => $exception->getMessage()
-            ];
+            dd($exception);
         }
     }
 }

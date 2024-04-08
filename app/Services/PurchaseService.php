@@ -47,6 +47,10 @@ class PurchaseService
     {
         $plan = $this->planService->getById($planId);
         $stripe = new \Stripe\StripeClient(config('stripe.secret_key'));
+        $stripe->customers->create([
+            'name' => 'Jenny Rosen',
+            'email' => 'jennyrosen@example.com',
+        ]);
         $intent = $stripe->paymentIntents->create([
             'amount'                    => $plan->price * 100,
             'currency'                  => 'usd',
@@ -150,7 +154,7 @@ class PurchaseService
                     'message' => 'You dont have enough coins'
                 ];
             }
-            if ($type == 'bonus') {
+            if ($type == 'coin') {
                 $userBalance->update([
                     'amount' => $userBalance->amount - $episode->price
                 ]);
