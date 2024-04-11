@@ -200,7 +200,7 @@ class PurchaseService
      * @param int $userId
      * @return mixed
      */
-    public function getHistory(int $userId, $page = 1, $take= 10):mixed
+    public function getHistory(int $userId, $page, $take):mixed
     {
         return User::query()
             ->select('payments.created_at', 'plans.type', 'plans.points', 'user_cards.type')
