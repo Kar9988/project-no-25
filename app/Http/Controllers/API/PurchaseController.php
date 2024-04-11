@@ -41,9 +41,9 @@ class PurchaseController extends Controller
     /**
      * @return JsonResponse
      */
-    public function index(): JsonResponse
+    public function index($page): JsonResponse
     {
-        $result = $this->purchaseService->getHistory(auth()->id());
+        $result = $this->purchaseService->getHistory(auth()->id(), $page);
         if ($result){
             return response()->json([
                 'success' => true,

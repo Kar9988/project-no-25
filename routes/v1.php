@@ -26,8 +26,9 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-Route::post('/register', [RegisterController::class, 'store']);
 Route::post('/login', [LoginController::class, 'store']);
+
+Route::post('/register', [RegisterController::class, 'store']);
 
 Route::post('/oauth/login', OAuthController::class);
 Route::get('auth/google', [SocialiteController::class, 'redirectToGoogle']);
@@ -78,7 +79,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('categories', [CategoryController::class, 'index']);
     });
     Route::post('/contact-us', [ContactUsController::class, 'sendMail']);
-    Route::get('purchase-history', [PurchaseController::class, 'index']);
+    Route::get('purchase-history/{page}', [PurchaseController::class, 'index']);
     Route::post('cancel-subscription/{id}', [PurchaseController::class, 'cancelSubscription']);
     Route::post('purchase/video', [PurchaseController::class, 'store']);
     Route::post('purchase/plan', [PurchaseController::class, 'storePlan']);
