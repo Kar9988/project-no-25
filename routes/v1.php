@@ -79,7 +79,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('categories', [CategoryController::class, 'index']);
     });
     Route::post('/contact-us', [ContactUsController::class, 'sendMail']);
-    Route::get('purchase-history/{page}', [PurchaseController::class, 'index']);
+    Route::get('purchase-history', [PurchaseController::class, 'index']);
     Route::post('cancel-subscription/{id}', [PurchaseController::class, 'cancelSubscription']);
     Route::post('purchase/video', [PurchaseController::class, 'store']);
     Route::post('purchase/plan', [PurchaseController::class, 'storePlan']);
