@@ -26,8 +26,9 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-Route::post('/register', [RegisterController::class, 'store']);
 Route::post('/login', [LoginController::class, 'store']);
+
+Route::post('/register', [RegisterController::class, 'store']);
 
 Route::post('/oauth/login', OAuthController::class);
 Route::get('auth/google', [SocialiteController::class, 'redirectToGoogle']);
