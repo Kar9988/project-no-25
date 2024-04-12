@@ -16,9 +16,12 @@ class PurchaseHistoryResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'coin' =>$this->points,
-            'date' => $this->created_at,
-            'type' => User::CARD_TYPES[$this->type] ?? null
+            'coin'         => $this->points,
+            'date'         => $this->created_at,
+            'type'         => $this->type,
+            'price'        => $this->price,
+            'payment_type' => $this->plan_type === 'one_time' ? 'coin' : 'subscription',
+            'payment_name' => $this->payment_name
         ];
     }
 }

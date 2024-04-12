@@ -267,7 +267,8 @@ class PurchaseService
     public function getHistory(int $userId, $page, $take):mixed
     {
         return User::query()
-            ->select('payments.created_at', 'plans.type', 'plans.points', 'user_cards.type')
+            ->select('payments.created_at', 'plans.type', 'plans.points', 'user_cards.type',
+                'plans.name as payment_name', 'plans.price', 'plans.type as plan_type')
             ->join('payments', 'payments.user_id', '=', 'users.id')
             ->join('plans', 'paymentable_id', '=', 'plans.id')
             ->join('user_cards', 'payments.payment_method', '=', 'user_cards.id')
