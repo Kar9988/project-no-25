@@ -86,6 +86,14 @@ class PurchaseService
     {
         try {
             DB::beginTransaction();
+            if (auth()->user()->getActiveSubscription) {
+
+                return [
+                    'type'    => 'error',
+                    'message' => 'You already have subscription, please cancel your current subscription to join another',
+                    'success' => false
+                ];
+            }
             $plan = $this->planService->getById($planId);
             try {
                 $stripe = new \Stripe\StripeClient(config('stripe.secret_key'));

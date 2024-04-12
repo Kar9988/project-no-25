@@ -80,7 +80,7 @@ Route::middleware('auth:api')->group(function () {
     });
     Route::post('/contact-us', [ContactUsController::class, 'sendMail']);
     Route::get('purchase-history', [PurchaseController::class, 'index']);
-    Route::post('cancel-subscription/{id}', [PurchaseController::class, 'cancelSubscription']);
+    Route::post('cancel-subscription', [PurchaseController::class, 'cancelSubscription']);
     Route::post('purchase/video', [PurchaseController::class, 'store']);
     Route::post('purchase/plan', [PurchaseController::class, 'storePlan']);
     Route::post('apple/create-payment-intent', [PurchaseController::class, 'applePaymentIntent']);

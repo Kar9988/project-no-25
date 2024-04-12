@@ -88,9 +88,9 @@ class PurchaseController extends Controller
      * @param $id
      * @return JsonResponse
      */
-    public function cancelSubscription($id): JsonResponse
+    public function cancelSubscription(): JsonResponse
     {
-        $cancel = $this->subscriptionService->update($id, ['cancelled_at' => Carbon::now()]);
+        $cancel = $this->subscriptionService->cancelAuthUserActiveSubscription();
         if ($cancel) {
             return response()->json([
                 'success' => true,
