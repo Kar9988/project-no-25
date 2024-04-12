@@ -86,15 +86,10 @@ class PurchaseService
     {
         try {
             DB::beginTransaction();
-            if (auth()->user()->getActiveSubscription) {
-
-                return [
-                    'type'    => 'error',
-                    'message' => 'You already have subscription, please cancel your current subscription to join another',
-                    'success' => false
-                ];
-            }
             $plan = $this->planService->getById($planId);
+            if (auth()->user()->getActiveSubscription && $plan->type !== 'one_time') {
+                $this->subscriptionService->cancelAuthUserActiveSubscription(auth()->id());
+            }
             try {
                 $stripe = new \Stripe\StripeClient(config('stripe.secret_key'));
                 if (!auth()->user()->customer_id) {
