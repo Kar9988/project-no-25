@@ -79,8 +79,7 @@ class PurchaseController extends Controller
      */
     public function storePlan(PlanPurchaseRequest $request): JsonResponse
     {
-        $response = $this->purchaseService->purchasePlan($request->payment_method, $request->payment_id,
-            $request->user_id, $request->plan_id, $request->type);
+        $response = $this->purchaseService->purchasePlan($request->payment_method, $request->user_id, $request->plan_id, $request->type);
 
         return response()->json($response);
     }

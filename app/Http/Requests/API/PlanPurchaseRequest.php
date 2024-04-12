@@ -25,7 +25,6 @@ class PlanPurchaseRequest extends FormRequest
     {
         return [
             'payment_method' => 'required|string',
-            'payment_id'     => 'required|string',
             'user_id'        => 'required|exists:users,id',
             'plan_id'        => 'required|exists:plans,id',
             'type'           => 'required|string',
