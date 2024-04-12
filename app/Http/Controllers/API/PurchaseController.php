@@ -90,7 +90,7 @@ class PurchaseController extends Controller
      */
     public function cancelSubscription(): JsonResponse
     {
-        $cancel = $this->subscriptionService->cancelAuthUserActiveSubscription();
+        $cancel = $this->subscriptionService->cancelAuthUserActiveSubscription(auth()->id());
         if ($cancel) {
             return response()->json([
                 'success' => true,
