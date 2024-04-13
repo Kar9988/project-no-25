@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 
 use App\Models\Invoice;
 use App\Models\Plan;
+use App\Models\Subscription;
 use App\Models\UserCard;
 use App\Services\InvoiceService;
 use App\Services\PaymentService;
@@ -13,6 +14,8 @@ use App\Services\UserBalanceService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Stripe\PaymentMethod;
 
 class PayInvoice extends Command
 {
@@ -30,7 +33,7 @@ class PayInvoice extends Command
      */
     protected $description = 'Command description';
 
-    public function __construct(InvoiceService $invoiceService, UserBalanceService $userBalanceService, SubscriptionService $subService,PaymentService $paymentService)
+    public function __construct(InvoiceService $invoiceService, UserBalanceService $userBalanceService, SubscriptionService $subService, PaymentService $paymentService)
     {
         parent::__construct();
         $this->invoiceService = $invoiceService;
@@ -50,67 +53,72 @@ class PayInvoice extends Command
 
             foreach ($invoices as $invoice) {
                 $paymentable = [
-                    'from_id' => 0,
-                    'user_id' => $invoice->subscription->user->id,
-                    'amount' => $invoice->subscription->plan->price,
+                    'from_id'          => 0,
+                    'user_id'          => $invoice->subscription->user->id,
+                    'amount'           => $invoice->subscription->plan->price,
                     'paymentable_type' => Plan::class,
-                    'Paymentable_id' => $invoice->subscription->plan->id
+                    'Paymentable_id'   => $invoice->subscription->plan->id
                 ];
                 $this->paymentService->create($paymentable);
-                $paymentMethod = UserCard::where('user_id', $invoice->subscription->user->id)->first();
+                $paymentMethod = UserCard::where('user_id', $invoice->subscription->user->id)->orderBy('id', 'DESC')->first();
                 $stripe = new \Stripe\StripeClient(config('stripe.secret_key'));
                 $paymentIntent = $stripe->paymentIntents->create([
-                    'amount' => $invoice->subscription->plan->price*100,
-                    'currency' => 'usd',
-                    'payment_method' => $paymentMethod->payment_method,
-                    'automatic_payment_methods' => ['enabled' => true],
+                    'amount'                    => $invoice->subscription->plan->price * 100,
+                    'currency'                  => 'usd',
+                    'customer'                  => $invoice->subscription->user->customer_id,
+                    'payment_method'            => $paymentMethod->payment_method,
+                    'automatic_payment_methods' => [
+                        'enabled'         => true,
+                        'allow_redirects' => 'never'
+                    ]
                 ]);
-                dd($paymentIntent);
-                $stripe = new \Stripe\StripeClient(config('stripe.secret_key'));
-
-                $stripe->paymentIntents->confirm(
+                $paymentResult = $stripe->paymentIntents->confirm(
                     $paymentIntent->id,
                     [
-                        'payment_method' => $invoice,
-                        'return_url' => 'https://www.example.com',
+                        'payment_method' => $paymentMethod->payment_method,
                     ]
                 );
-                dd($paymentIntent);
+                if ($paymentResult->status !== 'succeeded') {
+                    \Illuminate\Support\Facades\Log::error('Payment Intent details: ', [$paymentResult]);
+                    $invoice->subscription()->delete();
+                    $invoice->delete();
 
-                if ($updateBalance['success']) {
-                    $type = $invoice->subscription->plan['type'];
-                    $updateSub = [
-                        'start_date' => Carbon::today()->toDateString(),
-                        'end_date' => Carbon::today()->toDateString(),
+                    return [
+                        'type'    => 'error',
+                        'message' => 'Payment failed: ' . $paymentResult->last_payment_error->message,
+                        'success' => false
                     ];
-
-                    switch ($type) {
-                        case 'Weekly':
-                            $updateSub['end_date'] = Carbon::today()->addWeeks()->toDateString();
-                            break;
-                        case 'Yearly':
-                            $updateSub['end_date'] = Carbon::today()->addYear()->toDateString();
-                            break;
-                        case 'One Time':
-                            break;
-                    }
-                    $updateSubscription = $this->subService->update($invoice->subscription['id'], $updateSub);
-                    if ($updateSubscription) {
-                        $invoiceData = [
-                            'user_id' => $invoice->subscription->user['id'],
-                            'subscription_id' => $invoice->subscription['id'],
-                            'next_attempt' => $updateSub['end_date'],
-                            'amount' => $invoice->subscription->plan['price'],
-                        ];
-                        $this->invoiceService->addInvoice($invoiceData);
-                        $this->invoiceService->delete($invoice->id);
-                    }
                 }
+                $this->updateSubscriptionAndInvoice($invoice->subscription);
+                $invoice->delete();
             }
             DB::commit();
-        }catch (\Exception $exception){
+        } catch (\Exception $exception) {
             DB::rollBack();
-            dd($exception);
+            Log::error($exception);
         }
+    }
+
+    private function updateSubscriptionAndInvoice(Subscription $subscription)
+    {
+        $nextAttempt = null;
+        switch ($subscription->plan->type) {
+            case('weekly'):
+                $nextAttempt = \Carbon\Carbon::now()->addWeek();
+                break;
+            case('yearly'):
+                $nextAttempt = Carbon::now()->addYear();
+                break;
+            default:
+        }
+        $subscription->update([
+            'start_date' => Carbon::now(),
+            'end_date'   => $nextAttempt,
+        ]);
+        $subscription->invoice()->create([
+            'user_id'      => $subscription->user_id,
+            'next_attempt' => $nextAttempt,
+            'amount'       => $subscription->plan->price,
+        ]);
     }
 }

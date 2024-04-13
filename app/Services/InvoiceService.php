@@ -37,7 +37,10 @@ class InvoiceService
      */
     public function getByDate($date):mixed
     {
-        return $this->model::with(['user', 'subscription', 'subscription.plan'])->where('next_attempt', $date)->get();
+        return $this->model::with(['user', 'subscription', 'subscription.plan'])
+            ->whereHas('subscription.plan')
+            ->whereNull('canceled_at')
+            ->where('next_attempt', $date)->get();
     }
 
     /**

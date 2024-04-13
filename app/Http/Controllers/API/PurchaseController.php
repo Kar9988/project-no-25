@@ -79,8 +79,7 @@ class PurchaseController extends Controller
      */
     public function storePlan(PlanPurchaseRequest $request): JsonResponse
     {
-        $response = $this->purchaseService->purchasePlan($request->payment_method, $request->payment_id,
-            $request->user_id, $request->plan_id, $request->type);
+        $response = $this->purchaseService->purchasePlan($request->payment_method, $request->user_id, $request->plan_id, $request->type);
 
         return response()->json($response);
     }
@@ -89,9 +88,9 @@ class PurchaseController extends Controller
      * @param $id
      * @return JsonResponse
      */
-    public function cancelSubscription($id): JsonResponse
+    public function cancelSubscription(): JsonResponse
     {
-        $cancel = $this->subscriptionService->update($id, ['cancelled_at' => Carbon::now()]);
+        $cancel = $this->subscriptionService->cancelAuthUserActiveSubscription(auth()->id());
         if ($cancel) {
             return response()->json([
                 'success' => true,
