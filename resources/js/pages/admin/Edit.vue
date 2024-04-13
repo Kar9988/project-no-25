@@ -4,7 +4,8 @@ import {useUserStore} from "../../store/userStore.js";
 import {computed, onMounted, ref} from "vue";
 import {useRoute} from 'vue-router';
 import {useCategoryStore} from "../../store/categoryStore.js";
-
+import CardPaymentHistory from "./CardPaymentHistory.vue";
+import axios from "../../axios-configured.js";
 
 const adminStore = useAdminStore()
 const userStore = useUserStore();
@@ -12,6 +13,7 @@ const user = computed(() => userStore?.user);
 const route = useRoute();
 const userId = ref(null);
 const errors = ref(null);
+const paymentHistory = ref(null)
 const form = ref({
     id: '',
     name: '',
@@ -24,9 +26,10 @@ const form = ref({
 onMounted(() => {
     userId.value = route.params.id;
     getUser(userId.value)
+    getPayments(userId.value)
 })
 
-
+console.log(paymentHistory.value)
 const getUser = async (userId) => {
     try {
         user.value = await useUserStore().getUser(userId);
@@ -36,11 +39,15 @@ const getUser = async (userId) => {
         form.value.amount = user.value?.user_balance.amount
         form.value.bonus = user.value?.user_balance.bonus
         form.value.balanceId = user.value?.user_balance.id
-
     } catch (error) {
         console.error("Error deleting user:", error.message);
     }
 };
+const getPayments = async (userId)=>{
+   await axios.get('payment-history/'+userId).then((res)=>{
+        paymentHistory.value  = res.data
+    })
+}
 const UpdateUserData = async (userId, form) => {
 
     try {
@@ -84,6 +91,7 @@ const UpdateUserData = async (userId, form) => {
             </div>
         </form>
     </div>
+    <CardPaymentHistory :payment-history="paymentHistory"/>
 </template>
 
 <style scoped>
