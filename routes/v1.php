@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\Admin\CategoryController;
 use App\Http\Controllers\API\Admin\LikeController as UserLikeController;
 use App\Http\Controllers\API\Admin\LikeController as AdminLikeController;
+use App\Http\Controllers\API\Admin\PaymentController;
 use App\Http\Controllers\API\Admin\UploadController;
 use App\Http\Controllers\API\Admin\UserController as AdminUserController;
 use App\Http\Controllers\API\Admin\VideoController;
@@ -53,7 +54,6 @@ Route::middleware('auth:api')->group(function () {
 //    Route::get('all-history', [EpisodeController::class, 'showAllHistory']);
 
 
-
     Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
         Route::post('/upload/video', [UploadController::class, 'store'])->excludedMiddleware('throttle:api');
         Route::post('/balance/{id}', [UserBalanceController::class, 'store']);
@@ -84,6 +84,8 @@ Route::middleware('auth:api')->group(function () {
     Route::post('purchase/video', [PurchaseController::class, 'store']);
     Route::post('purchase/plan', [PurchaseController::class, 'storePlan']);
     Route::post('apple/create-payment-intent', [PurchaseController::class, 'applePaymentIntent']);
+    Route::get('payment-history', [PaymentController::class, 'index']);
+    Route::get('payment-history/{id}', [PaymentController::class, 'getByUser']);
     Route::get('episode/source/{episodeId}', [EpisodeController::class, 'getVideoStream'])->name('episode.video');
     Route::apiResource('views', ViewController::class)->names([
         'index' => 'userViews.index',

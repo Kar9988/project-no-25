@@ -7,6 +7,7 @@ import Auth from "../layouts/Auth.vue";
 import Dashboard from "../pages/admin/Dashboard.vue";
 import Tables from "../pages/admin/Tables.vue";
 import Users from "../pages/admin/Users.vue";
+import PaymentHistory from "../pages/admin/Payment-history.vue";
 // views for Auth layout
 
 import Login from "../pages/auth/Login.vue";
@@ -32,6 +33,11 @@ const routes = [
             {
                 path: "/admin/videos",
                 component: VideosList,
+
+            },
+            {
+                path: "/admin/payment-history",
+                component: PaymentHistory,
 
             },
             {
